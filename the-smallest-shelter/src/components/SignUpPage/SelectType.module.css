@@ -1,0 +1,66 @@
+.typeContent {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.typeTitleWrap {
+    text-align: center;
+    margin: auto;
+}
+
+.typeTitle {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 15px;
+}
+
+.selectTable {
+    width: 70%;
+    /* display: flex; */
+    text-align: center;
+    justify-content: center;
+    margin: 0 auto;
+    /* box-sizing: border-box; */
+}
+
+.selectTypeWrap {
+    width: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    border: 1px solid #d2d2d2;
+}
+
+.typeName {
+    font-size: 16px;
+    padding: 20px;
+    border-bottom: 1px solid #d2d2d2;
+    
+}
+
+.typeButtonWrap {
+    padding: 20px;
+    text-align: center;
+}
+
+.typeImage {
+    display: block;
+    margin: 0 auto;
+    padding-bottom: 5px;
+}
+
+.typeButton {
+    width: 80%;
+    height: 40px;
+    margin: 5px;
+    background-color: #FBC22E;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.typeButton:hover {
+    transition: all ease 0.1s;
+    transform: scale(1.05);
+}

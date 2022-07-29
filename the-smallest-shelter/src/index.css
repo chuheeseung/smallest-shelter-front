@@ -1,0 +1,13 @@
+@font-face { font-family: 'SpoqaHanSansNeo-Bold'; src: url(./assets/fonts/SpoqaHanSansNeo-Bold.ttf) format('truetype'); }
+
+body {
+  margin: 0;
+  font-family: 'SpoqaHanSansNeo-Bold';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
