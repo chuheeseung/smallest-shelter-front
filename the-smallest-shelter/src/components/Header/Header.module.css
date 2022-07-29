@@ -1,0 +1,27 @@
+.headerWrap {
+  height: 80px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "SpoqaHanSansNeoBold";
+}
+
+.headerLogo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 60px;
+  vertical-align: middle;
+}
+
+.headerRight {
+  display: flex;
+  flex-direction: row;
+  margin-right: 84px;
+  align-items: center;
+}
+
+.headerRight span {
+  font-size: 14px;
+}

@@ -1,0 +1,89 @@
+.signUpWrap {
+    text-align: center;
+}
+
+.titleWrap {
+
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 700;
+    padding-bottom: 18px;
+}
+
+.formWrap {
+}
+
+.inputBlockWrap {
+    text-align: center;
+}
+
+.inputFormBlock {
+    width: 700px;
+    height: 35px;
+    display: block;
+    margin: 1px auto;
+    border: 1.5px solid #D2D2D2;
+    border-radius: 10px;
+}
+
+.inputFormBlock:focus {
+    outline: 2px solid #fbc22e;
+}
+
+
+.inputForm {
+    width: 700px;
+    height: 35px;
+    margin: 5px;
+    border: 1.5px solid #D2D2D2;
+    border-radius: 10px;
+}
+
+.inputForm:focus {
+    outline: 2px solid #fbc22e;
+}
+
+.errorMessageWrap {
+    margin-top: 8px;
+    color: #ef0000;
+    font-size: 12px;
+}
+
+.divWrap {
+    display: block;
+    flex-flow: row nowrap;
+    justify-self: flex-start;
+    flex-direction: column;
+    
+}
+
+.inputLabel {
+    position: relative;
+    text-align: left;
+    margin-top: 10px;
+}
+
+.formButton {
+    width: 700px;
+    height: 35px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: white;
+    background-color: #FBC22E;
+    border: 0;
+    outline: 0;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.formButton:hover {
+    transition: all ease 0.1s;
+    transform: scale(1.02);
+}
+
+.formButton:disabled {
+    background-color: #dadada;
+    color: white;
+}

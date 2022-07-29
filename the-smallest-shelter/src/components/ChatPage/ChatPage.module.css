@@ -1,0 +1,74 @@
+.chatContainer {
+  width: 80%;
+  border: 1px solid gray;
+  margin-top: 32px;
+}
+
+.headerWrap {
+  padding: 12px 18px;
+  color: #000;
+  font-size: 18px;
+  font-weight: bold;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.headerWrap img {
+  border-radius: 50%;
+  width: 32px;
+  margin-right: 8px;
+}
+
+.messageContainer {
+  display: flex;
+  margin-bottom: 3px;
+  padding: 4px 16px 8px;
+  margin-top: 8px;
+}
+
+.messageContainer p {
+  margin-bottom: 0;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.userInfo .userName {
+  margin: 0 0 4px 4px;
+  font-weight: bold;
+}
+
+.message {
+  border: 1px solid #ECECEC;
+  border-radius: 15px;
+  padding: 8px 12px;
+}
+
+.chatForm {
+  padding: 12px 18px;
+  border-top: 1px solid #d9d9d9;
+}
+
+.inputWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputWrap input[type=text] {
+  width: 70%;
+  margin: 0 14px 0 16px;
+  border: 1px solid #969696;
+  padding: 4px 16px;
+  border-radius: 20px;
+}
+
+.inputWrap input[type=text]:focus {
+  outline: none;
+}
+
+.inputWrap button {
+  border: none;
+  background-color: inherit;
+}

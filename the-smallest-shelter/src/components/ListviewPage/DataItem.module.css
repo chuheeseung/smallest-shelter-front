@@ -1,0 +1,46 @@
+.dataContainer {
+  width: 250px;
+  height: 350px;
+  overflow: hidden;
+  margin: 16px;
+  margin-bottom: 3rem;
+  border-radius: 5px;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.dataContainer:hover {
+  transition: all ease 0.1s;
+  transform: scale(1.02);
+}
+
+.dataPhoto {
+  max-width: 100%;
+  width: auto !important;
+  height: auto !important;
+  display: block;
+  z-index: -1;
+}
+
+.dataInfo {
+  padding-left: 4px;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.dataInfo h4 {
+  margin: 6px 0 0 0;
+  font-size: 20px;
+}
+
+.dataInfo p {
+  margin: 4px 0 0 0;
+  color: #969696;
+}
+
+.dataAdoptedTag {
+  width: 80px;
+  height: 80px;
+  padding-right: 6px;
+}
