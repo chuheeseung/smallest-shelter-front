@@ -76,80 +76,49 @@ function InputForm({ selectType }) {
         }
     };
 
+    const getRandomImage = () => {
+        const randomIndex = Math.floor(Math.random() * imageArr.length);
+        const profileImage = imageArr[randomIndex];
+        return profileImage;
+    };
+
     const onSubmitButton = () => {
         if(idValid && pwValid && name.length > 0 && phoneNumValid && addr.length > 0 && emailValid) {
-            if(type === "private") {
-                const submit = async (e) => {
-                    e.preventDefault();
+            const profileImage = getRandomImage();
 
-                    console.log(`
-                        type: ${type},
-                        id: ${id},
-                        pw: ${pw},
-                        name: ${name},
-                        phoneNum: ${phoneNum},
-                        addr: ${addr},
-                        email: ${email},
-                    `);
-    
-                    // const res = await axios({
-                    //     headers: {
-                    //         withCredentials: true,
-                    //         "Access-Control-Allow-Origin": "http://localhost:3000",
-                    //         'Accept': 'application/json',
-                    //     },
-                    //     method: 'post',
-                    //     url: 'http://hana-umc.shop:8080/priavte/join',
-                    //     data: {
-                    //         type: type,
-                    //         id: id,
-                    //         pw: pw,
-                    //         name: name,
-                    //         phoneNum: phoneNum,
-                    //         addr: addr,
-                    //         email: email,
-                    //     }
-                    // })
-                };
-            }
-            else if(type === "organization") {
-                const submit = async (e) => {
-                    e.preventDefault();
+            console.log(`
+                type: ${type},
+                id: ${id},
+                pw: ${pw},
+                name: ${name},
+                phoneNum: ${phoneNum},
+                addr: ${addr},
+                email: ${email},
+                profileImg: url(${profileImage}),
+            `);
+            alert("회원가입이 완료되었습니다!");
+            window.location.href = '/signin';
 
-                    console.log(`
-                        type: ${type},
-                        id: ${id},
-                        pw: ${pw},
-                        name: ${name},
-                        phoneNum: ${phoneNum},
-                        addr: ${addr},
-                        email: ${email},
-                    `);
-    
-                    // const res = await axios({
-                    //     headers: {
-                    //         withCredentials: true,
-                    //         "Access-Control-Allow-Origin": "http://localhost:3000",
-                    //         'Accept': 'application/json',
-                    //     },
-                    //     method: 'post',
-                    //     url: 'http://hana-umc.shop:8080/organization/join',
-                    //     data: {
-                    //         type: type,
-                    //         id: id,
-                    //         pw: pw,
-                    //         name: name,
-                    //         phoneNum: phoneNum,
-                    //         addr: addr,
-                    //         email: email,
-                    //     }
-                    // })
-                };
-            }
-            
+            // const res = await axios({
+            //     headers: {
+            //         withCredentials: true,
+            //         "Access-Control-Allow-Origin": "http://localhost:3000",
+            //         'Accept': 'application/json',
+            //     },
+            //     method: 'post',
+            //     url: 'http://hana-umc.shop:8080/priavte/join',
+            //     data: {
+            //         type: type,
+            //         id: id,
+            //         pw: pw,
+            //         name: name,
+            //         phoneNum: phoneNum,
+            //         addr: addr,
+            //         email: email,
+            //     }
+            // })
+            //  document.location.href = '/signin';
         }
-        
-        window.location.href = "/signin";
     };
 
     useEffect(() => {
