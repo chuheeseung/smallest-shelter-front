@@ -2,6 +2,26 @@ import React, { useState, useEffect } from 'react';
 import style from './InputForm.module.css';
 import axios from 'axios';
 
+import image66 from '../../assets/img/ProfileImg/Ellipse 66.png';
+import image67 from '../../assets/img/ProfileImg/Ellipse 67.png';
+import image68 from '../../assets/img/ProfileImg/Ellipse 68.png';
+import image69 from '../../assets/img/ProfileImg/Ellipse 69.png';
+import image70 from '../../assets/img/ProfileImg/Ellipse 70.png';
+import image71 from '../../assets/img/ProfileImg/Ellipse 71.png';
+import image72 from '../../assets/img/ProfileImg/Ellipse 72.png';
+import image73 from '../../assets/img/ProfileImg/Ellipse 73.png';
+import image74 from '../../assets/img/ProfileImg/Ellipse 74.png';
+import image75 from '../../assets/img/ProfileImg/Ellipse 75.png';
+import image76 from '../../assets/img/ProfileImg/Ellipse 76.png';
+import image77 from '../../assets/img/ProfileImg/Ellipse 77.png';
+import image78 from '../../assets/img/ProfileImg/Ellipse 78.png';
+import image79 from '../../assets/img/ProfileImg/Ellipse 79.png';
+import image80 from '../../assets/img/ProfileImg/Ellipse 80.png';
+import image81 from '../../assets/img/ProfileImg/Ellipse 81.png';
+import image82 from '../../assets/img/ProfileImg/Ellipse 82.png';
+import image83 from '../../assets/img/ProfileImg/Ellipse 83.png';
+import image84 from '../../assets/img/ProfileImg/Ellipse 84.png';
+
 function InputForm({ selectType }) {
     const type = selectType;
     const [id, setId] = useState('');
@@ -16,6 +36,13 @@ function InputForm({ selectType }) {
     const [phoneNumValid, setPhoneNumValid] = useState(false);
     const [emailValid, setEmailValid] = useState(false);
     const [notAllow, setNotAllow] = useState(true);
+
+    const imageArr = [
+        image66, image67, image68, image69, image70,
+        image71, image72, image73, image74, image75,
+        image76, image77, image78, image79, image80,
+        image81, image82, image83, image84
+    ];
 
     const handleId = (e) => {
         setId(e.target.value);
