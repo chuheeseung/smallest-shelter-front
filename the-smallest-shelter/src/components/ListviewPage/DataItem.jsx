@@ -4,9 +4,14 @@ import AdoptedTag from '../../assets/img/adopted.png';
 
 
 function DataItem({ id, photoUrl, name, age, gender, species, isAdopted }) {
+  const handleClick = () => {
+    console.log("clicked : ", id);
+    // useNavigate("/detail?id");
+  };
+
   return (
     <>
-    <div className={style.dataContainer}>
+    <div className={style.dataContainer} onClick={handleClick}>
       <img className={style.dataPhoto} src={photoUrl} alt="사진 url"/>
       <div className={style.dataInfo}>
         <div>
