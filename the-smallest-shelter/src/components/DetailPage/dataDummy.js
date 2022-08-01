@@ -7,7 +7,7 @@ export const DetailResponse = {
         year: 2015,
         gender: "MALE",
         IsAdopted: true,
-        IsOrganization: true,
+        IsOrganization: false,
         organizationName: "유행사",
         phoneNumber: "010-1234-1234",
         address: "강남 테헤란로 14 어쩌구 빌딩 4층",

@@ -8,7 +8,7 @@ import ReactModal from 'react-modal';
 // import useModals from "./useModals.js";
 ReactModal.setAppElement('#root');
 
-export default function HistoryRegister({isOrganization}){
+export default function HistoryRegister({isOrganization, animalIdx}){
     const [isOpen, setOpen] = useState(false);
     const handleClick = () => {
       // 여기서 열어준다
@@ -30,7 +30,7 @@ export default function HistoryRegister({isOrganization}){
                 <PlusIcon onClick={handleClick}>
                     <AiOutlinePlus/>
                 </PlusIcon>
-                <RegisterModal isOpen={isOpen} onCancel={handleModalCancel} />
+                <RegisterModal isOpen={isOpen} onCancel={handleModalCancel} animalIdx={animalIdx}/>
             </>
             : null
         }

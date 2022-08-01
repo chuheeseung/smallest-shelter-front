@@ -32,25 +32,23 @@ const RegisterModal = ({ isOpen, onCancel, animalIdx}) => {
             imgUrl = await getDownloadURL(uploadFile.ref);
         }
         console.log("게시물 사진: ",imgUrl, "게시물 내용: ",historyContent);
-        // const res = await axios({
-        //     headers: {
-        //         withCredentials: true,
-        //         "Access-Control-Allow-Origin": "http://localhost:3000",
-        //         'Accept': 'application/json',
-        //     },
-        //     method: 'post',
-        //     url: 'http://hana-umc.shop:8080/new',
-        //     params:{
-        //         animal_id:{animalIdx}
-        //     },
-        //     data: {
-        //       imgUrl: imgUrl,
-        //        content: historyContent
-        //     }
-        // })
-        // if (res.data) {
-        //     alert('Added Data');
-        // }
+        await axios({
+            headers: {
+                withCredentials: true,
+                'Accept': 'application/json',
+            },
+            method: 'post',
+            url: 'https://sjs.hana-umc.shop/post/join?animal_id=1',
+            params:{
+                animal_id:{animalIdx}
+            },
+            data: {
+              imgUrl: imgUrl,
+              content: historyContent
+            }
+        }).then(
+          (response) => {console.log(response);},
+        )
         setHistoryContent("");
         onCancel();
     }
