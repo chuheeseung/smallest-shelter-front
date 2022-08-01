@@ -1,14 +1,16 @@
-import { child, DataSnapshot, onChildAdded, ref } from 'firebase/database';
+import { child, DataSnapshot, onChildAdded, query, ref } from 'firebase/database';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { dbService } from '../../fbase';
+import { dbService, storeService } from '../../fbase';
 import style from "./ChatHistory.module.css";
 import ChatHistoryList from './ChatHistoryList';
 import { GrCheckbox, GrCheckboxSelected } from 'react-icons/gr';
 import dummy from '../ChatPage/DirectMessageData.json';
+import { collection, onSnapshot, orderBy } from 'firebase/firestore';
 
 function ChatHistory() {
+  // realtime vs firestore
   const [messages, setMessages] = useState([]); // 모든 쪽지 내역
   const [message, setMessage] = useState([]);  // 받은/보낸 쪽지 내역
   const [clicked, setClicked] = useState("sent");  // 받은/보낸 쪽지 클릭 시 색 변경을 위해 (default: 보낸 쪽지)
@@ -19,6 +21,17 @@ function ChatHistory() {
   const chatRoomId = Object.keys(dummy)[0]// (userId-currentUserId) 지금은 하나라 0번 인덱스만 접근
   const currUserId = 'JNVe6U0iGlP4A5Pm65UfXgZju0Z2';  // 현재 사용자 id
   const userId = chatRoomId.split('-').filter(e => e !== currUserId).join();
+
+  // useEffect(() => {
+  //   const q = query(collection(storeService, chatRoomId), orderBy("time"));
+  //   onSnapshot(q, (snapshot) => {
+  //     const messagesArray = snapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
+  //     setMessages(messagesArray);
+  //   })
+  // }, [])
 
   useEffect(() => {
     addMessagesListeners(chatRoomId)
@@ -36,21 +49,7 @@ function ChatHistory() {
       }
       setMessages(messagesArray);  
     })
-
-  }
-
-  // useEffect(() => {
-  //   let tmp = [];
-  //   let chatArr = [];
-  //   for (var i in dummy[chatRoomId]) {
-  //     tmp.push(dummy[chatRoomId][i]);
-  //     if (dummy[chatRoomId][i].sentUser.id === currUserId) {
-  //       chatArr.push(dummy[chatRoomId][i]);
-  //     }
-  //   }
-  //   setMessages(tmp);
-  //   setMessage(chatArr)
-  // }, [])
+   }
 
   const handleReceivedChat = () => {
     let tmp = messages.filter(e => e.sentUser.id !== currUserId);
