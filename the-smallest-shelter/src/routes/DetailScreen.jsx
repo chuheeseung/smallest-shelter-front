@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from "react";
+// import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Banner from "../components/DetailPage/Banner";
 import Posts from "../components/DetailPage/Posts";
 import SliderSection from "../components/DetailPage/SliderSection";
@@ -9,6 +11,8 @@ import ReactModal from 'react-modal';
 import HistoryRegister from "../components/DetailPage/HistoryRegister";
 
 function DetailScreen() {
+    const location = useLocation();
+    const id = location.state.id;
     const [isOrganization, setIsOrganization] = useState(true);
     const [name, setName] = useState("");
     const [imgUrl, setImgUrl] = useState("");
@@ -34,6 +38,7 @@ function DetailScreen() {
     //     }
     // })
     //     .then((response) => {
+        console.log({id});
             let detailData = DetailResponse.result;
             // let { mainImgUrl, name, species, month, year, gender, IsAdopted, IsOrganization, organizationName, phoneNumber, address, Post, recommandAnimal, illness } = detailData;
             setName(detailData.name);
@@ -82,7 +87,7 @@ function DetailScreen() {
                 <PostList>
                     <PostListTitle>
                         <div style={{display: 'flex', flex: 1}}>동물 히스토리</div>
-                        <HistoryRegister isOrganization={isOrganization}/>
+                        <HistoryRegister isOrganization={isOrganization} animalIdx={id}/>
                     </PostListTitle>
                     <PostContainer>
                         {
