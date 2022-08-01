@@ -8,8 +8,7 @@ import ReactModal from 'react-modal';
 ReactModal.setAppElement('#root');
 
 
-export default function Posts({ imgUrl, name, info }) {
-
+export default function Posts({ postIdx, imgUrl}) {
     const [isOpen, setOpen] = useState(false);
     const handleClick = () => {
       // 여기서 열어준다
@@ -27,19 +26,8 @@ export default function Posts({ imgUrl, name, info }) {
        <>
             <PhotoContainer onClick={handleClick}>
                 <img src={imgUrl} alt="대표 사진" style={{width:"220px", height: "220px",margin: "10px", borderRadius:"15px", objectFit: "cover"}}/>
-                <PhotoContent>
-                    <PhotoName>{name}</PhotoName>
-                    <PhotoInfo>
-                        <span>{info}</span>
-                    </PhotoInfo>
-                </PhotoContent>
-                    
             </PhotoContainer>
             <Modal isOpen={isOpen} onSubmit={handleModalSubmit} onCancel={handleModalCancel} 
-                imgUrl = {imgUrl}
-                name = {name}
-                info = {info}
-            
             />
         </>
     );
