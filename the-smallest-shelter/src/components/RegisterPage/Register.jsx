@@ -22,14 +22,25 @@ let index = 0;
 
 function Register() {
     const navigate = useNavigate();
-    // 이름, 나이, 성별, 종, 질병, 질병 추가 입력, [사회화, 분리불안, 배변훈련, 짖음, 입질], 이미지
-    // str, str, int, str, list<String>, object (int), str
+    // 이름, 나이(year, month), 성별, 종, 질병, 질병 추가 입력, [사회화, 분리불안, 배변훈련, 짖음, 입질], 이미지
+    // str, int, str, str, list<String>, object (str), str
     const [name, setName] = useState("");
-    const [age, setAge] = useState("");
-    const [gender, setGender] = useState(0);
-    const genderList = ['암컷(중성화 X)', '수컷(중성화 X)', '암컷(중성화 O)', '수컷(중성화 O)'];
+    const [year, setYear] = useState();
+    const [month, setMonth] = useState();
+    const [isGuessed, setIsGuessed] = useState(false);
+    const [gender, setGender] = useState("");
+    const [genderIdx, setGenderIdx] = useState(0);
+    const genderList = [
+        {name: '수컷(중성화 X)', value: "MALE"},
+        {name: '암컷(중성화 X)', value: "FEMALE"},
+        {name: '수컷(중성화 O)', value: "MALE_NEUTRAL"},
+        {name: '암컷(중성화 O)', value: "FEMALE_NEUTRAL"} ,  
+    ];
     const [species, setSpecies] = useState("");
-    const speciesArr = ['강아지', '고양이'];
+    const speciesList = [
+        {name: '강아지', value: 'DOG'},
+        {name: '고양이', value: 'CAT'}
+    ];
     const [items, setItems] = useState(["홍역", "파보", "코로나", "슬개골",]);
     const [diseaseName, setDiseaseName] = useState("");
     const [selectedItems, setSelectedItems] = useState([]);
@@ -44,12 +55,18 @@ function Register() {
     ]
     const [image, setImage] = useState("");
 
+    const setGenderFunc = (e) => {
+        const idx = Number(e.target.id) + 1;
+        setGender(e.target.value)
+        setGenderIdx(idx);
+    }
     const uploadImage = (img) => {
         setImage(img);
     }
 
     const onSubmit = async (e) => {
         e.preventDefault();
+
         let imgUrl = "";
 
         if (image !== "") {
@@ -59,13 +76,15 @@ function Register() {
         }
         console.log(`
         이름: ${name},
-        나이: ${age},
+        나이: ${year}살 ${month}개월,
+        추정: ${isGuessed},
         성별: ${gender},
         종: ${species},
         질병: ${selectedItems},
         check 5: ${checkVal},
-        사진: ${imgUrl}
+        사진: ${imgUrl},
       `);
+      
         const res = await axios({
             headers: {
                 withCredentials: true,
@@ -73,18 +92,21 @@ function Register() {
                 'Accept': 'application/json',
             },
             method: 'post',
-            url: 'http://hana-umc.shop:8080/new',
+            url: 'http://hana-umc.shop:8080/animal/join',
             data: {
                 name: name,
-                age: age,
-                socialization: checkVal[0],
-                anxiety: checkVal[1],
-                train: checkVal[2],
-                bark: checkVal[3],
-                bite: checkVal[4],
-                illness: selectedItems,
-                mainImg: imgUrl,
+                year: year,
+                month: month,
+                isGuessed: isGuessed,
+                gender: gender,
                 species: species,
+                mainImgUrl: imgUrl,
+                socialization: String(checkVal[0]),
+                separation: String(checkVal[1]),
+                toilet: String(checkVal[2]),
+                bark: String(checkVal[3]),
+                bite: String(checkVal[4]),
+                illness: selectedItems, 
             }
         })
         if (res.data) {
@@ -120,53 +142,71 @@ function Register() {
                                 placeholder="이름을(를) 입력하세요"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                required
                                 className={style.nameInput} />
                         </p>
                         <p className={style.genderInput}>
                             <span className={style.title}>성별</span>
                             {genderList.map((data, idx) => (
-                                <label htmlFor={data}>
+                                <label htmlFor={idx}>
                                     <input
                                         type="radio"
-                                        id={data}
+                                        id={idx}
                                         name="gender"
-                                        value={idx + 1}
-                                        onChange={(e) => setGender(Number(e.target.value))}
-                                        checked={gender == idx + 1}
+                                        value={data.value}
+                                        onChange={setGenderFunc}
+                                        checked={genderIdx == idx + 1}
                                         style={{ display: "none" }}
+                                        required
                                     />
-                                    {gender == idx + 1 ? <GrCheckboxSelected /> : <GrCheckbox />}
-                                    <span style={{ marginLeft: "8px", color: "black", position: "relative", top: "-1.5px" }}>{data}</span>
+                                    {genderIdx == idx + 1 ? <GrCheckboxSelected /> : <GrCheckbox />}
+                                    <span style={{ marginLeft: "8px", color: "black", position: "relative", top: "-1.5px" }}>{data.name}</span>
                                 </label>
                             ))}
                         </p>
                         <p>
-                            <label htmlFor='age' className={style.title}>나이</label>
+                            <span className={style.title}>나이</span>
                             <input
-                                id="age"
-                                placeholder="나이를 입력하세요"
+                                id="year"
                                 type='number'
-                                value={age}
-                                onChange={(e) => setAge(e.target.value)}
+                                value={year}
+                                onChange={(e) => setYear(e.target.value)}
                                 className={style.ageInput}
+                                min="0"
+                                required
                             />
+                            <span style={{color: 'black'}}>살</span>
+                            <input
+                                id="month"
+                                type='number'
+                                value={month}
+                                onChange={(e) => setMonth(e.target.value)}
+                                className={style.ageInput}
+                                min="0"
+                                required
+                            />
+                            <span style={{color: 'black'}}>개월</span>
+                            <div className={style.isGuessed} onClick={() => setIsGuessed(!isGuessed)}> 
+                                {isGuessed ? <GrCheckboxSelected size={13}/> : <GrCheckbox size={13}/> } <span>추정</span>
+                            </div>
                             <span style={{fontSize: '12px', color: '#969696', verticalAlign: 'bottom', marginLeft: '16px'}}>※ 1살 미만일 경우 0살로 기입하세요.</span>
                         </p>
                         <p className={style.speciesInput}>
                             <span className={style.title}>동물 종류</span>
-                            {speciesArr.map((data) => (
-                                <label htmlFor={data}>
+                            {speciesList.map((data) => (
+                                <label htmlFor={data.name}>
                                     <input
                                         type="radio"
-                                        id={data}
+                                        id={data.name}
                                         name="species"
-                                        value={data}
+                                        value={data.value}
                                         onChange={(e) => setSpecies(e.target.value)}
-                                        checked={species === data}
+                                        checked={species === data.value}
                                         style={{ display: "none" }}
+                                        required
                                     />
-                                    {species === data ? <GrCheckboxSelected /> : <GrCheckbox />}
-                                    <span style={{ marginLeft: "8px", color: "black", position: "relative", top: "-1.5px" }}>{data}</span>
+                                    {species === data.value ? <GrCheckboxSelected /> : <GrCheckbox />}
+                                    <span style={{ marginLeft: "8px", color: "black", position: "relative", top: "-1.5px" }}>{data.name}</span>
                                 </label>
                             ))}
                         </p>
