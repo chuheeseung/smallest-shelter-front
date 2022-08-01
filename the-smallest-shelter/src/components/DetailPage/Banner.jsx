@@ -1,21 +1,23 @@
 import React, { Component, useState } from 'react'
 import axios from "axios";
 import styled from "styled-components";
-import { AiOutlineStar, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { AiOutlineStar, AiOutlineHeart, AiFillHeart, AiOutlineLike } from "react-icons/ai";
 import { FiMail } from 'react-icons/fi';
 import { Checkbox } from 'antd';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import {
     MuiThemeProvider,
     createMuiTheme
   } from "@material-ui/core/styles";
 import Popover from "@material-ui/core/Popover";
-import Like from "./Like";
 import SuccessMark from "../../assets/img/SuccessMark.png";
 import { Link, useNavigate } from 'react-router-dom';
 
-function Banner({ isOrganization }) {
+function Banner(props) {
     const navigate = useNavigate();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [adoptCheck,setAdoptCheck] = useState("false");
+    const [likeHeart, setLikeHeart] = useState("true");
     // 임시
     const currUser = {
         "id": "JNVe6U0iGlP4A5Pm65UfXgZju0Z2",
@@ -36,16 +38,24 @@ function Banner({ isOrganization }) {
             : `${currUserId}-${userId}`
     }
 
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [adoptCheck,setAdoptCheck] = useState("false");
-    const [isAdoptSuccess, setIsAdoptSuccess] = useState(false);
-
     const onChange = (e) => {
         console.log(`checked = ${e.target.checked}`);
         let checked = `${e.target.checked}`
         setAdoptCheck(checked);
         console.log(checked);
-        setIsAdoptSuccess(true)
+        // axios.get('https://jsonplaceholder.typicode.com/posts/1')
+        // .then((res) => {
+        //   let { data } = res;
+        //   let { animalIdx, isLike } = data;
+          
+        //   console.log('animalIdx : ' + animalIdx);
+        //   console.log('isLike : ' +isLike);
+        //   setLikeHeart(isLike);
+        // })
+        // .catch((err) => {
+        //   console.log(err);
+          
+        // });
       };
 
     const handleClick = event => {
@@ -71,14 +81,30 @@ function Banner({ isOrganization }) {
           }
         }
       });
+      const likedRes = () => {
+        console.log("좋아요 누름");
+        axios.get('https://jsonplaceholder.typicode.com/posts/1')
+        .then((res) => {
+          let { data } = res;
+          let { animalIdx, isLike } = data;
+          
+          console.log('animalIdx : ' + animalIdx);
+          console.log('isLike : ' +isLike);
+          setLikeHeart(isLike);
+        })
+        .catch((err) => {
+          console.log(err);
+          
+        });
+      }
         return (
             <RootBanner>
                 <DetailTitle>동물 상세 정보</DetailTitle>
                 <ContainerBanner>
                     <Profile>
-                        <ProfileImg src="https://mblogthumb-phinf.pstatic.net/MjAyMTAxMTRfOTgg/MDAxNjEwNjE0MDg3ODcy.28hxXvxgn2WbHgG7ZiL64bxAiizC3JBZwKCRP-8PcQIg.EDx8izDu_pCfgLBg7F15z7yARZfsEpvk15sX3INo8ZEg.JPEG.brteddy/IMG_0343.jpg?type=w800"/>
+                        <ProfileImg src={props.imgUrl}/>
                         <PetInfo>
-                            <PetName> 길동이 / <button onClick={handleClick} style={{background:"none", border:"none", fontWeight:"700",}}>&nbsp;유행사</button>
+                            <PetName> {props.name} / <button onClick={handleClick} style={{background:"none", border:"none", fontWeight:"700",}}>&nbsp;유행사</button>
                             <MuiThemeProvider theme={theme2}>
                                 <Popover
                                     id="popover-with-anchor"
@@ -94,9 +120,9 @@ function Banner({ isOrganization }) {
                                         horizontal: "center"
                                     }}
                                 >
-                                    <GroupTitle>단체명</GroupTitle>
-                                    <GroupInfo>서울특별시 종로구 종로13길 134</GroupInfo>
-                                    <GroupInfo>02-554-3349</GroupInfo>
+                                    <GroupTitle>{props.organizationName}</GroupTitle>
+                                    <GroupInfo>{props.address}</GroupInfo>
+                                    <GroupInfo>{props.phoneNumber}</GroupInfo>
                                 </Popover>
                             </MuiThemeProvider>
                             </PetName>
@@ -116,26 +142,40 @@ function Banner({ isOrganization }) {
                                         나이
                                     </InfoItem1>
                                     {
-                                        isOrganization==true //단체이면 입양상태 체크 가능
+                                        props.isOrganization=="true" //단체이면 입양상태 체크 가능
                                         ? <div style={{marginTop:"19px"}}><Checkbox onChange={onChange}/></div>
                                         : null
                                     }
                                 </InfoParagraph>
                                 <InfoParagraph>
                                     <InfoItem2>
-                                        고양이
+                                        {
+                                            `${props.species}`=="CAT"
+                                            ? <>고양이</>
+                                            : <>강아지</>
+                                        }
                                     </InfoItem2>
                                     <InfoItem2>
-                                        여
+                                        {
+                                            `${props.gender}`=="MALE"
+                                            ? <>남</>
+                                            : <>여</>
+                                        }
                                     </InfoItem2>
                                     <InfoItem2>
-                                        홍역,심장병
+                                        {
+                                            props.illness.map((item)=>{
+                                                return(
+                                                    <>{item.illnessName} &nbsp;</>
+                                                )
+                                            })
+                                        }
                                     </InfoItem2>
                                     <InfoItem2>
-                                        2살
+                                        {props.age}
                                     </InfoItem2>
                                     {
-                                        isOrganization==true
+                                        props.isOrganization=="true"
                                         ? <InfoItem2>입양 상태</InfoItem2>
                                         : null
                                     }
@@ -146,16 +186,20 @@ function Banner({ isOrganization }) {
                     <ProfileIcon>
                         <IconSet>
                             {
-                                isOrganization==false//입양희망자인 경우
+                                props.isOrganization=="false"//입양희망자인 경우
                                 ?<>
-                                    <AiOutlineHeart size="22"/>
-                                    <FiMail size="22" style={{marginLeft:"22px"}} onClick={() => navigate(`/chat/${chatRoomId}`)}/>
+                                    {
+                                        likeHeart=="false"
+                                        ? <AiOutlineHeart/>
+                                        : <AiFillHeart/>
+                                    }
+                                        <Link to="/chat"><FiMail size="22" style={{marginLeft:"22px"}} onClick={() => navigate(`/chat/${chatRoomId}`)}/></Link>
                                 </>
                                 : null
                             }
                         </IconSet>     
                         {
-                            adoptCheck=="false"//입양 되었을 때 마크 여부
+                            props.isAdopted=="true"//입양 되었을 때 마크 여부
                             ? <img src={SuccessMark} style={{width:"150px"}}/>
                             : null
                         }
@@ -169,7 +213,7 @@ const RootBanner=styled.section`
     width: 100%;
     height: 460px;
     background: #FBC22E;
-    font-family: 'Spoqa Han Sans Neo';
+    font-family: 'SpoqaHanSansNeo-Bold';
     padding: 5px 0px;
 
 `;
@@ -239,7 +283,7 @@ const InfoParagraph=styled.p`
     align-items:left;
 `;
 
-const InfoItem1=styled.h5`
+const InfoItem1=styled.div`
     margin-top:20px;
 `
 
