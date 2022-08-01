@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { AiOutlineStar, AiOutlineHeart, AiFillHeart, AiOutlineLike } from "react-icons/ai";
 import { FiMail } from 'react-icons/fi';
 import { Checkbox } from 'antd';
-import 'antd/dist/antd.min.css';
+import 'antd/dist/antd.css';
 import {
     MuiThemeProvider,
     createMuiTheme
