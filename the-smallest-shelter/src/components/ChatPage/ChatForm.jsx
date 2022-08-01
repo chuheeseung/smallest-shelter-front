@@ -12,13 +12,24 @@ function ChatForm() {
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // 임시
-  const currUser = {
+  // const currUser = {
+  //   "id": "JNVe6U0iGlP4A5Pm65UfXgZju0Z2",
+  //   "image": "http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon",
+  //   "name": "입양희망자"
+  // };
+  // const user = {
+  //   "id": "VRHxfEj1c1g0pbsAiYut1x2VzvP2",
+  //   "image": "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon",
+  //   "name": "유행사"
+  // }
+
+  // 임시 (유행사로 로그인 했을 때)
+  const user = {
     "id": "JNVe6U0iGlP4A5Pm65UfXgZju0Z2",
     "image": "http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon",
     "name": "입양희망자"
   };
-  const user = {
+  const currUser = {
     "id": "VRHxfEj1c1g0pbsAiYut1x2VzvP2",
     "image": "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon",
     "name": "유행사"
@@ -56,7 +67,8 @@ function ChatForm() {
         id: user.id,
         name: user.name,
         image: user.image
-      }
+      },
+      checked: false,
     }
 
     return message;
