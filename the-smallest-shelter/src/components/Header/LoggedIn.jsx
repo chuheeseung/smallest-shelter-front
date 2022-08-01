@@ -24,7 +24,6 @@ function LoggedIn() {
   const addMessagesListeners = (chatRoomId) => {
     let messagesArray = [];
     onChildAdded(child(messagesRef, chatRoomId), DataSnapshot => {
-      console.log(DataSnapshot.val())
       if (DataSnapshot.val().sentUser.id !== currUserId && !DataSnapshot.val().checked) {
         messagesArray.push(DataSnapshot.val());
       }

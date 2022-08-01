@@ -9,9 +9,10 @@ function RadioGroup({ item, idx, checkType, setCheckVal, checkVal }) {
   const onChangeCheck = (e) => {
     const { id, value } = e.target;
     setClick(Number(value));
+
     let tmp = [];
     tmp = checkVal;
-    tmp[id] = Number(value);
+    tmp[id] = checkType[Number(value)-1].text;
 
     let flagObj = {};
     flagObj= checkFlag;
@@ -19,7 +20,6 @@ function RadioGroup({ item, idx, checkType, setCheckVal, checkVal }) {
 
     setCheckVal(tmp);
     setCheckFlag(flagObj)
-    // console.log(checkFlag[id])
 }
 
   return (
