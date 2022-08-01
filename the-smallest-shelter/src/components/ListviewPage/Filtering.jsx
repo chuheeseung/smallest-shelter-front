@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import style from './Filtering.module.css';
 import { Select } from 'antd';
 import searchButtonImage from '../../assets/img/search.png';
-import trashButtonImage from '../../assets/img/trash.png';
 
 const { Option } = Select;
 
@@ -25,7 +24,7 @@ function Filtering({ getFilter }) {
     if(e === undefined) {
       e = '';
     }
-    console.log(e);
+    console.log("selected ", e);
     
     setSelectedFilter((selectedFilter) => {
       let newSelect = {...selectedFilter};
@@ -38,7 +37,7 @@ function Filtering({ getFilter }) {
     if(e === undefined) {
       e = '';
     }
-    console.log(e);
+    console.log("selected ", e);
 
     setSelectedFilter((selectedFilter) => {
       let newSelect = {...selectedFilter};
@@ -51,7 +50,7 @@ function Filtering({ getFilter }) {
     if(e === undefined) {
       e = '';
     }
-    console.log(e);
+    console.log("selected ", e);
     
     setSelectedFilter((selectedFilter) => {
       let newSelect = {...selectedFilter};
@@ -64,7 +63,7 @@ function Filtering({ getFilter }) {
     if(e === undefined) {
       e = '';
     }
-    console.log(e);
+    console.log("selected ", e);
 
     setSelectedFilter((selectedFilter) => {
       let newSelect = {...selectedFilter};

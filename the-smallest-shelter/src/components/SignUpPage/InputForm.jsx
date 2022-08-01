@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import style from './InputForm.module.css';
 import axios from 'axios';
+import { Radio } from 'antd';
 
 import image66 from '../../assets/img/ProfileImg/Ellipse 66.png';
 import image67 from '../../assets/img/ProfileImg/Ellipse 67.png';
@@ -23,13 +24,13 @@ import image83 from '../../assets/img/ProfileImg/Ellipse 83.png';
 import image84 from '../../assets/img/ProfileImg/Ellipse 84.png';
 
 function InputForm({ selectType }) {
-    const type = selectType;
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
     const [name, setName] = useState('');
     const [phoneNum, setPhoneNum] = useState('');
     const [addr, setAddr] = useState('');
     const [email, setEmail] = useState('');
+    const [organizationName, setOrganizationName] = useState('');
 
     const [idValid, setIdValid] = useState(false);
     const [pwValid, setPwValid] = useState(false);
@@ -103,48 +104,108 @@ function InputForm({ selectType }) {
         }
     };
 
+    const handleOrganizationCheck = (e) => {
+        console.log(e.target.value);
+        setOrganizationName(e.target.value);
+    };
+
     const getRandomImage = () => {
         const randomIndex = Math.floor(Math.random() * imageArr.length);
         const profileImage = imageArr[randomIndex];
         return profileImage;
     };
 
-    const onSubmitButton = () => {
+    const onSubmitButton = async () => {
         if(idValid && pwValid && name.length > 0 && phoneNumValid && addr.length > 0 && emailValid) {
             const profileImage = getRandomImage();
 
-            console.log(`
-                type: ${type},
-                id: ${id},
-                pw: ${pw},
-                name: ${name},
-                phoneNum: ${phoneNum},
-                addr: ${addr},
-                email: ${email},
-                profileImg: url(${profileImage}),
-            `);
-            alert("회원가입이 완료되었습니다!");
-            window.location.href = '/signin';
+            if(selectType === "private") {
+                console.log(`
+                    username: ${id},    
+                    password: ${pw},
+                    passwordCheck: ${pw},
+                    name: ${name},
+                    phoneNumber: ${phoneNum},
+                    address: ${addr},
+                    email: ${email},
+                    profileImgUrl: url(${profileImage}),
+                    role: "PRIVATE",
+                `);
 
-            // const res = await axios({
-            //     headers: {
-            //         withCredentials: true,
-            //         "Access-Control-Allow-Origin": "http://localhost:3000",
-            //         'Accept': 'application/json',
-            //     },
-            //     method: 'post',
-            //     url: 'http://hana-umc.shop:8080/priavte/join',
-            //     data: {
-            //         type: type,
-            //         id: id,
-            //         pw: pw,
-            //         name: name,
-            //         phoneNum: phoneNum,
-            //         addr: addr,
-            //         email: email,
-            //     }
-            // })
-            //  document.location.href = '/signin';
+                /*
+                const submit = async (e) => {
+                    e.preventDefault();
+
+                    const res = await axios({
+                        headers: {
+                            withCredentials: true,
+                            "Access-Control-Allow-Origin": "http://localhost:3000",
+                            'Accept': 'application/json',
+                        },
+                        method: 'POST',
+                        url: 'http://hana-umc.shop:8080/user/priavte/join',
+                        data: {
+                            username: id,    
+                            password: pw,
+                            passwordCheck: pw,
+                            name: name,
+                            phoneNumber: phoneNum,
+                            address: addr,
+                            email: email,
+                            profileImgUrl: url(profileImage),
+                            role: "PRIVATE",
+                        },
+                    });
+                };
+                */
+                
+                alert("개인 회원가입이 완료되었습니다!");
+                window.location.href = '/signin';
+            }
+            else if(selectType === "organization") {
+                console.log(`
+                    username: ${id},
+                    password: ${pw},
+                    passwordCheck: ${pw},
+                    name: ${name},
+                    phoneNumber: ${phoneNum},
+                    address: ${addr},
+                    email: ${email},
+                    organizationName: ${organizationName},
+                    profileImgUrl: url(${profileImage}),
+                    role: "ORGANIZATION",
+                `);
+
+                /*
+                const submit = async (e) => {
+                    e.preventDefault();
+
+                    const res = await axios({
+                        headers: {
+                            withCredentials: true,
+                            "Access-Control-Allow-Origin": "http://localhost:3000",
+                            'Accept': 'application/json',
+                        },
+                        method: 'POST',
+                        url: 'http://hana-umc.shop:8080/user/priavte/join',
+                        data: {
+                            username: id,
+                            password: pw,
+                            passwordCheck: pw,
+                            name: name,
+                            phoneNumber: phoneNum,
+                            address: addr,
+                            email: email,
+                            profileImgUrl: url(profileImage),
+                            role: "ORGANIZATION",
+                        },
+                    });
+                };
+                */
+
+                alert("단체 회원가입이 완료되었습니다!");
+                window.location.href = '/signin';
+            }
         }
     };
 
@@ -185,7 +246,7 @@ function InputForm({ selectType }) {
                     </div>
                     <input 
                         className={style.inputFormBlock} 
-                        type="text" 
+                        type="password" 
                         placeholder='비밀번호'
                         value={pw}
                         onChange={handlePw}
@@ -239,6 +300,17 @@ function InputForm({ selectType }) {
                         onChange={handleEmail}
                     />
                 </div>
+                {
+                    (selectType === "organization") ? 
+                    <div>
+                        <div className={style.inputLabel}>단체 선택</div>
+                        <Radio.Group onChange={handleOrganizationCheck}>
+                            <Radio value={'UHENGSA'}>유행사</Radio>
+                            <Radio value={'KARA'}>카라</Radio>
+                        </Radio.Group>
+                    </div> :
+                    <></>
+                }
             </div>
             <button 
                 disabled={notAllow} 

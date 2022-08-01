@@ -15,11 +15,13 @@
 }
 
 .dataPhoto {
-  max-width: 100%;
-  width: auto !important;
-  height: auto !important;
-  display: block;
+  width: 100%;
+  /* width: auto !important; */
+  height: 100%;
   z-index: -1;
+  /* overflow: hidden; */
+  display: block;
+  
 }
 
 .dataInfo {
