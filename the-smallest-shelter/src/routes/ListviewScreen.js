@@ -5,19 +5,13 @@ import Banner from '../components/ListviewPage/Banner';
 import { dummy } from '../components/ListviewPage/dataDummy';
 import style from './ListviewScreen.module.css';
 import { Pagination } from 'antd';
+import axios from 'axios';
 
 const PAGE_SIZE = 10;
 
 export default function ListviewScreen() {
     const [cardList,setCardList] = useState([]); // 데이터 받아오는 배열
-
-    const [minValue, setMinValue] = useState(0);
-    const [maxValue, setMaxValue] = useState(PAGE_SIZE);
-
-    const handleChange = (value) => {
-        setMinValue((value - 1) * PAGE_SIZE);
-        setMaxValue(value * PAGE_SIZE);
-    };
+    const [pageNum, setPageNum] = useState(0);
 
     const handleFilter = (filters) => {
         console.log(filters);
@@ -33,10 +27,10 @@ export default function ListviewScreen() {
                 method: 'POST',
                 url: 'http://hana-umc.shop:8080/search',
                 data: {
-                    Species: filters.species,
-                    Gender: filters.gender,
-                    Age: filters.age,
-                    isAdopted: filters.isAdopted,
+                    Species: filters[species],
+                    Gender: filters[gender],
+                    Age: filters[age],
+                    isAdopted: filters[isAdopted],
                 }
             }).then((response) => {
                 console.log(response);
@@ -44,25 +38,43 @@ export default function ListviewScreen() {
             })
         };
         */
+
     };
 
-    /*
-    useEffect(()=> {axios({
-            method: "GET",
-            url: "http://hana-umc.shop:8080/list",
-            headers: {
-                withCredentials: true,
-                "Access-Control-Allow-Origin": "http://localhost:3000",
-                'Accept': 'application/json',
-            }
-        })
-        .then((response) => setCardList(response.data));
-    }, []);
-    */
+    const handlePrevious = () => {
+        axios.get("http://hana-umc.shop:8080/animal/animals",
+            {params: {page: (pageNum > 0 ? pageNum - 1 : 0)}},
+            {withCredentials: true}
+        ).then((res) => {
+            console.log(res.data.result)
+            setCardList(res.data.result);
+        });
+    };
 
-    useEffect(() => { 
-        setCardList(dummy.results);
+    const handleNext = () => {
+        axios.get("http://hana-umc.shop:8080/animal/animals",
+            {params: {page: pageNum + 1}},
+            {withCredentials: true}
+        ).then((res) => {
+            console.log(res.data.result)
+            setCardList(res.data.result);
+        });
+    };
+
+    useEffect(() => {
+        axios.get("http://hana-umc.shop:8080/animal/animals",
+            {params: {page: pageNum}},
+            {withCredentials: true}
+        ).then((res) => {
+            console.log(res.data.result)
+            setCardList(res.data.result);
+        })
     }, []);
+    
+
+    // useEffect(() => { 
+    //     setCardList(dummy.results);
+    // }, []);
 
     return (
         <>
@@ -70,8 +82,8 @@ export default function ListviewScreen() {
             <Filtering getFilter={handleFilter} />
             <div className={style.dataContainer}>
                 {
-                    cardList.slice(minValue, maxValue)
-                        .map((item) => {
+                    // cardList.slice(minValue, maxValue)
+                        cardList.map((item) => {
                         return (
                             <DataItem
                                 key={item.animal_idx}
@@ -80,15 +92,11 @@ export default function ListviewScreen() {
                         )
                     })
                 }
-                
             </div>
-            <Pagination
-                style={{display: 'block', margin: '8px', textAlign: 'center'}}
-                defaultCurrent={1}
-                defaultPageSize={PAGE_SIZE}
-                onChange={handleChange}
-                total={cardList.length}
-            />
+            <div>
+                <button onClick={handlePrevious}>이전</button>
+                <button onClick={handleNext}>다음</button>
+            </div>
         </>
     )
 }

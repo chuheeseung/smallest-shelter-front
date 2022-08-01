@@ -70,8 +70,9 @@ function Login() {
                 }).then((response) => {
                     console.log(response); // 출력값 확인하기
 
-                    sessionStorage.setItem("id", response.id);
-                    sessionStorage.getItem("pw", response.pw);
+                    sessionStorage.setItem("userIDx", response.userIdx);
+                    sessionStorage.setItem("name", response.name);
+                    sessionStorage.setItem("role", response.role);
                     
                     setSavedLoginId(sessionStorage.getItem("id"));
                     setSavedLoginPw(sessionStorage.getItem("pw"));
