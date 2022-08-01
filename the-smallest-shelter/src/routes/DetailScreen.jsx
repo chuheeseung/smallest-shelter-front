@@ -13,7 +13,7 @@ import HistoryRegister from "../components/DetailPage/HistoryRegister";
 function DetailScreen() {
     const location = useLocation();
     const id = location.state.id;
-    const [isOrganization, setIsOrganization] = useState(true);
+    const [isOrganization, setIsOrganization] = useState(false);
     const [name, setName] = useState("");
     const [imgUrl, setImgUrl] = useState("");
     const [species, setSpecies] = useState("");
@@ -94,6 +94,7 @@ function DetailScreen() {
                             postData.map((item) => {
                                 return (
                                     <Posts
+                                        animalIdx={id}
                                         postIdx = {item.postIdx}
                                         imgUrl = {item.postImgUrl}
                                     />

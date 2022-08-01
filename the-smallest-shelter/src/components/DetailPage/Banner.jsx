@@ -142,7 +142,7 @@ function Banner(props) {
                                         나이
                                     </InfoItem1>
                                     {
-                                        props.isOrganization=="true" //단체이면 입양상태 체크 가능
+                                        props.isOrganization==true //단체이면 입양상태 체크 가능
                                         ? <div style={{marginTop:"19px"}}><Checkbox onChange={onChange}/></div>
                                         : null
                                     }
@@ -175,7 +175,7 @@ function Banner(props) {
                                         {props.age}
                                     </InfoItem2>
                                     {
-                                        props.isOrganization=="true"
+                                        props.isOrganization==true
                                         ? <InfoItem2>입양 상태</InfoItem2>
                                         : null
                                     }
@@ -186,7 +186,7 @@ function Banner(props) {
                     <ProfileIcon>
                         <IconSet>
                             {
-                                props.isOrganization=="false"//입양희망자인 경우
+                                props.isOrganization==false//입양희망자인 경우
                                 ?<>
                                     {
                                         likeHeart=="false"
@@ -199,7 +199,7 @@ function Banner(props) {
                             }
                         </IconSet>     
                         {
-                            props.isAdopted=="true"//입양 되었을 때 마크 여부
+                            props.isAdopted==true//입양 되었을 때 마크 여부
                             ? <img src={SuccessMark} style={{width:"150px"}}/>
                             : null
                         }

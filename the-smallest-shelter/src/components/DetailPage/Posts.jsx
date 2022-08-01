@@ -16,12 +16,28 @@ export default function Posts(props) {
     const [postContent, setPostContent]=useState("");
     
     const handleClick = () => {
-      let postData = modaldata.result;
       // 여기서 열어준다
-      console.log(postData.imgUrl);
-      console.log(postData.content);
-      setPostImgUrl(postData.imgUrl);
-      setPostContent(postData.content)
+      axios({
+        headers: {
+            withCredentials: true,
+            'Accept': 'application/json',
+        },
+        method: 'get',
+        url: 'https://sjs.hana-umc.shop/post?animal_id=1&post_id=1',
+        params:{
+            animal_id:1,
+            post_id:1
+        }
+    }).then(
+      (response) => {
+        console.log(response);
+        let postData = response.result;
+        console.log(postData.imgUrl);
+        console.log(postData.content);
+        setPostImgUrl(postData.imgUrl);
+        setPostContent(postData.content)
+      },
+    )
       setOpen(true);
     };
 

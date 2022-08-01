@@ -94,7 +94,7 @@ class TabPanel extends Component {
     return this.props.children;
   }
 }
-
+//-------------------------여기가 메인-----------------------------------
 function MyPage() {
   const [isOrganization, setIsOrganization] = useState(true);
     return (
