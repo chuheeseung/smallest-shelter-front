@@ -268,13 +268,13 @@ const CarouselItem = styled.img`
   border-radius: 15px;
 `;
 
-const SliderSection = () => (
+const SliderSection = ({recommandAnimal}) => (
   <Carousel perPage={3} gutter={12}>
   {
-    slideData.results.map((item) => {
+    recommandAnimal.map((item) => {
       return (
         <CarouselItem
-          src = {item.photo}
+          src = {item.recommandImgUrl}
         />
 
       )
