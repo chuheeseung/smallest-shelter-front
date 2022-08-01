@@ -6,76 +6,29 @@ import trashButtonImage from '../../assets/img/trash.png';
 
 const { Option } = Select;
 
-function Filtering({ getFilter }) {
+function Filtering({ ...cardList }) {
+  const filterCategory = ['species', 'gender', 'age', 'isAdopted'];
   const filterData = {
-    species: ['', 'DOG', 'CAT'],
-    gender: ['', 'MALE', 'FEMALE', 'MALE_NEUTRAL', 'FEMALE_NEUTRAL'],
-    age: ['', 'PUPPY', 'JUNIOR', 'ADULT', 'SENIOR'],
-    isAdopted: ['', true, false],
+    species: ['전체', '강아지', '고양이'],
+    gender: ['전체', '암컷', '수컷', '암컷(중성화O)', '수컷(중성화O)'],
+    age: ['전체', 'Puppy (0살)', 'Junior (1살~2살)', 'Adult (3살~8살)', 'Senior (9살~)'],
+    isAdopted: ['전체', '입양 완료', '보호중'],
   };
 
-  const [selectedFilter, setSelectedFilter] = useState({
-    species: '',
-    gender: '',
-    age: '',
-    isAdopted: '',
-  });
+  const [data, setData] = useState([]);
+  // const [newData, setNewData] = useState([]);
 
-  const handleSpeciesChange = (e) => {
-    if(e === undefined) {
-      e = '';
-    }
-    console.log(e);
-    
-    setSelectedFilter((selectedFilter) => {
-      let newSelect = {...selectedFilter};
-      newSelect['species'] = e;
-      return newSelect;
-    })
-  };
-
-  const handleGenderChange = (e) => {
-    if(e === undefined) {
-      e = '';
-    }
-    console.log(e);
-
-    setSelectedFilter((selectedFilter) => {
-      let newSelect = {...selectedFilter};
-      newSelect['gender'] = e;
-      return newSelect;
-    })
-  };
-
-  const handleAgeChange = (e) => {
-    if(e === undefined) {
-      e = '';
-    }
-    console.log(e);
-    
-    setSelectedFilter((selectedFilter) => {
-      let newSelect = {...selectedFilter};
-      newSelect['age'] = e;
-      return newSelect;
-    })
-  };
-
-  const handleIsAdoptedChange = (e) => {
-    if(e === undefined) {
-      e = '';
-    }
-    console.log(e);
-
-    setSelectedFilter((selectedFilter) => {
-      let newSelect = {...selectedFilter};
-      newSelect['isAdopted'] = e;
-      return newSelect;
-    })
+  const handleChange = (value) => {
+    console.log(`selected ${value}`);
   };
 
   const handleFilterButton = () => {
-    getFilter(selectedFilter);
+    // setData(...cardList);
+    // console.log(...data);
   };
+
+  const handleResetButton = () => {};
+
 
   return (
     <div className={style.filterContent}>
@@ -84,12 +37,10 @@ function Filtering({ getFilter }) {
         <Select
           className={style.filterSection}
           defaultValue={filterData.species[0]}
-          onChange={handleSpeciesChange}
-          allowClear='true'
+          onChange={handleChange}
         >
-          <Option className={style.filterItem} value={filterData.species[0]}>전체</Option>
-          <Option className={style.filterItem} value={filterData.species[1]}>강아지</Option>
-          <Option className={style.filterItem} value={filterData.species[2]}>고양이</Option>
+          <Option className={style.filterItem} value={filterData.species[1]}>{filterData.species[1]}</Option>
+          <Option className={style.filterItem} value={filterData.species[2]}>{filterData.species[2]}</Option>
         </Select>
       </div>
       <div className={style.filterWrap}>
@@ -97,14 +48,12 @@ function Filtering({ getFilter }) {
         <Select
           className={style.filterSection}
           defaultValue={filterData.gender[0]}
-          onChange={handleGenderChange}
-          allowClear='true'
+          onChange={handleChange}
         >
-          <Option className={style.filterItem} value={filterData.gender[0]}>전체</Option>
-          <Option className={style.filterItem} value={filterData.gender[1]}>수컷(중성화 X)</Option>
-          <Option className={style.filterItem} value={filterData.gender[2]}>암컷(중성화 X)</Option>
-          <Option className={style.filterItem} value={filterData.gender[3]}>수컷(중성화 O)</Option>
-          <Option className={style.filterItem} value={filterData.gender[4]}>암컷(중성화 O)</Option>
+          <Option className={style.filterItem} value={filterData.gender[1]}>{filterData.gender[1]}</Option>
+          <Option className={style.filterItem} value={filterData.gender[2]}>{filterData.gender[2]}</Option>
+          <Option className={style.filterItem} value={filterData.gender[3]}>{filterData.gender[3]}</Option>
+          <Option className={style.filterItem} value={filterData.gender[4]}>{filterData.gender[4]}</Option>
         </Select>
       </div>
       <div className={style.filterWrap}>
@@ -112,14 +61,12 @@ function Filtering({ getFilter }) {
         <Select
           className={style.filterSection}
           defaultValue={filterData.age[0]}
-          onChange={handleAgeChange}
-          allowClear='true'
+          onChange={handleChange}
         >
-          <Option className={style.filterItem} value={filterData.age[0]}>전체</Option>
-          <Option className={style.filterItem} value={filterData.age[1]}>Puppy (0살)</Option>
-          <Option className={style.filterItem} value={filterData.age[2]}>Junior (1살~2살)</Option>
-          <Option className={style.filterItem} value={filterData.age[3]}>Adult (3살~8살)</Option>
-          <Option className={style.filterItem} value={filterData.age[4]}>Senior (9살~)</Option>
+          <Option className={style.filterItem} value={filterData.age[1]}>{filterData.age[1]}</Option>
+          <Option className={style.filterItem} value={filterData.age[2]}>{filterData.age[2]}</Option>
+          <Option className={style.filterItem} value={filterData.age[3]}>{filterData.age[3]}</Option>
+          <Option className={style.filterItem} value={filterData.age[4]}>{filterData.age[4]}</Option>
         </Select>
       </div>
       <div className={style.filterWrap}>
@@ -129,17 +76,18 @@ function Filtering({ getFilter }) {
         <Select
           className={style.filterSection}
           defaultValue={filterData.isAdopted[0]}
-          onChange={handleIsAdoptedChange}
-          allowClear='true'
+          onChange={handleChange}
         >
-          <Option className={style.filterItem} value={filterData.isAdopted[0]}>전체</Option>
-          <Option className={style.filterItem} value={filterData.isAdopted[1]}>입양 완료</Option>
-          <Option className={style.filterItem} value={filterData.isAdopted[2]}>보호중</Option>
+          <Option className={style.filterItem} value={filterData.isAdopted[1]}>{filterData.isAdopted[1]}</Option>
+          <Option className={style.filterItem} value={filterData.isAdopted[2]}>{filterData.isAdopted[2]}</Option>
         </Select>
       </div>
       <div className={style.buttonWrap}>
         <button className={style.buttonItem} onClick={handleFilterButton}>
           <img className={style.buttonImage} src={searchButtonImage} alt={searchButtonImage} />
+        </button>
+        <button className={style.buttonItem} onClick={handleResetButton}>
+        <img className={style.buttonImage} src={trashButtonImage} alt={trashButtonImage} />
         </button>
       </div>
     </div>

@@ -14,38 +14,6 @@ export default function ListviewScreen() {
     const [minValue, setMinValue] = useState(0);
     const [maxValue, setMaxValue] = useState(PAGE_SIZE);
 
-    const handleChange = (value) => {
-        setMinValue((value - 1) * PAGE_SIZE);
-        setMaxValue(value * PAGE_SIZE);
-    };
-
-    const handleFilter = (filters) => {
-        console.log(filters);
-
-        /*
-        const submit = async (filters) => {
-            const res = await axios({
-                headers: {
-                    withCredentials: true,
-                    "Access-Control-Allow-Origin": "http://localhost:3000",
-                    'Accept': 'application/json',
-                },
-                method: 'POST',
-                url: 'http://hana-umc.shop:8080/search',
-                data: {
-                    Species: filters.species,
-                    Gender: filters.gender,
-                    Age: filters.age,
-                    isAdopted: filters.isAdopted,
-                }
-            }).then((response) => {
-                console.log(response);
-                setCardList(response);
-            })
-        };
-        */
-    };
-
     /*
     useEffect(()=> {axios({
             method: "GET",
@@ -56,26 +24,37 @@ export default function ListviewScreen() {
                 'Accept': 'application/json',
             }
         })
-        .then((response) => setCardList(response.data));
+        .then((response) => setData(response.data))
     }, []);
     */
 
-    useEffect(() => { 
+    useEffect(() => { // 처음 로딩 때 dummy를 가져와서 배열에 넣어줌
         setCardList(dummy.results);
     }, []);
+
+    const handleChange = (value) => {
+        setMinValue((value - 1) * PAGE_SIZE);
+        setMaxValue(value * PAGE_SIZE);
+    };
 
     return (
         <>
             <Banner />
-            <Filtering getFilter={handleFilter} />
+            <Filtering />
             <div className={style.dataContainer}>
                 {
                     cardList.slice(minValue, maxValue)
                         .map((item) => {
                         return (
                             <DataItem
-                                key={item.animal_idx}
-                                item = {item}
+                                key = {item.id}
+                                id = {item.id}
+                                photoUrl = {item.photo}
+                                name = {item.name}
+                                age = {item.age}
+                                species = {item.species}
+                                isAdopted = {item.isAdopted}
+                                gender = {item.gender}
                             />
                         )
                     })

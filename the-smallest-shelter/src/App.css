@@ -11,3 +11,57 @@ src: url("./assets/fonts/SpoqaHanSansNeo-Medium.ttf");
   font-family: "SpoqaHanSansNeoRegular";
   src: url("./assets/fonts/SpoqaHanSansNeo-Regular.ttf");
 }
+
+/* app.jsx */
+.app-container {
+  /* display: flex; */
+  align-items: center;
+}
+
+
+.list-title {
+  padding-left: 24px;
+  font-size: 36px;
+  /* border: 1px solid red; */
+  margin-top: 100px;
+  text-align: center;
+}
+
+.list-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* photo.jsx */
+.photo-container {
+  width: 250px;
+  margin: 16px;
+  border-radius: 5px;
+  /* border: 1px solid red; */
+}
+
+.photo-container img {
+  max-width: 100%;
+}
+
+.photo-morahazi {
+  /* display: flex; */
+  padding: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.photo-name {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.photo-info {
+  display: block;
+}
+
+.photo-info span {
+  margin-right: 8px;
+}
