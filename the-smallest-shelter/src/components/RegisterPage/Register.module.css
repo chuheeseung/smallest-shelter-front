@@ -43,6 +43,23 @@
     outline: none;
 }
 
+.info .ageInput {
+    width: 32px;
+    margin-right: 6px;
+}
+
+.isGuessed {
+    display: inline;
+    vertical-align: bottom;
+}
+
+.isGuessed span {
+    color: #000;
+    font-size: 13px;
+    position: relative;
+    top: -1.5px
+}
+
 .info .genderInput label,
 .info .speciesInput label,
 .checkList span {

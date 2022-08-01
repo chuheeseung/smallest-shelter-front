@@ -19,8 +19,7 @@ function RadioGroup({ item, idx, checkType, setCheckVal, checkVal }) {
 
     setCheckVal(tmp);
     setCheckFlag(flagObj)
-    console.log(checkFlag[id])
-
+    // console.log(checkFlag[id])
 }
 
   return (
@@ -37,6 +36,7 @@ function RadioGroup({ item, idx, checkType, setCheckVal, checkVal }) {
                 onChange={onChangeCheck}
                 checked={click === index + 1}
                 style={{ display: "none" }}
+                required
               />
 
               {click === index + 1 && checkFlag[idx]

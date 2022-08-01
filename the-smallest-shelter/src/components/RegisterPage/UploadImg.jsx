@@ -42,6 +42,7 @@ function UploadImg({ uploadImage }) {
               accept="image/*"
               onChange={onFileChange}
               ref={fileInput}
+              required
             />
           </>
         )}
