@@ -11,7 +11,7 @@ import { IoCloseSharp } from "react-icons/io5"
 import UploadImg from '../RegisterPage/UploadImg';
 let index = 0;
 
-const RegisterModal = ({ isOpen, onCancel}) => {
+const RegisterModal = ({ isOpen, onCancel, animalIdx}) => {
     const navigate = useNavigate();
     const [image, setImage] = useState("");
     const [historyContent, setHistoryContent] = useState("");
@@ -40,9 +40,12 @@ const RegisterModal = ({ isOpen, onCancel}) => {
         //     },
         //     method: 'post',
         //     url: 'http://hana-umc.shop:8080/new',
+        //     params:{
+        //         animal_id:{animalIdx}
+        //     },
         //     data: {
-        //         imgUrl: imgUrl,
-        //         content: historyContent
+        //       imgUrl: imgUrl,
+        //        content: historyContent
         //     }
         // })
         // if (res.data) {

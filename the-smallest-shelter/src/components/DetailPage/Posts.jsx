@@ -2,17 +2,27 @@ import React, { useState } from 'react'
 import styled from 'styled-components';
 import Modal from "./Modal";
 import ReactModal from 'react-modal';
+import axios from 'axios';
+import { modaldata } from './ModalDummyData';
 
 // import MyModal from "./MyModal";
 // import useModals from "./useModals.js";
 ReactModal.setAppElement('#root');
 
 
-export default function Posts({ postIdx, imgUrl}) {
+export default function Posts(props) {
     const [isOpen, setOpen] = useState(false);
+    const [postImgUrl, setPostImgUrl]=useState("");
+    const [postContent, setPostContent]=useState("");
+    
     const handleClick = () => {
+      let postData = modaldata.result;
       // 여기서 열어준다
-        setOpen(true);
+      console.log(postData.imgUrl);
+      console.log(postData.content);
+      setPostImgUrl(postData.imgUrl);
+      setPostContent(postData.content)
+      setOpen(true);
     };
 
     const handleModalSubmit = () => {
@@ -25,10 +35,9 @@ export default function Posts({ postIdx, imgUrl}) {
     return (
        <>
             <PhotoContainer onClick={handleClick}>
-                <img src={imgUrl} alt="대표 사진" style={{width:"220px", height: "220px",margin: "10px", borderRadius:"15px", objectFit: "cover"}}/>
+                <img src={props.imgUrl} alt="대표 사진" style={{width:"220px", height: "220px",margin: "10px", borderRadius:"15px", objectFit: "cover"}}/>
             </PhotoContainer>
-            <Modal isOpen={isOpen} onSubmit={handleModalSubmit} onCancel={handleModalCancel} 
-            />
+            <Modal isOpen={isOpen} onSubmit={handleModalSubmit} onCancel={handleModalCancel} postImgUrl={postImgUrl} postContent={postContent}/>
         </>
     );
 }

@@ -1,8 +1,10 @@
+import React, { useEffect ,useState } from 'react';
 import ReactModal from 'react-modal';
 import styled from 'styled-components';
 import { IoCloseSharp } from "react-icons/io5"
+import axios from 'axios';
 
-const Modal = ({ isOpen, onSubmit, onCancel, imgUrl, name, info }) => {
+const Modal = ({isOpen,onSubmit,onCancel,postImgUrl,postContent}) => {
   const handleClickSubmit = () => {
     onSubmit();
   };
@@ -17,9 +19,9 @@ const Modal = ({ isOpen, onSubmit, onCancel, imgUrl, name, info }) => {
       >
         <div style={{ objectFit: "cover",display:"flex", flexWrap:"wrap" ,justifyContent:"space-between"}}>
           <div style={{width:"80%", height: "550px",display:"flex"}}>
-            <img src={imgUrl} alt="대표 사진" style={{width:"80%", height: "100%"}}/>
+            <img src={postImgUrl} alt="대표 사진" style={{width:"80%", height: "100%"}}/>
             <div>
-              <div style={{ width:"200px",margin:"20px"}}>모달 입니다. 그렇고 저렇고 어쩌구 저쩌구 등등 </div>
+              <div style={{ width:"200px",margin:"20px"}}>{postContent}</div>
             </div>
           </div>
           <div>
@@ -46,7 +48,7 @@ const customStyles = {
       backgroundColor: 'rgba(0,0,0, 0.75)'
     },
   content: {
-    top: '35%',
+    top: '28%',
     left: '50%',
     width: '75%',
     height: '600px',

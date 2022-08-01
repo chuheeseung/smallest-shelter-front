@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useSwipeable } from 'react-swipeable';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { slideData } from './SlideDataDummy';
 
 const Container = styled.div`
   overflow: hidden;
