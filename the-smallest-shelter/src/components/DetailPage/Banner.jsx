@@ -193,7 +193,7 @@ function Banner(props) {
                                         ? <AiOutlineHeart/>
                                         : <AiFillHeart/>
                                     }
-                                        <Link to="/chat"><FiMail size="22" style={{marginLeft:"22px"}} onClick={() => navigate(`/chat/${chatRoomId}`)}/></Link>
+                                        <FiMail size="22" style={{marginLeft:"22px", color: 'black'}} onClick={() => navigate(`/chat/${chatRoomId}`)}/>
                                 </>
                                 : null
                             }

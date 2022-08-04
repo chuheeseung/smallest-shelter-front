@@ -7,43 +7,35 @@ import { BiRightArrowAlt } from 'react-icons/bi';
 import { addDoc, collection } from 'firebase/firestore';
 
 function ChatForm() {
-  const messagesRef = ref(dbService, "messages");
+  // const messagesRef = ref(dbService, "messages");
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // const currUser = {
-  //   "id": "JNVe6U0iGlP4A5Pm65UfXgZju0Z2",
-  //   "image": "http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon",
-  //   "name": "입양희망자"
-  // };
-  // const user = {
-  //   "id": "VRHxfEj1c1g0pbsAiYut1x2VzvP2",
-  //   "image": "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon",
-  //   "name": "유행사"
-  // }
-
-  // 임시 (유행사로 로그인 했을 때)
-  const user = {
+  const currUser = {
     "id": "JNVe6U0iGlP4A5Pm65UfXgZju0Z2",
     "image": "http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon",
     "name": "입양희망자"
   };
-  const currUser = {
+  const user = {
     "id": "VRHxfEj1c1g0pbsAiYut1x2VzvP2",
     "image": "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon",
     "name": "유행사"
   }
 
-  const chatRoomId = getChatRoomId(currUser, user);
+  // 임시 (유행사로 로그인 했을 때)
+  // const user = {
+  //   "id": "JNVe6U0iGlP4A5Pm65UfXgZju0Z2",
+  //   "image": "http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon",
+  //   "name": "입양희망자"
+  // };
+  // const currUser = {
+  //   "id": "VRHxfEj1c1g0pbsAiYut1x2VzvP2",
+  //   "image": "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon",
+  //   "name": "유행사"
+  // }
 
-  // 랜덤 메시지 id 생성
-  function guid() {
-    function s4() {
-      return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-  }
+  const chatRoomId = getChatRoomId(currUser, user);
 
   function getChatRoomId(currUser, user) {
     const currUserId = currUser.id
@@ -55,7 +47,6 @@ function ChatForm() {
 
   const createMessage = () => {
     const message = {
-      messageId: guid(),
       content: content,
       time: Date.now(),
       sentUser: {
@@ -83,7 +74,7 @@ function ChatForm() {
     setLoading(true);
     try {
       // realtime database 저장
-      await set(push(child(messagesRef, chatRoomId)), createMessage());
+      // await set(push(child(messagesRef, chatRoomId)), createMessage());
       // firestore 저장
       await addDoc(collection(storeService, chatRoomId), createMessage())
       setLoading(false);
