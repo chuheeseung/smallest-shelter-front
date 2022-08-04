@@ -4,33 +4,30 @@ import { AiOutlineDown } from 'react-icons/ai';
 import style from "./LoggedIn.module.css";
 import userIcon from '../../assets/img/Ellipse 36.png';
 import { Link } from "react-router-dom";
-import { dbService } from '../../fbase';
+import { storeService } from '../../fbase';
 import dummy from '../ChatPage/DirectMessageData.json';
-import { child, DataSnapshot, onChildAdded, query, ref } from 'firebase/database';
+import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
 
 function LoggedIn() {
   const [msgCnt, setMsgCnt] = useState(0);
   const [messages, setMessages] = useState([]); // check가 false인 쪽지 내역
-  const messagesRef = ref(dbService, "messages");
 
   const chatRoomId = Object.keys(dummy)[0]// (userId-currentUserId) 지금은 하나라 0번 인덱스만 접근
   const currUserId = 'JNVe6U0iGlP4A5Pm65UfXgZju0Z2';  // 현재 사용자 id
   const userId = chatRoomId.split('-').filter(e => e !== currUserId).join();
 
   useEffect(() => {
-    addMessagesListeners(chatRoomId)
-  }, [])
-
-  const addMessagesListeners = (chatRoomId) => {
-    let messagesArray = [];
-    onChildAdded(child(messagesRef, chatRoomId), DataSnapshot => {
-      if (DataSnapshot.val().sentUser.id !== currUserId && !DataSnapshot.val().checked) {
-        messagesArray.push(DataSnapshot.val());
-      }
-      setMessages(messagesArray);
-      setMsgCnt(messagesArray.length);
+    const q = query(collection(storeService, chatRoomId), where('sentUser.id', "not-in", [currUserId]));
+    onSnapshot(q, (snapshot) => {
+      const all = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      const messageArray = all.filter(e => !e.checked)
+      setMessages(messageArray);
+      setMsgCnt(messageArray.length);
     })
-   }
+  }, [])
 
   return (
     <div>
