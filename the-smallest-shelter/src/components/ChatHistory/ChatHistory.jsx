@@ -28,24 +28,16 @@ function ChatHistory() {
         id: doc.id,
         ...doc.data(),
       }));
+      getMessage(messagesArray);
       setMessages(messagesArray);
     })
-
-    // 처음에 받은 쪽지 목록 가져옴
-    let messageQuery = [];
-    onSnapshot(q, (snapshot) => {
-      snapshot.docs.map((doc) => {
-        if (doc.data().sentUser.id !== currUserId && !message.includes(doc.id)) {
-          messageQuery.push({
-            id: doc.id,
-            ...doc.data(),
-          })
-        }
-      })
-      messageQuery = [...new Set(messageQuery)]
-      setMessage(messageQuery);
-    })
-  }, [clickRead])
+  }, [])
+  
+  // default가 받은 쪽지 탭이라 받은 쪽지 목록 보여줌
+  const getMessage = (messages) => {
+    const messageArr = messages.filter(e => e.sentUser.id !== currUserId);
+    setMessage(messageArr)
+  }
 
   const handleReceivedChat = () => {
     setCheckedItems([])
