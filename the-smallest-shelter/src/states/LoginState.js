@@ -15,3 +15,9 @@ export const LoginRole = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const LoginUserID = atom({
+  key: 'LoginUserID',
+  default: 0,
+  effects_UNSTABLE: [persistAtom],
+});
+

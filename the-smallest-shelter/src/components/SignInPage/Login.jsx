@@ -5,17 +5,18 @@ import logoImage from '../../assets/img/Group8700.png';
 import style from './Login.module.css';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { LoginState, LoginRole } from '../../states/LoginState';
+import { LoginState, LoginRole, LoginUserID } from '../../states/LoginState';
 import { loginResponse } from './loginDummy';
 
 const User = {
-    id: 'test1234',
-    pw: '@test1234'
+        id: 'test1234',
+        pw: '@test1234'
 }
 
 function Login() {
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
     const [isRole, setIsRole] = useRecoilState(LoginRole);
+    const [isUserID, setIsUserID] = useRecoilState(LoginUserID);
 
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
@@ -90,7 +91,7 @@ function Login() {
             */
         }
 
-        // if(id === User.id && pw === User.pw) {
+        if(id === User.id && pw === User.pw) {
             alert("로그인에 성공했습니다!");
             sessionStorage.setItem("id", id);
             sessionStorage.setItem("pw", pw);
@@ -100,14 +101,13 @@ function Login() {
             
 
             setIsLoggedIn(true);
-            console.log(isLoggedIn);
             setIsRole(loginResponse.result.role);
-            console.log(isRole);
-            // window.location.href = "/";
-        // }
-        // else {
-        //     alert("등록되지 않은 회원입니다.");
-        // }
+            setIsUserID(loginResponse.result.userIdx);
+            window.location.href = "/";
+        }
+        else {
+            alert("등록되지 않은 회원입니다.");
+        }
     };
 
     useEffect(() => {
