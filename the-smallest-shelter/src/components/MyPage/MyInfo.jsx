@@ -4,39 +4,48 @@ import styled from 'styled-components';
 import user1 from '../../assets/img/ProfileImg/Ellipse 67.png';
 import axios from "axios";
 
-function MyInfo({isOrganization}){
+function MyInfo(props){
     console.log();
     return(
         <>
             {
-                {isOrganization}
+                props.isRole=="ORGANIZATION"
                 ?<MyInfoTitle>단체 정보</MyInfoTitle>
                 :<MyInfoTitle>개인 정보</MyInfoTitle>
             }
             <MyInfoProfile>
                 <ProfileTitle>프로필 사진</ProfileTitle>
-                <ProfileImg src={user1}></ProfileImg>
+                <ProfileImg src={props.profileImgUrl}></ProfileImg>
             </MyInfoProfile>
             <MyInfoDetail>
             {
-                {isOrganization}
+                props.isRole=="ORGANIZATION"
                 ?<ProfileTitle>단체 상세정보</ProfileTitle>
                 :<ProfileTitle>개인 상세정보</ProfileTitle>
             }
                 <DetailInfo>
                     <ListItem>
                         {
-                            {isOrganization}
-                            ?<div>단체 이름</div>
-                            :<div>이름</div>
+                            props.isRole == "ORGANIZATION"
+                                ? <>
+                                    <div>단체 이름</div>
+                                    <div>전화번호</div>
+                                    <div>주소</div>
+                                    <div>이메일</div>
+                                </>
+                                :
+                                <><div>이름</div>
+                                    <div>전화번호</div>
+                                    <div>주소</div>
+                                    <div>이메일</div>
+                                    </>
                         }
-                        <div>전화번호</div>
-                        <div>주소</div>
                     </ListItem>
                     <ListUserInfo>
-                        <div>김성은</div>
-                        <div>010-0000-0000</div>
-                        <div>경기도 ##시 ##구 ##로 189</div>
+                        <div>{props.name}</div>
+                        <div>{props.phoneNumber}</div>
+                        <div>{props.address}</div>
+                        <div>{props.email}</div>
                     </ListUserInfo>
                 </DetailInfo>
             </MyInfoDetail>
@@ -49,6 +58,7 @@ const MyInfoTitle= styled.div`
     padding: 10px 5px 20px 20px;
     border-bottom:1px solid white;
     font-size:15px;
+    font-family:
 `;
 
 const MyInfoProfile= styled.div`

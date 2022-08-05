@@ -4,13 +4,20 @@ import { Link } from 'react-router-dom';
 import logoImage from '../../assets/img/Group8700.png';
 import style from './Login.module.css';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { LoginState, LoginRole, LoginUserID } from '../../states/LoginState';
+import { loginResponse } from './loginDummy';
 
 const User = {
-    id: 'test1234',
-    pw: '@test1234'
+        id: 'test1234',
+        pw: '@test1234'
 }
 
 function Login() {
+    const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+    const [isRole, setIsRole] = useRecoilState(LoginRole);
+    const [isUserID, setIsUserID] = useRecoilState(LoginUserID);
+
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
     
@@ -92,7 +99,11 @@ function Login() {
             
             setSavedLoginId(sessionStorage.getItem("id"));
             setSavedLoginPw(sessionStorage.getItem("pw"));
+            
 
+            setIsLoggedIn(true);
+            setIsRole(loginResponse.result.role);
+            setIsUserID(loginResponse.result.userIdx);
             window.location.href = "/";
         }
         else {

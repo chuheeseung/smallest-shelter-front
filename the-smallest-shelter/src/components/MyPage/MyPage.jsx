@@ -1,11 +1,16 @@
-import React, { Component, Children, useState} from "react";
+import React, { Component, Children, useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import MyInfo from "../MyPage/MyInfo";
 import "./MyPage.css";
 import MyLikeAnimal from "./MyLikeAnimal";
 import styled from 'styled-components';
 import ChatHistory from "../ChatHistory/ChatHistory";
-
+import { 
+  useRecoilState, 
+  // useRecoilValue, 
+} from 'recoil';
+import { LoginRole } from '../../states/LoginState';
+import { myInfoDummy } from './dataMyInfo';
 
 class Tabs extends Component {
   static childContextTypes = {
@@ -96,18 +101,55 @@ class TabPanel extends Component {
 }
 //-------------------------여기가 메인-----------------------------------
 function MyPage() {
-  const [isOrganization, setIsOrganization] = useState(true);
+  const [isRole, setIsRole] = useRecoilState(LoginRole);
+
+  //State들
+  const [isUserID, setIsUserID] = useState(0);
+  const [isName, setIsName] = useState("");
+  const [isPhoneNumber, setIsPhoneNumber] = useState("");
+  const [isAddress, setIsAddress] = useState("");
+  const [isEmail, setIsEmail] = useState("");
+  const [isProfileUrl, setIsProfileUrl] = useState("");
+
+  const getPosts = async () => {
+  //  const mypageRes= await axios({
+  //     headers: {
+  //         withCredentials: true,
+  //         'Accept': 'application/json',
+  //     },
+  //     method: 'get',
+  //     url: 'https://sjs.hana-umc.shop/post?animal_id=1&post_id=1',
+  //     params:{
+  //         animal_id:1,
+  //         post_id:1
+  //     }
+  // }).then(
+    let dummyInfo = myInfoDummy.result;
+    console.log("isRole: ",isRole," 호출");
+
+    setIsUserID(dummyInfo.userIdx);
+    setIsName(dummyInfo.name);
+    setIsPhoneNumber(dummyInfo.phoneNumber);
+    setIsAddress(dummyInfo.address);
+    setIsEmail(dummyInfo.email);
+    setIsProfileUrl(dummyInfo.profileImgUrl);
+  };
+
+  useEffect(() => {
+    getPosts();
+  },[]);
+
     return (
       <div>
         <Tabs defaultActiveIndex={0}>
           <TabList>
               {
-                  isOrganization==true
+                isRole=="ORGANIZATION"
                   ? <Tab>단체정보</Tab>
                   : <Tab>개인정보</Tab>
               }
               {
-                  isOrganization==true
+                isRole=="ORGANIZATION"
                   ? <Tab>등록한 동물 목록</Tab>
                   : <Tab>나의 관심 동물</Tab>
               }
@@ -117,10 +159,10 @@ function MyPage() {
             </Tab>
           </TabList>
           <TabPanels>
-            <TabPanel>
-              <MyInfo isOrganization={isOrganization}/>
+            <TabPanel >
+              <MyInfo isRole={isRole} userID={isUserID} name={isName} phoneNumber={isPhoneNumber} address={isAddress} email={isEmail} profileImgUrl={isProfileUrl}/>
             </TabPanel>
-            <TabPanel><MyLikeAnimal isOrganization={isOrganization}/></TabPanel>
+            <TabPanel><MyLikeAnimal isRole={isRole} userID={isUserID}/></TabPanel>
             <TabPanel>
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',  margin: '0 auto'}}>
               <ChatHistory/>
