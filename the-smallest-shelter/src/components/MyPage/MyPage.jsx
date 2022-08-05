@@ -5,7 +5,13 @@ import "./MyPage.css";
 import MyLikeAnimal from "./MyLikeAnimal";
 import styled from 'styled-components';
 import ChatHistory from "../ChatHistory/ChatHistory";
-
+import { 
+  useRecoilState, 
+  useRecoilValue, 
+  useSetRecoilState, 
+  useResetRecoilState 
+} from 'recoil';
+import { LoginRole } from '../../states/LoginState';
 
 class Tabs extends Component {
   static childContextTypes = {
@@ -96,7 +102,10 @@ class TabPanel extends Component {
 }
 //-------------------------여기가 메인-----------------------------------
 function MyPage() {
+  const [isRole, setIsRole] = useRecoilState(LoginRole);
   const [isOrganization, setIsOrganization] = useState(true);
+  const currentRole = useRecoilValue(LoginRole);
+  console.log(currentRole);
     return (
       <div>
         <Tabs defaultActiveIndex={0}>

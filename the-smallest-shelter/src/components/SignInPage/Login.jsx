@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import logoImage from '../../assets/img/Group8700.png';
 import style from './Login.module.css';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { LoginState, LoginRole } from '../../states/LoginState';
+import { loginResponse } from './loginDummy';
 
 const User = {
     id: 'test1234',
@@ -11,6 +14,9 @@ const User = {
 }
 
 function Login() {
+    const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+    const [isRole, setIsRole] = useRecoilState(LoginRole);
+
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
     
@@ -84,19 +90,24 @@ function Login() {
             */
         }
 
-        if(id === User.id && pw === User.pw) {
+        // if(id === User.id && pw === User.pw) {
             alert("로그인에 성공했습니다!");
             sessionStorage.setItem("id", id);
             sessionStorage.setItem("pw", pw);
             
             setSavedLoginId(sessionStorage.getItem("id"));
             setSavedLoginPw(sessionStorage.getItem("pw"));
+            
 
-            window.location.href = "/";
-        }
-        else {
-            alert("등록되지 않은 회원입니다.");
-        }
+            setIsLoggedIn(true);
+            console.log(isLoggedIn);
+            setIsRole(loginResponse.result.role);
+            console.log(isRole);
+            // window.location.href = "/";
+        // }
+        // else {
+        //     alert("등록되지 않은 회원입니다.");
+        // }
     };
 
     useEffect(() => {
