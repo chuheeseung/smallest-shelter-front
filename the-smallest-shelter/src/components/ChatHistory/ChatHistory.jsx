@@ -6,7 +6,7 @@ import style from "./ChatHistory.module.css";
 import ChatHistoryList from './ChatHistoryList';
 import { GrCheckbox, GrCheckboxSelected } from 'react-icons/gr';
 import dummy from '../ChatPage/DirectMessageData.json';
-import { collection, doc, onSnapshot, orderBy, query, updateDoc } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query, updateDoc } from 'firebase/firestore';
 import { onValue, ref } from 'firebase/database';
 
 function ChatHistory() {
@@ -20,7 +20,7 @@ function ChatHistory() {
   const currUserId = 'JNVe6U0iGlP4A5Pm65UfXgZju0Z2';  // 현재 사용자 id
   const userId = chatRoomId.split('-').filter(e => e !== currUserId).join();
 
-  useEffect(() => { 
+  useEffect(() => {
     const q = query(collection(storeService, chatRoomId), orderBy("time", "desc"));
     // time 기준으로 정렬한 쿼리 컬렉션
     onSnapshot(q, (snapshot) => {
@@ -32,7 +32,7 @@ function ChatHistory() {
       setMessages(messagesArray);
     })
   }, [])
-  
+
   // default가 받은 쪽지 탭이라 받은 쪽지 목록 보여줌
   const getMessage = (messages) => {
     const messageArr = messages.filter(e => e.sentUser.id !== currUserId);
@@ -84,18 +84,41 @@ function ChatHistory() {
     setCheckedItems([]);
   }
 
+  const handleDelete = (e) => {
+    e.preventDefault();
+    checkedItems.map((id) => {
+      const ref = doc(storeService, chatRoomId, id);
+      deleteDoc(ref);
+    })
+    setClicked("received");
+    setClickRead(prev => !prev);
+    setCheckedItems([]);
+  }
+
   return (
     <div>
       <div className={style.listContainer}>
         <div className={style.listHeader}>
           <div style={{ fontWeight: 'bold' }}>
             <span>쪽지 목록</span>
-            {clicked === 'received' &&
-              <span style={{
-                color: checkedItems.length > 0 ? 'black' : '#969696', marginLeft: '8px'
-              }}
-                onClick={handleReadCheck}>읽음</span>}
+            {clicked === 'received' 
+            ? ( <>
+                <span style={{
+                  color: checkedItems.length > 0 ? 'black' : '#969696', marginLeft: '8px'
+                }}
+                  onClick={handleReadCheck}>읽음</span>
+                <span style={{
+                  color: checkedItems.length > 0 ? 'red' : '#969696', marginLeft: '8px'
+                }}
+                  onClick={handleDelete}>삭제</span>
+              </> )
+            : (<span style={{
+              color: checkedItems.length > 0 ? 'red' : '#969696', marginLeft: '8px'
+            }}
+              onClick={handleDelete}>삭제</span>)
+            }
           </div>
+
           <div style={{ fontWeight: 'bold', color: '#969696' }}>
             <span
               style={{ marginRight: '32px', color: clicked === 'received' && 'black' }}
@@ -122,7 +145,6 @@ function ChatHistory() {
             } </span>
           <span style={{ fontWeight: 'bold' }}>내용</span>
         </div>
-
 
         {message.length > 0 &&
           message.map((message, idx) => (
