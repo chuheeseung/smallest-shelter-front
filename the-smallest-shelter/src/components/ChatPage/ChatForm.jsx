@@ -7,7 +7,7 @@ import { BiRightArrowAlt } from 'react-icons/bi';
 import { addDoc, collection } from 'firebase/firestore';
 
 function ChatForm() {
-  // const messagesRef = ref(dbService, "messages");
+  const messagesRef = ref(dbService, "messages");
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -74,7 +74,7 @@ function ChatForm() {
     setLoading(true);
     try {
       // realtime database 저장
-      // await set(push(child(messagesRef, chatRoomId)), createMessage());
+      await set(push(child(messagesRef, chatRoomId)), createMessage());
       // firestore 저장
       await addDoc(collection(storeService, chatRoomId), createMessage())
       setLoading(false);

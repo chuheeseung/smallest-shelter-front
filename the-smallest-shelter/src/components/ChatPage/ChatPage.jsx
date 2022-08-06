@@ -1,55 +1,63 @@
-import React, { useEffect, useState } from 'react';
-import dummy from './DirectMessageData.json';
+import React, { Component } from 'react';
+import { dbService } from '../../fbase';
+import { child, onChildAdded, ref } from 'firebase/database';
+import ChatForm from './ChatForm';
+import ChatHeader from './ChatHeader';
 import Message from './Message';
 import style from './ChatPage.module.css';
-import ChatHeader from './ChatHeader';
-import ChatForm from './ChatForm';
-import { storeService } from '../../fbase';
-import { useParams } from 'react-router-dom';
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 
-function ChatPage() {
-  const {chatRoomId} = useParams();
-  const [messages, setMessages] = useState([]); // 모든 쪽지 내역
-  const currUserId = 'JNVe6U0iGlP4A5Pm65UfXgZju0Z2';  // 현재 사용자 id
-  const userId = chatRoomId.split('-').filter(e => e !== currUserId).join();
-
-  // 상대 정보 (리코일 사용할 것)
-  const user = {
-    id: userId,
-    name: "유행사",
-    image: "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon"
+export class ChatClass extends Component {
+  state = {
+    messages: [], // 모든 쪽지 내역
+    currUserId: 'JNVe6U0iGlP4A5Pm65UfXgZju0Z2',  // 현재 사용자 id
+    messagesRef: ref(dbService, "messages"),
+    user: {
+      id: 'VRHxfEj1c1g0pbsAiYut1x2VzvP2',
+      name: "유행사",
+      image: "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon"
+    }
   }
 
-  useEffect(() => {
-    const q = query(collection(storeService, chatRoomId), orderBy("time"));
-    onSnapshot(q, (snapshot) => {
-      const messagesArray = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setMessages(messagesArray);
-    })
-  }, [])
+  componentDidMount() {
+    const chatRoomId = 'JNVe6U0iGlP4A5Pm65UfXgZju0Z2-VRHxfEj1c1g0pbsAiYut1x2VzvP2';
+    if (chatRoomId) {
+      this.addMessagesListeners(chatRoomId)
+    }
+  }
 
-  return (
-    <div className={style.chatContainer}>
-      <ChatHeader user={user}/>
-      <div className={style.chatWrap} style={{height: !messages.length && '200px'}}>
-        {messages.length > 0 &&
-          messages.map((message) => (
-            <Message
-              key={message.id}
-              message={message.content}
-              sentUser={message.sentUser}
-              receivedUser={message.receivedUser}
-            />
-          ))
-        }
+  addMessagesListeners = (chatRoomId) => {
+    let messagesArray = [];
+    let { messagesRef } = this.state;
+    onChildAdded(child(messagesRef, chatRoomId), DataSnapshot => {
+      messagesArray.push(DataSnapshot.val());
+      this.setState({
+        messages: messagesArray,
+      })
+    })
+  }
+
+  render() {
+    const { messages, user } = this.state;
+    return (
+      <div className={style.chatContainer}>
+        <ChatHeader user={user}/>
+        <div className={style.chatWrap} style={{height: !messages.length && '200px'}}>
+          {messages.length > 0 &&
+            messages.map((message) => (
+              <Message
+                key={message.id}
+                message={message.content}
+                sentUser={message.sentUser}
+                receivedUser={message.receivedUser}
+                time={message.time}
+              />
+            ))
+          }
+        </div>
+        <ChatForm/>
       </div>
-      <ChatForm/>
-    </div>
-  );
+    );
+  }
 }
 
-export default ChatPage;
+export default ChatClass;
