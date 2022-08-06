@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import { storeService } from '../../fbase';
 import dummy from '../ChatPage/DirectMessageData.json';
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
+import { useRecoilValue } from "recoil";
+import { LoginRole, LoginUserID } from "../../states/LoginState";
 
 function LoggedIn() {
   const [msgCnt, setMsgCnt] = useState(0);
@@ -15,6 +17,9 @@ function LoggedIn() {
   const chatRoomId = Object.keys(dummy)[0]// (userId-currentUserId) 지금은 하나라 0번 인덱스만 접근
   const currUserId = 'JNVe6U0iGlP4A5Pm65UfXgZju0Z2';  // 현재 사용자 id
   const userId = chatRoomId.split('-').filter(e => e !== currUserId).join();
+  
+  // const LoginUserID = useRecoilValue(LoginUserID);
+  // const LoginRole = useRecoilValue(LoginRole);
 
   useEffect(() => {
     const q = query(collection(storeService, chatRoomId), where('sentUser.id', "not-in", [currUserId]));
@@ -37,7 +42,7 @@ function LoggedIn() {
      
       <span style={{ margin: "0 24px", fontWeight: "bold" }}>|</span>
 
-      <Dropdown overlay={Content} placement="bottomLeft">
+      <Dropdown overlay={<Content/>} placement="bottomLeft">
         <Space style={{ verticalAlign: "middle" }}>
           <span>000님</span>
           <AiOutlineDown />
@@ -55,8 +60,12 @@ const Content = () => {
           <img src={userIcon} style={{ width: "48px" }} />
         </div>
         <div className={style.userInfo}>
+
           <p style={{ fontSize: "16px", color: "black", fontWeight: "bold" }}>사용자 이름</p>
           <p style={{ fontSize: "12px", color: "#969696" }}>회원 등급 (개인, 단체)</p>
+          {/* 리코일 사용
+          <p style={{ fontSize: "16px", color: "black", fontWeight: "bold" }}>{LoginUserID}</p>
+          <p style={{ fontSize: "12px", color: "#969696" }}>{LoginRole}</p> */}
         </div>
       </div>
       <div className={style.tabWrap}>
