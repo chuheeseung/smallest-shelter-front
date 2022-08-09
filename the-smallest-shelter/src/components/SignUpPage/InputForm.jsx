@@ -115,11 +115,13 @@ function InputForm({ selectType }) {
         return profileImage;
     };
 
-    const onSubmitButton = async () => {
+    const onSubmitButton = async (e) => {
+        e.preventDefault();
+
         if(idValid && pwValid && name.length > 0 && phoneNumValid && addr.length > 0 && emailValid) {
             const profileImage = getRandomImage();
 
-            if(selectType === "private") {
+            if(selectType == "private") {
                 console.log(`
                     username: ${id},    
                     password: ${pw},
@@ -132,37 +134,34 @@ function InputForm({ selectType }) {
                     role: "PRIVATE",
                 `);
 
-                /*
-                const submit = async (e) => {
-                    e.preventDefault();
+                const res = await axios({
+                    headers: {
+                        withCredentials: true,
+                        "Access-Control-Allow-Origin": "http://localhost:3000",
+                        'Accept': 'application/json',
+                    },
+                    method: 'POST',
+                    url: 'http://hana-umc.shop:8080/user/priavte/join',
+                    data: {
+                        username: id,    
+                        password: pw,
+                        passwordCheck: pw,
+                        name: name,
+                        phoneNumber: phoneNum,
+                        address: addr,
+                        email: email,
+                        profileImgUrl: url(profileImage),
+                        role: "PRIVATE",
+                    },
+                }).then((response) => {
+                    url = response.url;
+                    console.log(url);
 
-                    const res = await axios({
-                        headers: {
-                            withCredentials: true,
-                            "Access-Control-Allow-Origin": "http://localhost:3000",
-                            'Accept': 'application/json',
-                        },
-                        method: 'POST',
-                        url: 'http://hana-umc.shop:8080/user/priavte/join',
-                        data: {
-                            username: id,    
-                            password: pw,
-                            passwordCheck: pw,
-                            name: name,
-                            phoneNumber: phoneNum,
-                            address: addr,
-                            email: email,
-                            profileImgUrl: url(profileImage),
-                            role: "PRIVATE",
-                        },
-                    });
-                };
-                */
-                
-                alert("개인 회원가입이 완료되었습니다!");
-                window.location.href = '/signin';
-            }
-            else if(selectType === "organization") {
+                    alert("개인 회원가입이 완료되었습니다!");
+                    window.location.href = `/${url}`;
+                });
+            } 
+            else if(selectType == "organization") {
                 console.log(`
                     username: ${id},
                     password: ${pw},
@@ -176,35 +175,33 @@ function InputForm({ selectType }) {
                     role: "ORGANIZATION",
                 `);
 
-                /*
-                const submit = async (e) => {
-                    e.preventDefault();
+                
+                const res = await axios({
+                    headers: {
+                        withCredentials: true,
+                        "Access-Control-Allow-Origin": "http://localhost:3000",
+                        'Accept': 'application/json',
+                    },
+                    method: 'POST',
+                    url: 'http://hana-umc.shop:8080/user/organization/join',
+                    data: {
+                        username: id,
+                        password: pw,
+                        passwordCheck: pw,
+                        name: name,
+                        phoneNumber: phoneNum,
+                        address: addr,
+                        email: email,
+                        profileImgUrl: url(profileImage),
+                        role: "ORGANIZATION",
+                    },
+                }).then((response) => {
+                    url = response.url;
+                    console.log(url);
 
-                    const res = await axios({
-                        headers: {
-                            withCredentials: true,
-                            "Access-Control-Allow-Origin": "http://localhost:3000",
-                            'Accept': 'application/json',
-                        },
-                        method: 'POST',
-                        url: 'http://hana-umc.shop:8080/user/priavte/join',
-                        data: {
-                            username: id,
-                            password: pw,
-                            passwordCheck: pw,
-                            name: name,
-                            phoneNumber: phoneNum,
-                            address: addr,
-                            email: email,
-                            profileImgUrl: url(profileImage),
-                            role: "ORGANIZATION",
-                        },
-                    });
-                };
-                */
-
-                alert("단체 회원가입이 완료되었습니다!");
-                window.location.href = '/signin';
+                    alert("단체 회원가입이 완료되었습니다!");
+                    window.location.href = `/${url}`;
+                });
             }
         }
     };
