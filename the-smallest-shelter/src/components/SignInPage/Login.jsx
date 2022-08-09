@@ -54,53 +54,59 @@ function Login() {
         }
     };
 
-    const onSubmitButton = () => {
+    const onSubmitButton = async(e) => {
+        /*
         if(idValid && pwValid) {
-            /*
-            const submit = async (e) => {
-                e.preventDefault();
+            e.preventDefault();
 
-                console.log(`id: ${id}, pw: ${pw}`);
+            console.log(`id: ${id}, pw: ${pw}`);
 
-                const res = await axios({
-                    headers: {
-                        withCredentials: true,
-                        "Access-Control-Allow-Origin": "http://localhost:3000",
-                        'Accept': 'application/json',
-                    },
-                    method: 'POST',
-                    url: 'http://hana-umc.shop:8080/login',
-                    data: {
-                        username: id,
-                        password: pw,
-                    }
-                }).then((response) => {
-                    console.log(response); // 출력값 확인하기
+            const res = await axios({
+                headers: {
+                    withCredentials: true,
+                    "Access-Control-Allow-Origin": "http://localhost:3000",
+                    'Accept': 'application/json',
+                },
+                method: 'POST',
+                url: 'http://hana-umc.shop:8080/login',
+                data: {
+                    username: id,
+                    password: pw,
+                }
+            }).then((response) => {
+                console.log(response); // 출력값 확인하기
+                alert("로그인에 성공했습니다!");
 
-                    sessionStorage.setItem("userIDx", response.userIdx);
-                    sessionStorage.setItem("name", response.name);
-                    sessionStorage.setItem("role", response.role);
-                    
-                    setSavedLoginId(sessionStorage.getItem("id"));
-                    setSavedLoginPw(sessionStorage.getItem("pw"));
-                    
-                    window.location.href = "/";
-                }).catch((error) => {
-                    console.log(error);
-                })
-            }
-            */
+                sessionStorage.setItem("userIDx", response.userIdx);
+                sessionStorage.setItem("name", response.name);
+                sessionStorage.setItem("role", response.role);
+                
+                setSavedLoginId(id);
+                setSavedLoginPw(pw);
+
+                setIsLoggedIn(true);
+                setIsRole(response.userIdx);
+                setIsUserID(response.name);
+                setIsUserID(response.role);
+                
+                window.location.href = "/";
+            }).catch((error) => {
+                console.log(error);
+            })
+            
         }
+        */
 
         if(id === User.id && pw === User.pw) {
             alert("로그인에 성공했습니다!");
             sessionStorage.setItem("id", id);
             sessionStorage.setItem("pw", pw);
             
-            setSavedLoginId(sessionStorage.getItem("id"));
-            setSavedLoginPw(sessionStorage.getItem("pw"));
+            // setSavedLoginId(sessionStorage.getItem("id"));
+            // setSavedLoginPw(sessionStorage.getItem("pw"));
+            setSavedLoginId(id);
+            setSavedLoginPw(pw);
             
-
             setIsLoggedIn(true);
             setIsRole(loginResponse.result.role);
             setIsUserID(loginResponse.result.userIdx);
