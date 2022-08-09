@@ -121,6 +121,7 @@ function InputForm({ selectType }) {
         if(idValid && pwValid && name.length > 0 && phoneNumValid && addr.length > 0 && emailValid) {
             const profileImage = getRandomImage();
 
+            /*
             if(selectType == "private") {
                 console.log(`
                     username: ${id},    
@@ -203,6 +204,7 @@ function InputForm({ selectType }) {
                     window.location.href = `/${url}`;
                 });
             }
+            */
         }
     };
 

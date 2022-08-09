@@ -13,32 +13,29 @@ export default function ListviewScreen() {
     const [cardList,setCardList] = useState([]); // 데이터 받아오는 배열
     const [pageNum, setPageNum] = useState(0);
 
-    const handleFilter = (filters) => {
+    const handleFilter = async (filters) => {
         console.log(filters);
 
         /*
-        const submit = async (filters) => {
-            const res = await axios({
-                headers: {
-                    withCredentials: true,
-                    "Access-Control-Allow-Origin": "http://localhost:3000",
-                    'Accept': 'application/json',
-                },
-                method: 'POST',
-                url: 'http://hana-umc.shop:8080/search',
-                data: {
-                    Species: filters[species],
-                    Gender: filters[gender],
-                    Age: filters[age],
-                    isAdopted: filters[isAdopted],
-                }
-            }).then((response) => {
-                console.log(response);
-                setCardList(response);
-            })
-        };
+        const res = await axios({
+            headers: {
+                withCredentials: true,
+                "Access-Control-Allow-Origin": "http://localhost:3000",
+                'Accept': 'application/json',
+            },
+            method: 'POST',
+            url: 'http://hana-umc.shop:8080/search',
+            data: {
+                Species: filters[species],
+                Gender: filters[gender],
+                Age: filters[age],
+                isAdopted: filters[isAdopted],
+            }
+        }).then((response) => {
+            console.log(response);
+            setCardList(response);
+        });
         */
-
     };
 
     const handlePrevious = () => {
