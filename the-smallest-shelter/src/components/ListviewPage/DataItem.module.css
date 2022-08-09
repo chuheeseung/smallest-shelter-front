@@ -15,9 +15,8 @@
 }
 
 .dataPhoto {
-  width: 100%;
-  /* width: auto !important; */
-  height: 100%;
+  width: 100% !important;
+  height: 70%;
   z-index: -1;
   /* overflow: hidden; */
   display: block;

@@ -42,39 +42,39 @@ export default function ListviewScreen() {
     };
 
     const handlePrevious = () => {
-        axios.get("http://hana-umc.shop:8080/animal/animals",
-            {params: {page: (pageNum > 0 ? pageNum - 1 : 0)}},
-            {withCredentials: true}
-        ).then((res) => {
-            console.log(res.data.result)
-            setCardList(res.data.result);
-        });
+        // axios.get("http://hana-umc.shop:8080/animal/animals",
+        //     {params: {page: (pageNum > 0 ? pageNum - 1 : 0)}},
+        //     {withCredentials: true}
+        // ).then((res) => {
+        //     console.log(res.data.result)
+        //     setCardList(res.data.result);
+        // });
     };
 
     const handleNext = () => {
-        axios.get("http://hana-umc.shop:8080/animal/animals",
-            {params: {page: pageNum + 1}},
-            {withCredentials: true}
-        ).then((res) => {
-            console.log(res.data.result)
-            setCardList(res.data.result);
-        });
+        // axios.get("http://hana-umc.shop:8080/animal/animals",
+        //     {params: {page: pageNum + 1}},
+        //     {withCredentials: true}
+        // ).then((res) => {
+        //     console.log(res.data.result)
+        //     setCardList(res.data.result);
+        // });
     };
 
-    useEffect(() => {
-        axios.get("http://hana-umc.shop:8080/animal/animals",
-            {params: {page: pageNum}},
-            {withCredentials: true}
-        ).then((res) => {
-            console.log(res.data.result)
-            setCardList(res.data.result);
-        })
-    }, []);
+    // useEffect(() => {
+    //     axios.get("http://hana-umc.shop:8080/animal/animals",
+    //         {params: {page: pageNum}},
+    //         {withCredentials: true}
+    //     ).then((res) => {
+    //         console.log(res.data.result)
+    //         setCardList(res.data.result);
+    //     })
+    // }, []);
     
 
-    // useEffect(() => { 
-    //     setCardList(dummy.results);
-    // }, []);
+    useEffect(() => { 
+        setCardList(dummy.results);
+    }, []);
 
     return (
         <>
@@ -93,9 +93,9 @@ export default function ListviewScreen() {
                     })
                 }
             </div>
-            <div>
-                <button onClick={handlePrevious}>이전</button>
-                <button onClick={handleNext}>다음</button>
+            <div className={style.buttonWrap}>
+                <button className={style.pageButton} onClick={handlePrevious}>이전</button>
+                <button className={style.pageButton} onClick={handleNext}>다음</button>
             </div>
         </>
     )
