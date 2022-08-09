@@ -153,10 +153,13 @@ function InputForm({ selectType }) {
                         profileImgUrl: url(profileImage),
                         role: "PRIVATE",
                     },
-                });
+                }).then((response) => {
+                    url = response.url;
+                    console.log(url);
 
-                alert("개인 회원가입이 완료되었습니다!");
-                window.location.href = '/signin';
+                    alert("개인 회원가입이 완료되었습니다!");
+                    window.location.href = `/${url}`;
+                });
             } 
             else if(selectType == "organization") {
                 console.log(`
@@ -192,10 +195,13 @@ function InputForm({ selectType }) {
                         profileImgUrl: url(profileImage),
                         role: "ORGANIZATION",
                     },
-                });
+                }).then((response) => {
+                    url = response.url;
+                    console.log(url);
 
-                alert("단체 회원가입이 완료되었습니다!");
-                window.location.href = '/signin';
+                    alert("단체 회원가입이 완료되었습니다!");
+                    window.location.href = `/${url}`;
+                });
             }
         }
     };
