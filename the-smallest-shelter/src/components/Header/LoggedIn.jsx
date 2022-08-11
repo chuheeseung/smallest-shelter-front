@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 import { storeService } from '../../fbase';
 import dummy from '../ChatPage/DirectMessageData.json';
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
-import { useRecoilValue } from "recoil";
-import { LoginRole, LoginUserID } from "../../states/LoginState";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { LoginRole, LoginUserID, LoginState } from "../../states/LoginState";
 
 function LoggedIn() {
   const [msgCnt, setMsgCnt] = useState(0);
@@ -39,7 +39,7 @@ function LoggedIn() {
       <Link to="/mypage"> <Badge count={msgCnt} size="small" color="red">
         <span className={style.message}>쪽지</span>
       </Badge></Link>
-     
+
       <span style={{ margin: "0 24px", fontWeight: "bold" }}>|</span>
 
       <Dropdown overlay={<Content/>} placement="bottomLeft">
@@ -53,6 +53,18 @@ function LoggedIn() {
 };
 
 const Content = () => {
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  let sessionStorage = window.sessionStorage;
+
+  const handleLogOut = () => {
+    console.log(isLoggedIn);
+
+    sessionStorage.removeItem('id');
+    sessionStorage.removeItem('pw');
+    setIsLoggedIn(false);
+    window.location.href = '/';
+  };
+
   return (
     <div className={style.dropdownWrap}>
       <div className={style.userInfoWrap}>
@@ -71,7 +83,8 @@ const Content = () => {
       <div className={style.tabWrap}>
         <Link to="/mypage" style={{color: 'black'}}><p>마이페이지</p></Link>
         <p>설정</p>
-        <p>로그아웃</p>
+        <p onClick={handleLogOut}>로그아웃</p>
+        {/* <p>로그아웃</p> */}
       </div>
     </div>
   )
