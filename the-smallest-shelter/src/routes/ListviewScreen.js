@@ -24,7 +24,7 @@ export default function ListviewScreen() {
                 'Accept': 'application/json',
             },
             method: 'POST',
-            url: 'http://hana-umc.shop:8080/search',
+            url: 'http://hana-umc.shop:8080/animal/search',
             data: {
                 Species: filters[species],
                 Gender: filters[gender],
