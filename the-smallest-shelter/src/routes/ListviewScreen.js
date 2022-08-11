@@ -4,8 +4,6 @@ import DataItem from '../components/ListviewPage/DataItem';
 import Banner from '../components/ListviewPage/Banner';
 import { dummy } from '../components/ListviewPage/dataDummy';
 import style from './ListviewScreen.module.css';
-import { Pagination } from 'antd';
-import axios from 'axios';
 
 const PAGE_SIZE = 10;
 

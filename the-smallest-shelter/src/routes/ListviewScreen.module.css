@@ -19,10 +19,11 @@
 }
 
 .pageButton {
-  margin: 2px 4px;
+  margin: 2px 6px;
   border: none;
   background-color: #fbc22e;
-  border-radius: 2px;
+  border-radius: 6px;
   color: white;
   font-size: 15px;
+  cursor: pointer;
 }
