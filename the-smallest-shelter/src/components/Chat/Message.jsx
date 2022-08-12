@@ -45,8 +45,8 @@ function Message({ message, sentUser, receivedUser, time }) {
       <div className={style.userInfo}>
         {!isMessageMine(sentUser) && <p className={style.userName}>{sentUser.name}</p>}
         <div>
-          {isMessageMine(sentUser) && <span style={{fontSize: '12px', marginRight: '6px'}}>{getTime(hour, minute)}</span>}
-          <span className={style.message} style={{ backgroundColor: isMessageMine(sentUser) && "#ECECEC" }}>
+          {isMessageMine(sentUser) && <span style={{fontSize: '10px', marginRight: '6px'}}>{getTime(hour, minute)}</span>}
+          <span className={style.message} style={{ backgroundColor: isMessageMine(sentUser) ? "#FFE9B1" : "#F1F3F5"}}>
             {message}
           </span>
           {!isMessageMine(sentUser) && <span style={{fontSize: '12px', marginLeft: '6px'}}>{getTime(hour, minute)}</span>}

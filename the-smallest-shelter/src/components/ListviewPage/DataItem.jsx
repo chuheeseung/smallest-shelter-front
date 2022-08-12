@@ -7,10 +7,10 @@ function DataItem({ item }) {
   let navigate = useNavigate();
 
   const handleClick = () => {
-    console.log("clicked : ", item.animal_idx);
+    console.log("clicked : ", item.animalIdx);
     navigate('/detail', {
       state: {
-        id: item.animal_idx
+        id: item.animalIdx
       }
     });
   };

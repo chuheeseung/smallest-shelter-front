@@ -3,7 +3,6 @@ import { dbService, storeService } from '../../fbase';
 import { child, push, ref, set } from 'firebase/database';
 import style from './ChatPage.module.css';
 import { CgSmile } from 'react-icons/cg';
-import { BiRightArrowAlt } from 'react-icons/bi';
 import { addDoc, collection } from 'firebase/firestore';
 
 function ChatForm() {
@@ -91,19 +90,19 @@ function ChatForm() {
 
   return (
     <div className={style.chatForm}>
+      <div className={style.icon}><CgSmile size={21} color="gray"/></div>
       <form onSubmit={handleSubmit}>
         <div className={style.inputWrap}>
-          <CgSmile size={24}/>
-          <input
-            type="text"
+          <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="메시지 입력..."
+            placeholder="보낼 메시지를 입력하세요"
+            style={{resize: 'none'}}
           />
-          {content && <BiRightArrowAlt size={24} onClick={handleSubmit}/>}
+          {content && <button className={style.btn} onClick={handleSubmit}>전송</button>}
         </div>
         <div>
-      </div>
+        </div>
       </form>
     </div>
   );

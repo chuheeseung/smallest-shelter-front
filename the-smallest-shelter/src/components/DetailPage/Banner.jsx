@@ -3,21 +3,27 @@ import axios from "axios";
 import styled from "styled-components";
 import { AiOutlineStar, AiOutlineHeart, AiFillHeart, AiOutlineLike } from "react-icons/ai";
 import { FiMail } from 'react-icons/fi';
-import { Checkbox } from 'antd';
+import { Checkbox, Dropdown} from 'antd';
 import 'antd/dist/antd.min.css';
-import {
-    MuiThemeProvider,
-    createMuiTheme
-  } from "@material-ui/core/styles";
+import { createTheme } from '@material-ui/core/styles';
 import Popover from "@material-ui/core/Popover";
 import SuccessMark from "../../assets/img/SuccessMark.png";
 import { Link, useNavigate } from 'react-router-dom';
+import ChatPage from '../Chat/ChatPage';
+
+import { 
+    useRecoilState, 
+  } from 'recoil';
+import { LoginUserToken, LoginRole } from '../../states/LoginState';
 
 function Banner(props) {
+    const [userToken, setUserToken] = useRecoilState(LoginUserToken);
+    const [isRole, setIsRole] = useRecoilState(LoginRole);
+
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
-    const [adoptCheck,setAdoptCheck] = useState("false");
     const [likeHeart, setLikeHeart] = useState("true");
+    const [checkAdopted, setCheckAdopted]= useState("true");
     // 임시
     const currUser = {
         "id": "JNVe6U0iGlP4A5Pm65UfXgZju0Z2",
@@ -40,23 +46,25 @@ function Banner(props) {
 
     const onChange = (e) => {
         console.log(`checked = ${e.target.checked}`);
+        console.log(userToken, isRole);
         let checked = `${e.target.checked}`
-        setAdoptCheck(checked);
+        setCheckAdopted(checked);
         console.log(checked);
-        // axios.get('https://jsonplaceholder.typicode.com/posts/1')
-        // .then((res) => {
-        //   let { data } = res;
-        //   let { animalIdx, isLike } = data;
-          
-        //   console.log('animalIdx : ' + animalIdx);
-        //   console.log('isLike : ' +isLike);
-        //   setLikeHeart(isLike);
-        // })
-        // .catch((err) => {
-        //   console.log(err);
-          
-        // });
-      };
+
+        // axios.patch(`https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=30`, {animal_id: 30})
+        axios.patch('https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=30',
+        {   params:{animal_id: 30}, 
+            headers: {'Authorization': userToken}}
+            // headers: {
+            //     // withCredentials: true,
+            //     // 'Accept': 'application/json',
+            //     'Authorization': userToken,
+            // },
+        ).then((response) => {
+            console.log(response);
+        });
+    }
+        
 
     const handleClick = event => {
         setAnchorEl(event.currentTarget);
@@ -66,7 +74,7 @@ function Banner(props) {
         setAnchorEl(null);
     };
     
-    const theme2 = createMuiTheme({
+    const theme2 = createTheme({
         overrides: {
           MuiPopover: {
             root: {
@@ -83,7 +91,7 @@ function Banner(props) {
       });
       const likedRes = () => {
         console.log("좋아요 누름");
-        axios.get('https://jsonplaceholder.typicode.com/posts/1')
+        axios.get('https://sjs.hana-umc.shop/posts/1')
         .then((res) => {
           let { data } = res;
           let { animalIdx, isLike } = data;
@@ -105,7 +113,7 @@ function Banner(props) {
                         <ProfileImg src={props.imgUrl}/>
                         <PetInfo>
                             <PetName> {props.name} / <button onClick={handleClick} style={{background:"none", border:"none", fontWeight:"700",}}>&nbsp;유행사</button>
-                            <MuiThemeProvider theme={theme2}>
+                            <createTheme theme={theme2}>
                                 <Popover
                                     id="popover-with-anchor"
                                     open={Boolean(anchorEl)}
@@ -124,7 +132,7 @@ function Banner(props) {
                                     <GroupInfo>{props.address}</GroupInfo>
                                     <GroupInfo>{props.phoneNumber}</GroupInfo>
                                 </Popover>
-                            </MuiThemeProvider>
+                            </createTheme>
                             </PetName>
                             
                             <PetParagraph>
@@ -142,9 +150,9 @@ function Banner(props) {
                                         나이
                                     </InfoItem1>
                                     {
-                                        props.isOrganization==true //단체이면 입양상태 체크 가능
+                                        props.isOrganization=="ORGANIZATION" //단체이면 입양상태 체크 가능
                                         ? <div style={{marginTop:"19px"}}><Checkbox onChange={onChange}/></div>
-                                        : null
+                                        : <div style={{marginTop:"19px"}}><Checkbox onChange={onChange}/></div>
                                     }
                                 </InfoParagraph>
                                 <InfoParagraph>
@@ -172,12 +180,12 @@ function Banner(props) {
                                         }
                                     </InfoItem2>
                                     <InfoItem2>
-                                        {props.age}
+                                        {props.year}살 &nbsp; {props.month}개월 {props.isGuessed==true?"추정":""}
                                     </InfoItem2>
                                     {
-                                        props.isOrganization==true
+                                        props.isOrganization=="ORGANIZATION"
                                         ? <InfoItem2>입양 상태</InfoItem2>
-                                        : null
+                                        : <InfoItem2>입양 상태</InfoItem2>
                                     }
                                 </InfoParagraph>
                             </PetParagraph>
@@ -186,20 +194,20 @@ function Banner(props) {
                     <ProfileIcon>
                         <IconSet>
                             {
-                                props.isOrganization==false//입양희망자인 경우
+                                props.isOrganization=="PRIVATE"//입양희망자인 경우
                                 ?<>
                                     {
                                         likeHeart=="false"
-                                        ? <AiOutlineHeart/>
-                                        : <AiFillHeart/>
+                                        ? <AiOutlineHeart size="22"/>
+                                        : <AiFillHeart size="22"/>
                                     }
-                                        <FiMail size="22" style={{marginLeft:"22px", color: 'black'}} onClick={() => navigate(`/chat/${chatRoomId}`)}/>
+                                        <Dropdown overlay={<ChatPage/>} trigger={['click']}><FiMail size="22" style={{marginLeft:"22px", color: 'black'}}/></Dropdown>
                                 </>
                                 : null
                             }
                         </IconSet>     
                         {
-                            props.isAdopted==true//입양 되었을 때 마크 여부
+                            props.isAdopted==false//입양 되었을 때 마크 여부
                             ? <img src={SuccessMark} style={{width:"150px"}}/>
                             : null
                         }

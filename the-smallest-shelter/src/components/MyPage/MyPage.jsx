@@ -5,6 +5,7 @@ import "./MyPage.css";
 import MyLikeAnimal from "./MyLikeAnimal";
 import styled from 'styled-components';
 import ChatHistory from "../ChatHistory/ChatHistory";
+import axios from "axios";
 import { 
   useRecoilState, 
   // useRecoilValue, 
@@ -110,8 +111,9 @@ function MyPage() {
   const [isAddress, setIsAddress] = useState("");
   const [isEmail, setIsEmail] = useState("");
   const [isProfileUrl, setIsProfileUrl] = useState("");
+  const [myDataInfo,setMyDataInfo] = useState([]); 
 
-  const getPosts = async () => {
+  // const getPosts = async () => {
   //  const mypageRes= await axios({
   //     headers: {
   //         withCredentials: true,
@@ -123,21 +125,21 @@ function MyPage() {
   //         animal_id:1,
   //         post_id:1
   //     }
-  // }).then(
-    let dummyInfo = myInfoDummy.result;
-    console.log("isRole: ",isRole," 호출");
+  // }).then(setMyDataInfo(mypageRes.result)
+  //   // dummyInfo = mypageRes.result,
+  //   // console.log("isRole: ", isRole),
+  //   // console.log("data: ",mypageRes.result),
+  //   // setIsUserID(dummyInfo.userIdx),
+  //   // setIsName(dummyInfo.name),
+  //   // setIsPhoneNumber(dummyInfo.phoneNumber),
+  //   // setIsAddress(dummyInfo.address),
+  //   // setIsEmail(dummyInfo.email),
+  //   // setIsProfileUrl(dummyInfo.profileImgUrl),
+  // )};
 
-    setIsUserID(dummyInfo.userIdx);
-    setIsName(dummyInfo.name);
-    setIsPhoneNumber(dummyInfo.phoneNumber);
-    setIsAddress(dummyInfo.address);
-    setIsEmail(dummyInfo.email);
-    setIsProfileUrl(dummyInfo.profileImgUrl);
-  };
-
-  useEffect(() => {
-    getPosts();
-  },[]);
+  // useEffect(() => {
+  //   getPosts();
+  // },[]);
 
     return (
       <div>

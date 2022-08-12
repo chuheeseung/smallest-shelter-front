@@ -41,7 +41,7 @@ export class ChatClass extends Component {
     return (
       <div className={style.chatContainer}>
         <ChatHeader user={user}/>
-        <div className={style.chatWrap} style={{height: !messages.length && '200px'}}>
+        <div className={style.chatWrap}>
           {messages.length > 0 &&
             messages.map((message) => (
               <Message

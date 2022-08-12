@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logoImage from '../../assets/img/Group8700.png';
 import style from './Login.module.css';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { LoginState, LoginRole, LoginUserID } from '../../states/LoginState';
+import { 
+    LoginState, LoginRole, LoginUserIdx, LoginUserName, 
+    LoginUserId, LoginUserPw, LoginUserToken, LoginUserOrgName 
+} from '../../states/LoginState';
 import { loginResponse } from './loginDummy';
 
 const User = {
@@ -16,7 +19,13 @@ const User = {
 function Login() {
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
     const [isRole, setIsRole] = useRecoilState(LoginRole);
-    const [isUserID, setIsUserID] = useRecoilState(LoginUserID);
+    const [isUserIdx, setIsUserIdx] = useRecoilState(LoginUserIdx);
+    const [isUserName, setIsUserName] = useRecoilState(LoginUserName);
+    const [savedLoginId, setSavedLoginId] = useRecoilState(LoginUserId);
+    const [savedLoginPw, setSavedLoginPw] = useRecoilState(LoginUserPw);
+    const [savedUserToken, setSavedUserToken] = useRecoilState(LoginUserToken);
+    const [userOrgName, setUserOrgName] = useRecoilState(LoginUserOrgName);
+    let sessionStorage = window.sessionStorage;
 
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
@@ -25,38 +34,36 @@ function Login() {
     const [pwValid, setPwValid] = useState(false);
     const [notAllow, setNotAllow] = useState(true);
 
-    let [savedLoginId, setSavedLoginId] = useState("");
-    let [savedLoginPw, setSavedLoginPw] = useState("");
-    let sessionStorage = window.sessionStorage;
+    const navigate = useNavigate();
 
     const handleId = (e) => {
         setId(e.target.value);
-        const regex = /^[a-z]+[a-z0-9]{5,19}$/g;
+        // const regex = /^[a-z]+[a-z0-9]{5,19}$/g;
         
-        if(regex.test(id)) {
-            setIdValid(true);
-        }
-        else {
-            setIdValid(false);
-        }
+        // if(regex.test(id)) {
+        //     setIdValid(true);
+        // }
+        // else {
+        //     setIdValid(false);
+        // }
     };
 
     const handlePassword = (e) => {
         setPw(e.target.value);
-        const regex =
-        /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
+        // const regex =
+        // /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
 
-        if(regex.test(pw)) {
-            setPwValid(true);
-        }
-        else {
-            setPwValid(false);
-        }
+        // if(regex.test(pw)) {
+        //     setPwValid(true);
+        // }
+        // else {
+        //     setPwValid(false);
+        // }
     };
 
     const onSubmitButton = async(e) => {
-        /*
-        if(idValid && pwValid) {
+        
+        // if(idValid && pwValid) {
             e.preventDefault();
 
             console.log(`id: ${id}, pw: ${pw}`);
@@ -68,53 +75,72 @@ function Login() {
                     'Accept': 'application/json',
                 },
                 method: 'POST',
-                url: 'http://hana-umc.shop:8080/login',
+                url: 'http://sjs.hana-umc.shop:8080/login',
                 data: {
                     username: id,
                     password: pw,
                 }
             }).then((response) => {
-                console.log(response); // 출력값 확인하기
-                alert("로그인에 성공했습니다!");
-
-                sessionStorage.setItem("userIDx", response.userIdx);
-                sessionStorage.setItem("name", response.name);
-                sessionStorage.setItem("role", response.role);
+                console.log(response);
                 
+                // recoil
+                sessionStorage.setItem("userIdx", response.data.userIdx);
+                sessionStorage.setItem("name", response.data.name);
+                sessionStorage.setItem("role", response.data.role);
+                sessionStorage.setItem("organizationName", response.data.organizationName);
+                
+                setIsLoggedIn(true);
+                setIsUserIdx(response.data.userIdx);
+                setIsRole(response.data.role);
+                setIsUserName(response.data.name);
+                setUserOrgName(response.data.organizationName);
                 setSavedLoginId(id);
                 setSavedLoginPw(pw);
 
-                setIsLoggedIn(true);
-                setIsRole(response.userIdx);
-                setIsUserID(response.name);
-                setIsUserID(response.role);
+                console.log("isLoggedIn : ", isLoggedIn);
+                console.log("isUserIdx : ", isUserIdx);
+                console.log("isRole : ", isRole);
+                console.log("isUserName : ", isUserName);
+                console.log("userOrgName : ", userOrgName);
+                console.log("savedLoginId : ", savedLoginId);
+                console.log("savedLoginPw : ", savedLoginPw);
+
+                // authorization token
+                let userTokenString = response.headers.authorization;
+                // let userTokenList = userTokenString.split(' ');
+                sessionStorage.setItem("bearer_token", userTokenString);
+                setSavedUserToken(userTokenString);
                 
-                window.location.href = "/";
+                console.log(savedUserToken);
+
+                alert("로그인에 성공했습니다!");
+                
+                navigate('/');
             }).catch((error) => {
                 console.log(error);
             })
             
-        }
-        */
+        // }
+        
 
-        if(id === User.id && pw === User.pw) {
-            alert("로그인에 성공했습니다!");
-            sessionStorage.setItem("id", id);
-            sessionStorage.setItem("pw", pw);
+        // if(id === User.id && pw === User.pw) {
+        //     alert("로그인에 성공했습니다!");
+        //     sessionStorage.setItem("id", id);
+        //     sessionStorage.setItem("pw", pw);
             
-            // setSavedLoginId(sessionStorage.getItem("id"));
-            // setSavedLoginPw(sessionStorage.getItem("pw"));
-            setSavedLoginId(id);
-            setSavedLoginPw(pw);
+        //     // setSavedLoginId(sessionStorage.getItem("id"));
+        //     // setSavedLoginPw(sessionStorage.getItem("pw"));
+        //     setSavedLoginId(id);
+        //     setSavedLoginPw(pw);
             
-            setIsLoggedIn(true);
-            setIsRole(loginResponse.result.role);
-            setIsUserID(loginResponse.result.userIdx);
-            window.location.href = "/";
-        }
-        else {
-            alert("등록되지 않은 회원입니다.");
-        }
+        //     setIsLoggedIn(true);
+        //     setIsRole(loginResponse.result.role);
+        //     setIsUserID(loginResponse.result.userIdx);
+        //     window.location.href = "/";
+        // }
+        // else {
+        //     alert("등록되지 않은 회원입니다.");
+        // }
     };
 
     useEffect(() => {
@@ -173,7 +199,7 @@ function Login() {
             </div>
             <div>
                 <button 
-                    disabled={notAllow} 
+                    // disabled={notAllow} 
                     className={style.bottomButton} 
                     onClick={onSubmitButton}
                 >
