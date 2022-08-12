@@ -22,8 +22,10 @@ import image81 from '../../assets/img/ProfileImg/Ellipse 81.png';
 import image82 from '../../assets/img/ProfileImg/Ellipse 82.png';
 import image83 from '../../assets/img/ProfileImg/Ellipse 83.png';
 import image84 from '../../assets/img/ProfileImg/Ellipse 84.png';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 function InputForm({ selectType }) {
+    const navigate = useNavigate();
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
     const [name, setName] = useState('');
@@ -121,62 +123,36 @@ function InputForm({ selectType }) {
         if(idValid && pwValid && name.length > 0 && phoneNumValid && addr.length > 0 && emailValid) {
             const profileImage = getRandomImage();
 
-            /*
             if(selectType == "private") {
-                console.log(`
-                    username: ${id},    
-                    password: ${pw},
-                    passwordCheck: ${pw},
-                    name: ${name},
-                    phoneNumber: ${phoneNum},
-                    address: ${addr},
-                    email: ${email},
-                    profileImgUrl: url(${profileImage}),
-                    role: "PRIVATE",
-                `);
-
                 const res = await axios({
                     headers: {
                         withCredentials: true,
                         "Access-Control-Allow-Origin": "http://localhost:3000",
                         'Accept': 'application/json',
                     },
-                    method: 'POST',
-                    url: 'http://hana-umc.shop:8080/user/priavte/join',
+                    method: 'post',
+                    url: 'http://sjs.hana-umc.shop:8080/join',
                     data: {
                         username: id,    
                         password: pw,
-                        passwordCheck: pw,
                         name: name,
                         phoneNumber: phoneNum,
                         address: addr,
                         email: email,
-                        profileImgUrl: url(profileImage),
+                        profileImgUrl: "url",
                         role: "PRIVATE",
-                    },
-                }).then((response) => {
-                    url = response.url;
-                    console.log(url);
-
-                    alert("개인 회원가입이 완료되었습니다!");
-                    window.location.href = `/${url}`;
-                });
+                        organizationName: null
+                    }
+                })
+                .then((res) => {
+                    console.log(res);
+                    navigate('/');
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
             } 
             else if(selectType == "organization") {
-                console.log(`
-                    username: ${id},
-                    password: ${pw},
-                    passwordCheck: ${pw},
-                    name: ${name},
-                    phoneNumber: ${phoneNum},
-                    address: ${addr},
-                    email: ${email},
-                    organizationName: ${organizationName},
-                    profileImgUrl: url(${profileImage}),
-                    role: "ORGANIZATION",
-                `);
-
-                
                 const res = await axios({
                     headers: {
                         withCredentials: true,
@@ -184,27 +160,24 @@ function InputForm({ selectType }) {
                         'Accept': 'application/json',
                     },
                     method: 'POST',
-                    url: 'http://hana-umc.shop:8080/user/organization/join',
+                    url: 'http://sjs.hana-umc.shop:8080/join',
                     data: {
                         username: id,
                         password: pw,
-                        passwordCheck: pw,
                         name: name,
                         phoneNumber: phoneNum,
                         address: addr,
                         email: email,
-                        profileImgUrl: url(profileImage),
+                        profileImgUrl: "url",
                         role: "ORGANIZATION",
+                        organizationName: organizationName
                     },
-                }).then((response) => {
-                    url = response.url;
-                    console.log(url);
-
+                }).then(() => {
                     alert("단체 회원가입이 완료되었습니다!");
-                    window.location.href = `/${url}`;
+                    window.location.href = '/';
                 });
             }
-            */
+            
         }
     };
 

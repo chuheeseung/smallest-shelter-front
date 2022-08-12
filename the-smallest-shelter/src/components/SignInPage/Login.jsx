@@ -55,7 +55,7 @@ function Login() {
     };
 
     const onSubmitButton = async(e) => {
-        /*
+        
         if(idValid && pwValid) {
             e.preventDefault();
 
@@ -68,7 +68,7 @@ function Login() {
                     'Accept': 'application/json',
                 },
                 method: 'POST',
-                url: 'http://hana-umc.shop:8080/login',
+                url: 'http://sjs.hana-umc.shop:8080/login',
                 data: {
                     username: id,
                     password: pw,
@@ -77,17 +77,23 @@ function Login() {
                 console.log(response); // 출력값 확인하기
                 alert("로그인에 성공했습니다!");
 
-                sessionStorage.setItem("userIDx", response.userIdx);
-                sessionStorage.setItem("name", response.name);
-                sessionStorage.setItem("role", response.role);
+                // sessionStorage.setItem("userIdx", response.userIdx);
+                // sessionStorage.setItem("name", response.name);
+                // sessionStorage.setItem("role", response.role);
                 
-                setSavedLoginId(id);
-                setSavedLoginPw(pw);
+                // setSavedLoginId(id);
+                // setSavedLoginPw(pw);
 
-                setIsLoggedIn(true);
-                setIsRole(response.userIdx);
-                setIsUserID(response.name);
-                setIsUserID(response.role);
+                // setIsLoggedIn(true);
+                // setIsUserID(response.name);
+                // setIsRole(response.role);
+
+                // console.log("isLoggedIn : ", isLoggedIn);
+                // console.log("isUserID : ", isUserID);
+                // console.log("isRole : ", isRole);
+                
+                // console.log("savedLoginId : ", savedLoginId);
+                // console.log("savedLoginPw : ", savedLoginPw);
                 
                 window.location.href = "/";
             }).catch((error) => {
@@ -95,26 +101,26 @@ function Login() {
             })
             
         }
-        */
+        
 
-        if(id === User.id && pw === User.pw) {
-            alert("로그인에 성공했습니다!");
-            sessionStorage.setItem("id", id);
-            sessionStorage.setItem("pw", pw);
+        // if(id === User.id && pw === User.pw) {
+        //     alert("로그인에 성공했습니다!");
+        //     sessionStorage.setItem("id", id);
+        //     sessionStorage.setItem("pw", pw);
             
-            // setSavedLoginId(sessionStorage.getItem("id"));
-            // setSavedLoginPw(sessionStorage.getItem("pw"));
-            setSavedLoginId(id);
-            setSavedLoginPw(pw);
+        //     // setSavedLoginId(sessionStorage.getItem("id"));
+        //     // setSavedLoginPw(sessionStorage.getItem("pw"));
+        //     setSavedLoginId(id);
+        //     setSavedLoginPw(pw);
             
-            setIsLoggedIn(true);
-            setIsRole(loginResponse.result.role);
-            setIsUserID(loginResponse.result.userIdx);
-            window.location.href = "/";
-        }
-        else {
-            alert("등록되지 않은 회원입니다.");
-        }
+        //     setIsLoggedIn(true);
+        //     setIsRole(loginResponse.result.role);
+        //     setIsUserID(loginResponse.result.userIdx);
+        //     window.location.href = "/";
+        // }
+        // else {
+        //     alert("등록되지 않은 회원입니다.");
+        // }
     };
 
     useEffect(() => {

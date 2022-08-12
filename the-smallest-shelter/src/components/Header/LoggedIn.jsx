@@ -62,7 +62,7 @@ const Content = () => {
     sessionStorage.removeItem('id');
     sessionStorage.removeItem('pw');
     setIsLoggedIn(false);
-    window.location.href = '/';
+    // window.location.href = '/';
   };
 
   return (
