@@ -2,21 +2,21 @@ import React from 'react';
 import AdoptedTag from '../../assets/img/adopted.png';
 import styled from 'styled-components';
 
-function MyPageCard({ id, photoUrl, name, age, gender, species, isAdopted }) {
+function MyPageCard(props) {
   return (
     <>
     <DataContainer>
-      <DataPhoto src={photoUrl} alt="사진 url"/>
+      <DataPhoto src={props.mainImgUrl} alt="사진 url"/>
       <DataInfo>
         <div>
-        <h4 style={{fontWeight: "bold", margin: "10px 0 0 0", fontSize: "15px"}}>{name}</h4>
-        <p style={{margin: "4px 0 0 0", color: "#969696"}}>{age}</p>
-        <p style={{margin: "4px 0 0 0", color: "#969696"}}>{species} / {gender}</p>
+          <h4 style={{fontWeight: "bold", margin: "10px 0 0 0", fontSize: "15px"}}>{props.name}</h4>
+          <p style={{margin: "4px 0 0 0", color: "#969696"}}>{props.year}살 {props.month}개월 {props.guessed?"추정":""}</p>
+          <p style={{margin: "4px 0 0 0", color: "#969696"}}>{props.species=="CAT"?"고양이":"강아지"} / {props.gender=="MALE"?"남":"여"}</p>
         </div>
         {
-          isAdopted 
-          ? <img src={AdoptedTag} alt="adoptedTag" className="dataAdoptedTag" style={{width: "80px", height: "80px", paddingRight: "6px"}}/>
-          : null
+          props.isAdopted==false
+          ? null
+          : <img src={AdoptedTag} alt="adoptedTag" className="dataAdoptedTag" style={{width: "80px", height: "80px", paddingRight: "6px"}}/>
         }
       </DataInfo>
     </DataContainer>

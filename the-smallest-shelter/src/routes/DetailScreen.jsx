@@ -10,14 +10,26 @@ import styled from 'styled-components';
 import ReactModal from 'react-modal';
 import HistoryRegister from "../components/DetailPage/HistoryRegister";
 
+import { 
+    useRecoilState, 
+    // useRecoilValue, 
+  } from 'recoil';
+  import { LoginRole } from '../states/LoginState';
+
 function DetailScreen() {
+    const [isRole, setIsRole] = useRecoilState(LoginRole);
+
     const location = useLocation();
     const id = location.state.id;
-    const [isOrganization, setIsOrganization] = useState(false);
+    // const [detailData, setDetailData]=useState([]);
+
+    const [organizationMemberId, setOrganizationMemberId] = useState(0);
     const [name, setName] = useState("");
     const [imgUrl, setImgUrl] = useState("");
     const [species, setSpecies] = useState("");
-    const [age, setAge] = useState("");
+    const [year, setYear] = useState(0);
+    const [month, setMonth] = useState(0);
+    const [isGuessed, setIsGuessed] = useState(false);
     const [gender, setGender] = useState("");
     const [illness, setIllness] = useState([]);
     const [isAdopted, setIsAdopted] = useState(false);
@@ -27,56 +39,54 @@ function DetailScreen() {
     const [postData, setPostData] = useState([]);
     const [recommand , setRecommand] = useState([]);
     ReactModal.setAppElement('#root');
-    useEffect(()=> {
-    // useEffect(()=> {axios({
-    //     method: "GET",
-    //     url: "http://hana-umc.shop:8080/???",
-    //     headers: {
-    //         withCredentials: true,
-    //         "Access-Control-Allow-Origin": "http://localhost:3000",
-    //         'Accept': 'application/json',
-    //     }
-    // })
-    //     .then((response) => {
-        console.log({id});
-            let detailData = DetailResponse.result;
-            // let { mainImgUrl, name, species, month, year, gender, IsAdopted, IsOrganization, organizationName, phoneNumber, address, Post, recommandAnimal, illness } = detailData;
+
+    const getPosts = async () => {
+        await axios({
+            method: "GET",
+            url: "https://sjs.hana-umc.shop/animal/1",
+            headers: {
+                withCredentials: true,
+                'Accept': 'application/json',
+            }
+        })
+        .then((response) => {
+            let detailData=response.data.result;
             setName(detailData.name);
             setImgUrl(detailData.mainImgUrl);
             setSpecies(detailData.species);
-            setAge(`${detailData.year}살 ${detailData.month}개월`);
+            setYear(detailData.age.year);
+            setMonth(detailData.age.month);
+            setIsGuessed(detailData.age.isGuessed);
             setGender(detailData.gender);
             setIllness(detailData.illness);
             setIsAdopted(detailData.IsAdopted);
-            setIsOrganization(detailData.IsOrganization);
+            setOrganizationMemberId(detailData.organizationMemberId);
             setOrganizationName(detailData.organizationName);
             setPhoneNumber(detailData.phoneNumber);
             setAddress(detailData.address);
-            setPostData(detailData.Post);
+            setPostData(detailData.post);
             setRecommand(detailData.recommandAnimal);
-            // console.log('이름 : ' + name, 
-            //             '이미지: ' + imgUrl,
-            //             '종 : ' + species, 
-            //             '나이 : ' + age, 
-            //             '성별: ' + gender, 
-            //             '질병: ' + illness,
-            //             '입양여부 : ' + isAdopted, 
-            //             '단체이름 : ' + organizationName, 
-            //             '단체번호 : ' + phoneNumber, 
-            //             '단체주소 : ' + address, 
-            //             '단체여부 : ' + isOrganization, 
-            //             '게시물: ' + postData, 
-            //             '추천동물: ' + recommand);
-    });
+            console.log(response.data.result);
+        })
+    }
+
+    useEffect(() => {
+        getPosts();
+    },[]);
+
+
     return (
-        <div>
-            <div>
+        <>
+            <>
                 <Banner 
-                    isOrganization={isOrganization}
+                    animalIdx={id}
+                    isOrganization={isRole}
                     name={name}
                     imgUrl={imgUrl}
                     species={species}
-                    age={age}
+                    year={year}
+                    month={month}
+                    isGuessed={isGuessed}
                     gender={gender}
                     illness={illness}
                     isAdopted={isAdopted}
@@ -87,7 +97,7 @@ function DetailScreen() {
                 <PostList>
                     <PostListTitle>
                         <div style={{display: 'flex', flex: 1}}>동물 히스토리</div>
-                        <HistoryRegister isOrganization={isOrganization} animalIdx={id}/>
+                        <HistoryRegister isOrganization={isRole} animalIdx={id}/>
                     </PostListTitle>
                     <PostContainer>
                         {
@@ -105,11 +115,11 @@ function DetailScreen() {
                     </PostContainer>
                 </PostList>
                 <SliderContainer>
-                    <SliderSection recommandAnimal={recommand}/>
+                    {/* <SliderSection recommandAnimal={recommand}/> */}
                 </SliderContainer>
-            </div>
+            </>
 
-        </div>
+        </>
     );
 }
 
