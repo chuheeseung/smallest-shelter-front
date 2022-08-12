@@ -62,7 +62,11 @@ function Login() {
     };
 
     const onSubmitButton = async(e) => {
+        
+
         // if(idValid && pwValid) {
+
+        if(idValid && pwValid) {
 
             e.preventDefault();
 
@@ -82,6 +86,7 @@ function Login() {
                 }
             }).then((response) => {
                 console.log(response);
+
                 
                 // recoil
                 sessionStorage.setItem("userIdx", response.data.userIdx);
@@ -89,6 +94,15 @@ function Login() {
                 sessionStorage.setItem("role", response.data.role);
                 sessionStorage.setItem("organizationName", response.data.organizationName);
                 
+
+                
+                // recoil
+                sessionStorage.setItem("userIdx", response.data.userIdx);
+                sessionStorage.setItem("name", response.data.name);
+                sessionStorage.setItem("role", response.data.role);
+                sessionStorage.setItem("organizationName", response.data.organizationName);
+                
+
                 setIsLoggedIn(true);
                 setIsUserIdx(response.data.userIdx);
                 setIsRole(response.data.role);
@@ -107,6 +121,7 @@ function Login() {
 
                 // authorization token
                 let userTokenString = response.headers.authorization;
+
                 // let userTokenList = userTokenString.split(' ');
                 sessionStorage.setItem("bearer_token", userTokenString);
                 setSavedUserToken(userTokenString);
@@ -115,12 +130,26 @@ function Login() {
 
                 alert("로그인에 성공했습니다!");
                 
+
+                let userTokenList = userTokenString.split(' ');
+                sessionStorage.setItem("bearer_token", userTokenList[1]);
+                setSavedUserToken(userTokenList[1]);
+                
+                console.log(savedUserToken);
+
+                alert("로그인에 성공했습니다!");
+                
+
                 navigate('/');
             }).catch((error) => {
                 console.log(error);
             })
             
+
         // }
+
+        }
+
         
 
         // if(id === User.id && pw === User.pw) {
