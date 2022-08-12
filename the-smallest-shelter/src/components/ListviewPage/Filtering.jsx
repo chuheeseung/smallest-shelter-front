@@ -7,10 +7,10 @@ const { Option } = Select;
 
 function Filtering({ getFilter }) {
   const filterData = {
-    species: ['', 'DOG', 'CAT'],
-    gender: ['', 'MALE', 'FEMALE', 'MALE_NEUTRAL', 'FEMALE_NEUTRAL'],
-    age: ['', 'PUPPY', 'JUNIOR', 'ADULT', 'SENIOR'],
-    isAdopted: ['', true, false],
+    species: ["", "DOG", "CAT"],
+    gender: ["", "MALE", "FEMALE", "MALE_NEUTRAL", "FEMALE_NEUTRAL"],
+    age: ["", "PUPPY", "JUNIOR", "ADULT", "SENIOR"],
+    isAdopted: ["", true, false],
   };
 
   const [selectedFilter, setSelectedFilter] = useState({

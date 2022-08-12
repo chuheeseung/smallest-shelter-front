@@ -13,7 +13,11 @@ export default function ListviewScreen() {
     const [pageNum, setPageNum] = useState(0);
 
     const handleFilter = async (filters) => {
-        console.log(filters);
+        const species = filters['species'];
+        const gender = filters['gender'];
+        const ageBoundary = filters['age'];
+        const isAdopted = filters['isAdopted'];
+        console.log(species, gender, ageBoundary, isAdopted);
 
         const res = await axios({
             headers: {
@@ -22,19 +26,19 @@ export default function ListviewScreen() {
                 'Accept': 'application/json',
             },
             method: 'POST',
-            url: 'http://sjs.hana-umc.shop:8080/animal/search',
+            url: 'https://sjs.hana-umc.shop/animal/search',
             params: {
-                page: {pageNum}
+                page: pageNum
             },
             data: {
-                Species: filters.species,
-                Gender: filters.gender,
-                Age: filters.age,
-                isAdopted: filters.isAdopted,
+                species: species,
+                gender: gender,
+                ageBoundary: ageBoundary,
+                isAdopted: isAdopted,
             }
         }).then((response) => {
             console.log(response);
-            setCardList(response);
+            setCardList(response.data.result.animal);
         }).catch((error) => {
             console.log(error);
         });
@@ -42,7 +46,7 @@ export default function ListviewScreen() {
     };
 
     const handlePrevious = () => {
-        // axios.get("http://sjs.hana-umc.shop:8080/animals",
+        // axios.get("https://sjs.hana-umc.shop/animals",
         //     {params: {page: (pageNum > 0 ? pageNum - 1 : 0)}},
         //     {withCredentials: true}
         // ).then((res) => {
@@ -52,7 +56,7 @@ export default function ListviewScreen() {
     };
 
     const handleNext = () => {
-        // axios.get("http:/sjs./hana-umc.shop:8080/animals",
+        // axios.get("https://sjs./hana-umc.shop/animals",
         //     {params: {page: pageNum + 1}},
         //     {withCredentials: true}
         // ).then((res) => {
@@ -62,7 +66,7 @@ export default function ListviewScreen() {
     };
 
     useEffect(() => {
-        axios.get("http://sjs.hana-umc.shop:8080/animals",
+        axios.get("https://sjs.hana-umc.shop/animals",
             {params: {page: pageNum}},
             {withCredentials: true}
         ).then((res) => {
