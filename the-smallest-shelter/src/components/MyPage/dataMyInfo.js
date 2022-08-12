@@ -1,6 +1,6 @@
 export const myInfoDummy = {
     result: {
-        "userIdx": 1,
+        userIdx: 1,
         name: "본명",
         phoneNumber: "010-1111-1111",
         address: "인천 간석3동",

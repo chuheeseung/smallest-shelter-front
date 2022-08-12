@@ -7,7 +7,7 @@ import { Pagination } from 'antd';
 
 const PAGE_SIZE = 10;
 
-function MyLikeAnimal({isOrganization}){
+function MyLikeAnimal(props){
     const [cardList,setCardList] = useState([]); // 데이터 받아오는 배열
 
     const [minValue, setMinValue] = useState(0);
@@ -26,7 +26,7 @@ function MyLikeAnimal({isOrganization}){
     return(
         <>  
             {
-                {isOrganization}
+                props.isRole=="ORGANIZATION"
                 ?<MyLikeTitle>등록한 동물 목록</MyLikeTitle>
                 :<MyLikeTitle>나의 관심 동물</MyLikeTitle>
             }
@@ -69,12 +69,12 @@ const MyLikeTitle= styled.div`
 `;
 
 const DataContainer= styled.div`
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  padding:20px 20px 20px 70px;
-  margin: auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding:20px 20px 20px 70px;
+    margin: auto;
 `;
 
 
