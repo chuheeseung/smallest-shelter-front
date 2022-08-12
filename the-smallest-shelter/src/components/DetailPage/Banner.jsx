@@ -1,32 +1,28 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import axios from "axios";
 import styled from "styled-components";
 import { AiOutlineStar, AiOutlineHeart, AiFillHeart, AiOutlineLike } from "react-icons/ai";
 import { FiMail } from 'react-icons/fi';
-<<<<<<< HEAD
+
 import { Checkbox, Dropdown} from 'antd';
-=======
-import { Checkbox, Dropdown } from 'antd';
->>>>>>> f1fc2c2482fdb4d6b99aa00508dac6e37a662304
+
 import 'antd/dist/antd.min.css';
 import { createTheme } from '@material-ui/core/styles';
 import Popover from "@material-ui/core/Popover";
 import SuccessMark from "../../assets/img/SuccessMark.png";
 import { Link, useNavigate } from 'react-router-dom';
 import ChatPage from '../Chat/ChatPage';
-<<<<<<< HEAD
 
 import { 
     useRecoilState, 
   } from 'recoil';
-import { LoginUserToken, LoginRole } from '../../states/LoginState';
-=======
->>>>>>> f1fc2c2482fdb4d6b99aa00508dac6e37a662304
+import { LoginUserToken, LoginRole, LoginUserIdx } from '../../states/LoginState';
+
 
 function Banner(props) {
     const [userToken, setUserToken] = useRecoilState(LoginUserToken);
     const [isRole, setIsRole] = useRecoilState(LoginRole);
-
+    const [userID, setUserID] = useRecoilState(LoginUserIdx);
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const [likeHeart, setLikeHeart] = useState("true");
@@ -42,15 +38,38 @@ function Banner(props) {
         "image": "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon",
         "name": "유행사"
     }
-    const chatRoomId = getChatRoomId(currUser, user);
-    function getChatRoomId(currUser, user) {
-        const currUserId = currUser.id
-        const userId = user.id
-        return userId < currUserId
-            ? `${userId}-${currUserId}`
-            : `${currUserId}-${userId}`
-    }
+    // const chatRoomId = getChatRoomId(currUser, user);
+    // function getChatRoomId(currUser, user) {
+    //     const currUserId = currUser.id
+    //     const userId = user.id
+    //     return userId < currUserId
+    //         ? `${userId}-${currUserId}`
+    //         : `${currUserId}-${userId}`
+    // }
 
+    const testToken='Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ajIiLCJpZCI6MTUsImV4cCI6MTY2MDI5ODgwNiwidXNlcm5hbWUiOiJ5ajIifQ.m_dDeBO4ruXOOUIhCaiEtVZUSGBdwM97uQM0O3B2ibZ3xgYuIZDdInT0xqtRQgixQDv5N_0_c6jJ3yLQw9_bMA'
+    const test=30;
+    useEffect(() => {
+        console.log("유저 토큰 : ", userToken, "유저 아이디: ", userID)
+        axios.patch(`http://sjs.hana-umc.shop:8080/auth/private/animal/like?user_id=${userID}&animal_id=30`,
+        {
+            headers: {
+                Authorization: userToken,
+                "Access-Control-Allow-Origin": "http://localhost:3000",
+                withCredentials: true,
+                'Accept': 'application/json',
+            },
+            params:{
+                userId:userID,
+                animal_id: 30
+            },
+        }
+        ).then((response) => {
+            // console.log(response);
+        }).catch(err => console.log(err));
+
+    })
+    
     const onChange = (e) => {
         console.log(`checked = ${e.target.checked}`);
         console.log(userToken, isRole);
@@ -59,17 +78,17 @@ function Banner(props) {
         console.log(checked);
 
         // axios.patch(`https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=30`, {animal_id: 30})
-        axios.patch('https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=30',
-        {   params:{animal_id: 30}, 
-            headers: {'Authorization': userToken}}
-            // headers: {
-            //     // withCredentials: true,
-            //     // 'Accept': 'application/json',
-            //     'Authorization': userToken,
-            // },
-        ).then((response) => {
-            console.log(response);
-        });
+        // axios.post(`https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=30`,
+        //     {
+        //         params:{animal_id: 30},
+        //         headers: {
+        //             // withCredentials: true,
+        //             // 'Accept': 'application/json',
+        //             'Authorization': userToken
+        //     }}
+        //     ).then((response) => {
+        //         console.log(response);
+        //     });
     }
         
 
@@ -96,22 +115,22 @@ function Banner(props) {
           }
         }
       });
-      const likedRes = () => {
-        console.log("좋아요 누름");
-        axios.get('https://sjs.hana-umc.shop/posts/1')
-        .then((res) => {
-          let { data } = res;
-          let { animalIdx, isLike } = data;
+    //   const likedRes = () => {
+    //     console.log("좋아요 누름");
+    //     axios.get('https://sjs.hana-umc.shop/posts/1')
+    //     .then((res) => {
+    //       let { data } = res;
+    //       let { animalIdx, isLike } = data;
           
-          console.log('animalIdx : ' + animalIdx);
-          console.log('isLike : ' +isLike);
-          setLikeHeart(isLike);
-        })
-        .catch((err) => {
-          console.log(err);
+    //       console.log('animalIdx : ' + animalIdx);
+    //       console.log('isLike : ' +isLike);
+    //       setLikeHeart(isLike);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
           
-        });
-      }
+    //     });
+    //   }
         return (
             <RootBanner>
                 <DetailTitle>동물 상세 정보</DetailTitle>
@@ -208,11 +227,7 @@ function Banner(props) {
                                         ? <AiOutlineHeart size="22"/>
                                         : <AiFillHeart size="22"/>
                                     }
-<<<<<<< HEAD
                                         <Dropdown overlay={<ChatPage/>} trigger={['click']}><FiMail size="22" style={{marginLeft:"22px", color: 'black'}}/></Dropdown>
-=======
-                                    <Dropdown overlay={<ChatPage/>} trigger={['click']}><FiMail size="22" style={{marginLeft:"22px", color: 'black'}}/></Dropdown>
->>>>>>> f1fc2c2482fdb4d6b99aa00508dac6e37a662304
                                 </>
                                 : null
                             }
