@@ -15,9 +15,32 @@ export const LoginRole = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const LoginUserID = atom({
-  key: 'LoginUserID',
+export const LoginUserIdx = atom({
+  key: 'LoginUserIdx',
   default: 0,
   effects_UNSTABLE: [persistAtom],
 });
 
+export const LoginUserName = atom({
+  key: 'LoginUserName',
+  default: "",
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const LoginUserId = atom({
+  key: 'LoginUserId',
+  default: '',
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const LoginUserPw = atom({
+  key: 'LoginUserPw',
+  default: '',
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const LoginUserToken = atom({
+  key: 'LoginUserToken',
+  default: '',
+  effects_UNSTABLE: [persistAtom],
+});

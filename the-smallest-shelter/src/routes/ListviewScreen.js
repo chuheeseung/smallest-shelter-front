@@ -38,27 +38,27 @@ export default function ListviewScreen() {
     };
 
     const handlePrevious = () => {
-        // axios.get("http://hana-umc.shop:8080/animal/animals",
-        //     {params: {page: (pageNum > 0 ? pageNum - 1 : 0)}},
-        //     {withCredentials: true}
-        // ).then((res) => {
-        //     console.log(res.data.result)
-        //     setCardList(res.data.result);
-        // });
+        axios.get("http://sjs.hana-umc.shop:8080/animals",
+            {params: {page: (pageNum > 0 ? pageNum - 1 : 0)}},
+            {withCredentials: true}
+        ).then((res) => {
+            console.log(res.data.result)
+            setCardList(res.data.result.animal);
+        });
     };
 
     const handleNext = () => {
-        // axios.get("http://hana-umc.shop:8080/animal/animals",
-        //     {params: {page: pageNum + 1}},
-        //     {withCredentials: true}
-        // ).then((res) => {
-        //     console.log(res.data.result)
-        //     setCardList(res.data.result);
-        // });
+        axios.get("http:/sjs./hana-umc.shop:8080/animals",
+            {params: {page: pageNum + 1}},
+            {withCredentials: true}
+        ).then((res) => {
+            console.log(res.data.result)
+            setCardList(res.data.result.animal);
+        });
     };
 
     useEffect(() => {
-        axios.get("http://hana-umc.shop:8080/animals",
+        axios.get("http://sjs.hana-umc.shop:8080/animals",
             {params: {page: pageNum}},
             {withCredentials: true}
         ).then((res) => {

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logoImage from '../../assets/img/Group8700.png';
 import style from './Login.module.css';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { LoginState, LoginRole, LoginUserID } from '../../states/LoginState';
+import { LoginState, LoginRole, LoginUserIdx, LoginUserName, LoginUserId, LoginUserPw, LoginUserToken } from '../../states/LoginState';
 import { loginResponse } from './loginDummy';
 
 const User = {
@@ -16,7 +16,12 @@ const User = {
 function Login() {
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
     const [isRole, setIsRole] = useRecoilState(LoginRole);
-    const [isUserID, setIsUserID] = useRecoilState(LoginUserID);
+    const [isUserIdx, setIsUserIdx] = useRecoilState(LoginUserIdx);
+    const [isUserName, setIsUserName] = useRecoilState(LoginUserName);
+    const [savedLoginId, setSavedLoginId] = useRecoilState(LoginUserId);
+    const [savedLoginPw, setSavedLoginPw] = useRecoilState(LoginUserPw);
+    const [savedUserToken, setSavedUserToken] = useRecoilState(LoginUserToken);
+    let sessionStorage = window.sessionStorage;
 
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
@@ -25,9 +30,7 @@ function Login() {
     const [pwValid, setPwValid] = useState(false);
     const [notAllow, setNotAllow] = useState(true);
 
-    let [savedLoginId, setSavedLoginId] = useState("");
-    let [savedLoginPw, setSavedLoginPw] = useState("");
-    let sessionStorage = window.sessionStorage;
+    const navigate = useNavigate();
 
     const handleId = (e) => {
         setId(e.target.value);
@@ -74,28 +77,38 @@ function Login() {
                     password: pw,
                 }
             }).then((response) => {
-                console.log(response); // 출력값 확인하기
+                console.log(response);
+                
+                // recoil
+                sessionStorage.setItem("userIdx", response.data.userIdx);
+                sessionStorage.setItem("name", response.data.name);
+                sessionStorage.setItem("role", response.data.role);
+                
+                setIsLoggedIn(true);
+                setIsUserIdx(response.data.userIdx);
+                setIsRole(response.data.role);
+                setIsUserName(response.data.name);
+                setSavedLoginId(id);
+                setSavedLoginPw(pw);
+
+                console.log("isLoggedIn : ", isLoggedIn);
+                console.log("isUserIdx : ", isUserIdx);
+                console.log("isRole : ", isRole);
+                console.log("isUserName : ", isUserName);
+                console.log("savedLoginId : ", savedLoginId);
+                console.log("savedLoginPw : ", savedLoginPw);
+
+                // authorization token
+                let userTokenString = response.headers.authorization;
+                let userTokenList = userTokenString.split(' ');
+                sessionStorage.setItem("bearer_token", userTokenList[1]);
+                setSavedUserToken(userTokenList[1]);
+                
+                console.log(savedUserToken);
+
                 alert("로그인에 성공했습니다!");
-
-                // sessionStorage.setItem("userIdx", response.userIdx);
-                // sessionStorage.setItem("name", response.name);
-                // sessionStorage.setItem("role", response.role);
                 
-                // setSavedLoginId(id);
-                // setSavedLoginPw(pw);
-
-                // setIsLoggedIn(true);
-                // setIsUserID(response.name);
-                // setIsRole(response.role);
-
-                // console.log("isLoggedIn : ", isLoggedIn);
-                // console.log("isUserID : ", isUserID);
-                // console.log("isRole : ", isRole);
-                
-                // console.log("savedLoginId : ", savedLoginId);
-                // console.log("savedLoginPw : ", savedLoginPw);
-                
-                window.location.href = "/";
+                navigate('/');
             }).catch((error) => {
                 console.log(error);
             })
