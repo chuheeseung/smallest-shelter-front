@@ -5,7 +5,7 @@ import { dbService, storeService } from '../../fbase';
 import style from "./ChatHistory.module.css";
 import ChatHistoryList from './ChatHistoryList';
 import { GrCheckbox, GrCheckboxSelected } from 'react-icons/gr';
-import dummy from '../ChatPage/DirectMessageData.json';
+import dummy from '../Chat/DirectMessageData.json';
 import { collection, deleteDoc, doc, onSnapshot, orderBy, query, updateDoc } from 'firebase/firestore';
 import { onValue, ref } from 'firebase/database';
 

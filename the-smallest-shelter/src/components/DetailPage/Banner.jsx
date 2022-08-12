@@ -3,7 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { AiOutlineStar, AiOutlineHeart, AiFillHeart, AiOutlineLike } from "react-icons/ai";
 import { FiMail } from 'react-icons/fi';
-import { Checkbox } from 'antd';
+import { Checkbox, Dropdown } from 'antd';
 import 'antd/dist/antd.min.css';
 import {
     MuiThemeProvider,
@@ -12,6 +12,7 @@ import {
 import Popover from "@material-ui/core/Popover";
 import SuccessMark from "../../assets/img/SuccessMark.png";
 import { Link, useNavigate } from 'react-router-dom';
+import ChatPage from '../Chat/ChatPage';
 
 function Banner(props) {
     const navigate = useNavigate();
@@ -190,10 +191,10 @@ function Banner(props) {
                                 ?<>
                                     {
                                         likeHeart=="false"
-                                        ? <AiOutlineHeart/>
-                                        : <AiFillHeart/>
+                                        ? <AiOutlineHeart size="22"/>
+                                        : <AiFillHeart size="22"/>
                                     }
-                                        <FiMail size="22" style={{marginLeft:"22px", color: 'black'}} onClick={() => navigate(`/chat/${chatRoomId}`)}/>
+                                    <Dropdown overlay={<ChatPage/>} trigger={['click']}><FiMail size="22" style={{marginLeft:"22px", color: 'black'}}/></Dropdown>
                                 </>
                                 : null
                             }
