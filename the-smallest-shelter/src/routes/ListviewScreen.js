@@ -15,46 +15,50 @@ export default function ListviewScreen() {
     const handleFilter = async (filters) => {
         console.log(filters);
 
-        
-        // const res = await axios({
-        //     headers: {
-        //         withCredentials: true,
-        //         "Access-Control-Allow-Origin": "http://localhost:3000",
-        //         'Accept': 'application/json',
-        //     },
-        //     method: 'POST',
-        //     url: 'http://hana-umc.shop:8080/animal/search',
-        //     data: {
-        //         Species: filters[species],
-        //         Gender: filters[gender],
-        //         Age: filters[age],
-        //         isAdopted: filters[isAdopted],
-        //     }
-        // }).then((response) => {
-        //     console.log(response);
-        //     setCardList(response);
-        // });
+        const res = await axios({
+            headers: {
+                withCredentials: true,
+                "Access-Control-Allow-Origin": "http://localhost:3000",
+                'Accept': 'application/json',
+            },
+            method: 'POST',
+            url: 'http://sjs.hana-umc.shop:8080/animal/search',
+            params: {
+                page: {pageNum}
+            },
+            data: {
+                Species: filters.species,
+                Gender: filters.gender,
+                Age: filters.age,
+                isAdopted: filters.isAdopted,
+            }
+        }).then((response) => {
+            console.log(response);
+            setCardList(response);
+        }).catch((error) => {
+            console.log(error);
+        });
         
     };
 
     const handlePrevious = () => {
-        axios.get("http://sjs.hana-umc.shop:8080/animals",
-            {params: {page: (pageNum > 0 ? pageNum - 1 : 0)}},
-            {withCredentials: true}
-        ).then((res) => {
-            console.log(res.data.result)
-            setCardList(res.data.result.animal);
-        });
+        // axios.get("http://sjs.hana-umc.shop:8080/animals",
+        //     {params: {page: (pageNum > 0 ? pageNum - 1 : 0)}},
+        //     {withCredentials: true}
+        // ).then((res) => {
+        //     console.log(res.data.result)
+        //     setCardList(res.data.result.animal);
+        // });
     };
 
     const handleNext = () => {
-        axios.get("http:/sjs./hana-umc.shop:8080/animals",
-            {params: {page: pageNum + 1}},
-            {withCredentials: true}
-        ).then((res) => {
-            console.log(res.data.result)
-            setCardList(res.data.result.animal);
-        });
+        // axios.get("http:/sjs./hana-umc.shop:8080/animals",
+        //     {params: {page: pageNum + 1}},
+        //     {withCredentials: true}
+        // ).then((res) => {
+        //     console.log(res.data.result)
+        //     setCardList(res.data.result.animal);
+        // });
     };
 
     useEffect(() => {
@@ -82,7 +86,7 @@ export default function ListviewScreen() {
                         cardList.map((item) => {
                         return (
                             <DataItem
-                                key={item.animalIdx}
+                                key = {item.animalIdx}
                                 item = {item}
                             />
                         )
