@@ -6,9 +6,15 @@ import { dummy } from '../components/ListviewPage/dataDummy';
 import style from './ListviewScreen.module.css';
 import axios from 'axios';
 
+import { 
+    useRecoilState, 
+  } from 'recoil';
+import { LoginUserToken, LoginRole, LoginUserIdx } from '../states/LoginState';
+
 const PAGE_SIZE = 10;
 
 export default function ListviewScreen() {
+    const [userToken, setUserToken] = useRecoilState(LoginUserToken);
     const [cardList,setCardList] = useState([]); // 데이터 받아오는 배열
     const [pageNum, setPageNum] = useState(0);
 
@@ -72,6 +78,7 @@ export default function ListviewScreen() {
         ).then((res) => {
             console.log(res.data.result)
             setCardList(res.data.result.animal);
+            console.log(userToken);
         })
     }, []);
     
