@@ -11,3 +11,19 @@
   display: block;
   margin: 8px;
 }
+
+.buttonWrap {
+  width: 100%;
+  margin: auto;
+  text-align: center;
+}
+
+.pageButton {
+  margin: 2px 6px;
+  border: none;
+  background-color: #fbc22e;
+  border-radius: 6px;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
