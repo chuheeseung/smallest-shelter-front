@@ -9,10 +9,19 @@ import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 //이미지 및 아이콘
 import { IoCloseSharp } from "react-icons/io5"
 import UploadImg from '../RegisterPage/UploadImg';
+
+import { 
+  useRecoilState, 
+} from 'recoil';
+import { LoginUserToken, LoginRole, LoginUserIdx } from '../../states/LoginState';
+
 let index = 0;
 
 const RegisterModal = ({ isOpen, onCancel, animalIdx}) => {
     const navigate = useNavigate();
+
+    const testToken='Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MDMwMyIsImlkIjo4LCJleHAiOjE2NjAzMDYwOTIsInVzZXJuYW1lIjoidGVzdDAzMDMifQ.O2Jal1SViMAomLgV--FfUtULXRF34vvokT5XECv0o0Z7nnOuWjZaIPbkYFkaS4hvH0SFKcVGUgHyC4ird5g6_w'
+    const [accessToken, setAccessToken] = useRecoilState(LoginUserToken);
     const [image, setImage] = useState("");
     const [historyContent, setHistoryContent] = useState("");
     const { TextArea } = Input;
@@ -31,16 +40,18 @@ const RegisterModal = ({ isOpen, onCancel, animalIdx}) => {
             const uploadFile = await uploadString(fileRef, image, "data_url");
             imgUrl = await getDownloadURL(uploadFile.ref);
         }
+        let animalID=92;
         console.log("게시물 사진: ",imgUrl, "게시물 내용: ",historyContent);
         await axios({
             headers: {
+                Authorization: testToken,
                 withCredentials: true,
                 'Accept': 'application/json',
             },
             method: 'post',
-            url: 'https://sjs.hana-umc.shop/post/join?animal_id=1',
+            url: `https://sjs.hana-umc.shop/auth/organization/post/join?animal_id=${animalID}`,
             params:{
-                animal_id:{animalIdx}
+                animal_id:92
             },
             data: {
               imgUrl: imgUrl,

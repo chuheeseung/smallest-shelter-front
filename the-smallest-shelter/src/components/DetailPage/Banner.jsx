@@ -47,28 +47,25 @@ function Banner(props) {
     //         : `${currUserId}-${userId}`
     // }
 
-    const testToken='Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ajIiLCJpZCI6MTUsImV4cCI6MTY2MDI5ODgwNiwidXNlcm5hbWUiOiJ5ajIifQ.m_dDeBO4ruXOOUIhCaiEtVZUSGBdwM97uQM0O3B2ibZ3xgYuIZDdInT0xqtRQgixQDv5N_0_c6jJ3yLQw9_bMA'
-    const test=30;
+    const testToken='Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MDMwMyIsImlkIjo4LCJleHAiOjE2NjAzMDYwOTIsInVzZXJuYW1lIjoidGVzdDAzMDMifQ.O2Jal1SViMAomLgV--FfUtULXRF34vvokT5XECv0o0Z7nnOuWjZaIPbkYFkaS4hvH0SFKcVGUgHyC4ird5g6_w'
+    const test=92;
     useEffect(() => {
-        console.log("유저 토큰 : ", userToken, "유저 아이디: ", userID)
-        axios.patch(`http://sjs.hana-umc.shop:8080/auth/private/animal/like?user_id=${userID}&animal_id=30`,
-        {
+        console.log("유저 토큰 : ", testToken, "유저 아이디: ", userID)
+        axios({
             headers: {
-                Authorization: userToken,
-                "Access-Control-Allow-Origin": "http://localhost:3000",
+                Authorization: testToken,
                 withCredentials: true,
                 'Accept': 'application/json',
             },
+            method: 'patch',
+            url: `https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=${test}`,
             params:{
-                userId:userID,
-                animal_id: 30
+                animal_id:92
             },
-        }
-        ).then((response) => {
-            // console.log(response);
-        }).catch(err => console.log(err));
-
-    })
+        }).then(
+          (response) => {console.log(response);},
+        )
+    });
     
     const onChange = (e) => {
         console.log(`checked = ${e.target.checked}`);
