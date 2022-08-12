@@ -1,5 +1,4 @@
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
-import {RecoilRoot} from 'recoil';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import MyPage from './components/MyPage/MyPage';
@@ -15,7 +14,6 @@ import SignUpScreen from './routes/SignUpScreen';
 const App = () => {
   return (
       <BrowserRouter>
-        <RecoilRoot>
             <Header/>
             <Routes>
                 <Route path="/" element={<ListviewScreen />} />
@@ -29,7 +27,6 @@ const App = () => {
                 <Route path="/signup/organization" element={<OrganizationSignUp/>} />
             </Routes>
           <Footer/>
-          </RecoilRoot>
       </BrowserRouter>
   );
 };

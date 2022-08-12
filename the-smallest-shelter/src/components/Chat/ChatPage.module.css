@@ -1,0 +1,97 @@
+.chatContainer {
+  width: 510px;
+  border: 1px solid lightgray;
+  /* box-shadow: 0px -4px 30px rgba(0, 0, 0, 0.1); */
+  margin-top: 32px;
+  font-family: "SpoqaHanSansNeo-Medium";
+}
+
+.headerWrap {
+  background-color: #FBC22E;
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  font-family: "SpoqaHanSansNeo-Bold";
+  height: 48px;
+  line-height: 48px;
+}
+
+.chatWrap {
+  height: 420px;
+  overflow-y: scroll;
+}
+
+.messageContainer {
+  display: flex;
+  margin-bottom: 3px;
+  padding: 4px 16px 8px;
+  margin-top: 8px;
+}
+
+.messageContainer p {
+  margin-bottom: 0;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.userInfo .userName {
+  margin: 0 0 4px 4px;
+  font-size: 13px;
+}
+
+.message {
+  border: 1px solid #ECECEC;
+  border-radius: 15px;
+  padding: 8px 12px;
+}
+
+.chatForm {
+  border-top: 1px solid #d9d9d9;
+}
+
+.chatForm .icon {
+  border-bottom: 1px solid #d9d9d9;
+  padding: 3px 0 0 24px;
+  background-color: #F1F1F1;
+}
+
+.inputWrap {
+  display: flex;
+  align-items: center;
+}
+
+textarea {
+  width: 100%;
+  height: 60px;
+  border: none;
+  margin-left: 16px;
+  padding: 8px;
+  font-family: "SpoqaHanSansNeo-Medium";
+}
+
+textarea::placeholder {
+  color: #969696;
+}
+
+textarea:focus {
+  outline: none;
+}
+
+.inputWrap .btn {
+  width: 40px;
+  height: 30px;
+  background-color: #FBC22E;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-right: 16px;
+}
+
+.inputWrap button {
+  border: none;
+  background-color: inherit;
+}
