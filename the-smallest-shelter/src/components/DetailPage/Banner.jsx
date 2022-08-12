@@ -3,18 +3,25 @@ import axios from "axios";
 import styled from "styled-components";
 import { AiOutlineStar, AiOutlineHeart, AiFillHeart, AiOutlineLike } from "react-icons/ai";
 import { FiMail } from 'react-icons/fi';
+<<<<<<< HEAD
 import { Checkbox, Dropdown} from 'antd';
+=======
+import { Checkbox, Dropdown } from 'antd';
+>>>>>>> f1fc2c2482fdb4d6b99aa00508dac6e37a662304
 import 'antd/dist/antd.min.css';
 import { createTheme } from '@material-ui/core/styles';
 import Popover from "@material-ui/core/Popover";
 import SuccessMark from "../../assets/img/SuccessMark.png";
 import { Link, useNavigate } from 'react-router-dom';
 import ChatPage from '../Chat/ChatPage';
+<<<<<<< HEAD
 
 import { 
     useRecoilState, 
   } from 'recoil';
 import { LoginUserToken, LoginRole } from '../../states/LoginState';
+=======
+>>>>>>> f1fc2c2482fdb4d6b99aa00508dac6e37a662304
 
 function Banner(props) {
     const [userToken, setUserToken] = useRecoilState(LoginUserToken);
@@ -201,7 +208,11 @@ function Banner(props) {
                                         ? <AiOutlineHeart size="22"/>
                                         : <AiFillHeart size="22"/>
                                     }
+<<<<<<< HEAD
                                         <Dropdown overlay={<ChatPage/>} trigger={['click']}><FiMail size="22" style={{marginLeft:"22px", color: 'black'}}/></Dropdown>
+=======
+                                    <Dropdown overlay={<ChatPage/>} trigger={['click']}><FiMail size="22" style={{marginLeft:"22px", color: 'black'}}/></Dropdown>
+>>>>>>> f1fc2c2482fdb4d6b99aa00508dac6e37a662304
                                 </>
                                 : null
                             }

@@ -3,7 +3,7 @@ import style from './DataItem.module.css';
 import AdoptedTag from '../../assets/img/adopted.png';
 import { useNavigate } from 'react-router-dom';
 
-function DataItem({ item }) {
+function DataItem({ key, item }) {
   let navigate = useNavigate();
 
   const handleClick = () => {
@@ -37,7 +37,7 @@ function DataItem({ item }) {
       <div className={style.dataInfo}>
         <div>
           <h4>{item.name}</h4>
-          <p>{item.year}살 {item.month}개월 {item.isGuessed ? "추정" : ""}</p>
+          <p>{item.age.year}살 {item.age.month}개월 {item.age.isGuessed ? "추정" : ""}</p>
           <p>{item.species} / {stringGender()}</p>
         </div>
         {

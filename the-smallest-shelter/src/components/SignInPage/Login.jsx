@@ -63,7 +63,11 @@ function Login() {
 
     const onSubmitButton = async(e) => {
         
+<<<<<<< HEAD
         // if(idValid && pwValid) {
+=======
+        if(idValid && pwValid) {
+>>>>>>> f1fc2c2482fdb4d6b99aa00508dac6e37a662304
             e.preventDefault();
 
             console.log(`id: ${id}, pw: ${pw}`);
@@ -82,6 +86,7 @@ function Login() {
                 }
             }).then((response) => {
                 console.log(response);
+<<<<<<< HEAD
                 
                 // recoil
                 sessionStorage.setItem("userIdx", response.data.userIdx);
@@ -89,6 +94,15 @@ function Login() {
                 sessionStorage.setItem("role", response.data.role);
                 sessionStorage.setItem("organizationName", response.data.organizationName);
                 
+=======
+                
+                // recoil
+                sessionStorage.setItem("userIdx", response.data.userIdx);
+                sessionStorage.setItem("name", response.data.name);
+                sessionStorage.setItem("role", response.data.role);
+                sessionStorage.setItem("organizationName", response.data.organizationName);
+                
+>>>>>>> f1fc2c2482fdb4d6b99aa00508dac6e37a662304
                 setIsLoggedIn(true);
                 setIsUserIdx(response.data.userIdx);
                 setIsRole(response.data.role);
@@ -107,6 +121,7 @@ function Login() {
 
                 // authorization token
                 let userTokenString = response.headers.authorization;
+<<<<<<< HEAD
                 // let userTokenList = userTokenString.split(' ');
                 sessionStorage.setItem("bearer_token", userTokenString);
                 setSavedUserToken(userTokenString);
@@ -115,12 +130,26 @@ function Login() {
 
                 alert("로그인에 성공했습니다!");
                 
+=======
+                let userTokenList = userTokenString.split(' ');
+                sessionStorage.setItem("bearer_token", userTokenList[1]);
+                setSavedUserToken(userTokenList[1]);
+                
+                console.log(savedUserToken);
+
+                alert("로그인에 성공했습니다!");
+                
+>>>>>>> f1fc2c2482fdb4d6b99aa00508dac6e37a662304
                 navigate('/');
             }).catch((error) => {
                 console.log(error);
             })
             
+<<<<<<< HEAD
         // }
+=======
+        }
+>>>>>>> f1fc2c2482fdb4d6b99aa00508dac6e37a662304
         
 
         // if(id === User.id && pw === User.pw) {

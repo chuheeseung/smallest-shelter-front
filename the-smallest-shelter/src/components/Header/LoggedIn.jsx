@@ -5,7 +5,7 @@ import style from "./LoggedIn.module.css";
 import userIcon from '../../assets/img/Ellipse 36.png';
 import { Link } from "react-router-dom";
 import { storeService } from '../../fbase';
-import dummy from '../ChatPage/DirectMessageData.json';
+import dummy from '../Chat/DirectMessageData.json';
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { LoginRole, LoginUserID, LoginState } from "../../states/LoginState";
@@ -62,7 +62,7 @@ const Content = () => {
     sessionStorage.removeItem('id');
     sessionStorage.removeItem('pw');
     setIsLoggedIn(false);
-    window.location.href = '/';
+    // window.location.href = '/';
   };
 
   return (
@@ -82,7 +82,6 @@ const Content = () => {
       </div>
       <div className={style.tabWrap}>
         <Link to="/mypage" style={{color: 'black'}}><p>마이페이지</p></Link>
-        <p>설정</p>
         <p onClick={handleLogOut}>로그아웃</p>
         {/* <p>로그아웃</p> */}
       </div>
