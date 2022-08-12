@@ -46,26 +46,6 @@ function Banner(props) {
     //         ? `${userId}-${currUserId}`
     //         : `${currUserId}-${userId}`
     // }
-
-    const testToken='Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MDMwMyIsImlkIjo4LCJleHAiOjE2NjAzMDYwOTIsInVzZXJuYW1lIjoidGVzdDAzMDMifQ.O2Jal1SViMAomLgV--FfUtULXRF34vvokT5XECv0o0Z7nnOuWjZaIPbkYFkaS4hvH0SFKcVGUgHyC4ird5g6_w'
-    const test=92;
-    useEffect(() => {
-        console.log("유저 토큰 : ", testToken, "유저 아이디: ", userID)
-        axios({
-            headers: {
-                Authorization: testToken,
-                withCredentials: true,
-                'Accept': 'application/json',
-            },
-            method: 'patch',
-            url: `https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=${test}`,
-            params:{
-                animal_id:92
-            },
-        }).then(
-          (response) => {console.log(response);},
-        )
-    });
     
     const onChange = (e) => {
         console.log(`checked = ${e.target.checked}`);
@@ -86,6 +66,40 @@ function Banner(props) {
         //     ).then((response) => {
         //         console.log(response);
         //     });
+
+    const testToken='Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnYW5hMDMwMyIsImlkIjo3LCJleHAiOjE2NjAzMDgzMDUsInVzZXJuYW1lIjoiZ2FuYTAzMDMifQ.OFgIFb8lh6oRR-m4rZucDS8VRHz2F2wlVoIeL6ftgZu_qWr_jB3PhqxgD_w_jrIfxyl6bEObzJMNrlnM09ohkQ'
+    const test=30;
+    const userii=16;
+        axios({
+            headers: {
+                Authorization: testToken,
+                withCredentials: true,
+                'Accept': 'application/json',
+            },
+            method: 'patch',
+            url: `https://sjs.hana-umc.shop/auth/private/animal/like?user_id=${userii}&animal_id=${test}`,
+            params:{
+                user_id:16,
+                animal_id:30
+            }
+        }).then(
+          (response) => {console.log(response.data);},
+        )
+        // console.log("유저 토큰 : ", testToken, "유저 아이디: ", userID)
+        // axios({
+        //     headers: {
+        //         Authorization: testToken,
+        //         withCredentials: true,
+        //         'Accept': 'application/json',
+        //     },
+        //     method: 'patch',
+        //     url: `https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=${test}`,
+        //     params:{
+        //         animal_id:92
+        //     }
+        // }).then(
+        //   (response) => {console.log(response);},
+        // )
     }
         
 
