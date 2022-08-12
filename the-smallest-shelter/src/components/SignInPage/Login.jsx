@@ -5,7 +5,10 @@ import logoImage from '../../assets/img/Group8700.png';
 import style from './Login.module.css';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { LoginState, LoginRole, LoginUserIdx, LoginUserName, LoginUserId, LoginUserPw, LoginUserToken } from '../../states/LoginState';
+import { 
+    LoginState, LoginRole, LoginUserIdx, LoginUserName, 
+    LoginUserId, LoginUserPw, LoginUserToken, LoginUserOrgName 
+} from '../../states/LoginState';
 import { loginResponse } from './loginDummy';
 
 const User = {
@@ -21,6 +24,7 @@ function Login() {
     const [savedLoginId, setSavedLoginId] = useRecoilState(LoginUserId);
     const [savedLoginPw, setSavedLoginPw] = useRecoilState(LoginUserPw);
     const [savedUserToken, setSavedUserToken] = useRecoilState(LoginUserToken);
+    const [userOrgName, setUserOrgName] = useRecoilState(LoginUserOrgName);
     let sessionStorage = window.sessionStorage;
 
     const [id, setId] = useState('');
@@ -83,11 +87,13 @@ function Login() {
                 sessionStorage.setItem("userIdx", response.data.userIdx);
                 sessionStorage.setItem("name", response.data.name);
                 sessionStorage.setItem("role", response.data.role);
+                sessionStorage.setItem("organizationName", response.data.organizationName);
                 
                 setIsLoggedIn(true);
                 setIsUserIdx(response.data.userIdx);
                 setIsRole(response.data.role);
                 setIsUserName(response.data.name);
+                setUserOrgName(response.data.organizationName);
                 setSavedLoginId(id);
                 setSavedLoginPw(pw);
 
@@ -95,6 +101,7 @@ function Login() {
                 console.log("isUserIdx : ", isUserIdx);
                 console.log("isRole : ", isRole);
                 console.log("isUserName : ", isUserName);
+                console.log("userOrgName : ", userOrgName);
                 console.log("savedLoginId : ", savedLoginId);
                 console.log("savedLoginPw : ", savedLoginPw);
 
