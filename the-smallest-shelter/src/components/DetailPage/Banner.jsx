@@ -9,16 +9,18 @@ import { createTheme } from '@material-ui/core/styles';
 import Popover from "@material-ui/core/Popover";
 import SuccessMark from "../../assets/img/SuccessMark.png";
 import { Link, useNavigate } from 'react-router-dom';
-import ChatPage from '../Chat/ChatPage';
+import Chat from '../Chat/Chat';
 
 import { 
     useRecoilState, useRecoilValue, 
   } from 'recoil';
-import { LoginUserToken, LoginRole } from '../../states/LoginState';
+import { LoginUserToken, LoginRole, LoginUserId, LoginUserName } from '../../states/LoginState';
 
 function Banner(props) {
     const [userToken, setUserToken] = useRecoilState(LoginUserToken);
     const [isRole, setIsRole] = useRecoilState(LoginRole);
+    const loginUserId = useRecoilValue(LoginUserId);
+    const loginUserName = useRecoilValue(LoginUserName)
 
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -201,7 +203,7 @@ function Banner(props) {
                                         ? <AiOutlineHeart size="22"/>
                                         : <AiFillHeart size="22"/>
                                     }
-                                        <Dropdown overlay={<ChatPage/>} trigger={['click']}><FiMail size="22" style={{marginLeft:"22px", color: 'black'}}/></Dropdown>
+                                        <Dropdown overlay={<Chat/>} trigger={['click']}><FiMail size="22" style={{marginLeft:"22px", color: 'black'}}/></Dropdown>
                                 </>
                                 : null
                             }
