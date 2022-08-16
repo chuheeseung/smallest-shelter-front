@@ -1,26 +1,31 @@
 import React, { useState } from 'react';
-import { dbService, storeService } from '../../fbase';
+import { dbService } from '../../fbase';
 import { child, push, ref, set } from 'firebase/database';
-import style from './ChatPage.module.css';
+import style from './Chat.module.css';
 import { CgSmile } from 'react-icons/cg';
-import { addDoc, collection } from 'firebase/firestore';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { LoginUserId, LoginUserName } from '../../states/LoginState';
+import { Organization } from '../../states/ChatState';
 
-function ChatForm() {
+function ChatForm({ chatRoomId }) {
   const messagesRef = ref(dbService, "messages");
+
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const loginUserId = useRecoilValue(LoginUserId);
+  const loginUserName = useRecoilValue(LoginUserName);
+  
+  //const organization = useRecoilValue(Organization);
+  // 상대 계정 정보
+  const userId = chatRoomId.split('-').filter(e => e !== loginUserId).join();
+
   const currUser = {
-    "id": "JNVe6U0iGlP4A5Pm65UfXgZju0Z2",
+    "id": loginUserId,
     "image": "http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon",
-    "name": "입양희망자"
+    "name": loginUserName
   };
-  const user = {
-    "id": "VRHxfEj1c1g0pbsAiYut1x2VzvP2",
-    "image": "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon",
-    "name": "유행사"
-  }
 
   // 임시 (유행사로 로그인 했을 때)
   // const user = {
@@ -34,16 +39,6 @@ function ChatForm() {
   //   "name": "유행사"
   // }
 
-  const chatRoomId = getChatRoomId(currUser, user);
-
-  function getChatRoomId(currUser, user) {
-    const currUserId = currUser.id
-    const userId = user.id
-    return userId < currUserId
-      ? `${userId}-${currUserId}`
-      : `${currUserId}-${userId}`
-  }
-
   const createMessage = () => {
     const message = {
       content: content,
@@ -54,18 +49,20 @@ function ChatForm() {
         image: currUser.image
       },
       receivedUser: {
-        id: user.id,
-        name: user.name,
-        image: user.image
+        id: userId,
+        name: "받는 사람 이름",
+        image: '받는 사람 이미지'
+       // name: organization.orgName,
+        //image: organization.orgImg
       },
       checked: false,
     }
-
     return message;
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!content) {
       setErrors(prev => prev.concat("Type contents first"));
       return;
@@ -74,8 +71,6 @@ function ChatForm() {
     try {
       // realtime database 저장
       await set(push(child(messagesRef, chatRoomId)), createMessage());
-      // firestore 저장
-      await addDoc(collection(storeService, chatRoomId), createMessage())
       setLoading(false);
       setContent("");
       setErrors([]);
@@ -90,14 +85,14 @@ function ChatForm() {
 
   return (
     <div className={style.chatForm}>
-      <div className={style.icon}><CgSmile size={21} color="gray"/></div>
+      <div className={style.icon}><CgSmile size={21} color="gray" /></div>
       <form onSubmit={handleSubmit}>
         <div className={style.inputWrap}>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="보낼 메시지를 입력하세요"
-            style={{resize: 'none'}}
+            style={{ resize: 'none' }}
           />
           {content && <button className={style.btn} onClick={handleSubmit}>전송</button>}
         </div>

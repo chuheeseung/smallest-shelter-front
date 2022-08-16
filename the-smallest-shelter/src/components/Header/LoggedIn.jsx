@@ -8,7 +8,8 @@ import { storeService } from '../../fbase';
 import dummy from '../Chat/DirectMessageData.json';
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { LoginRole, LoginUserID, LoginState } from "../../states/LoginState";
+import { LoginRole, LoginState, LoginUserId, LoginUserName, LoginUserOrgName } from "../../states/LoginState";
+import { Received } from "../../states/ChatState";
 
 function LoggedIn() {
   const [msgCnt, setMsgCnt] = useState(0);
@@ -18,33 +19,41 @@ function LoggedIn() {
   const currUserId = 'JNVe6U0iGlP4A5Pm65UfXgZju0Z2';  // 현재 사용자 id
   const userId = chatRoomId.split('-').filter(e => e !== currUserId).join();
   
-  // const LoginUserID = useRecoilValue(LoginUserID);
-  // const LoginRole = useRecoilValue(LoginRole);
+  const loginUserName = useRecoilValue(LoginUserName);
+  const loginRole = useRecoilValue(LoginRole);
+  const loginUserOrgName = useRecoilValue(LoginUserOrgName);
+  const received = useRecoilValue(Received);
 
   useEffect(() => {
-    const q = query(collection(storeService, chatRoomId), where('sentUser.id', "not-in", [currUserId]));
-    onSnapshot(q, (snapshot) => {
-      const all = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      const messageArray = all.filter(e => !e.checked)
-      setMessages(messageArray);
-      setMsgCnt(messageArray.length);
-    })
+    // 받은 쪽지 중 checked가 false인 message Array
+    // console.log(received)
+    //const messageArray = received.filter((chat) => !chat.checked)
+    // console.log(messageArray)
+    //setMessages(messageArray);
+    //setMsgCnt(messageArray.length);
+    // const q = query(collection(storeService, chatRoomId), where('sentUser.id', "not-in", [currUserId]));
+    // onSnapshot(q, (snapshot) => {
+    //   const all = snapshot.docs.map((doc) => ({
+    //     id: doc.id,
+    //     ...doc.data(),
+    //   }));
+    //   const messageArray = all.filter(e => !e.checked)
+    //   setMessages(messageArray);
+    //   setMsgCnt(messageArray.length);
+    // })
   }, [])
 
   return (
     <div>
-      <Link to="/mypage"> <Badge count={msgCnt} size="small" color="red">
-        <span className={style.message}>쪽지</span>
+      {/* <Link to="/mypage"> <Badge count={msgCnt} size="small" color="red">
+        <span>쪽지</span>
       </Badge></Link>
 
-      <span style={{ margin: "0 24px", fontWeight: "bold" }}>|</span>
+      <span style={{ margin: "0 24px", fontWeight: "bold" }}>|</span> */}
 
-      <Dropdown overlay={<Content/>} placement="bottomLeft">
+      <Dropdown overlay={<Content loginUserName={loginUserName} loginRole={loginRole} loginUserOrgName={loginUserOrgName}/>} placement="bottomLeft">
         <Space style={{ verticalAlign: "middle" }}>
-          <span>000님</span>
+          <span>{loginUserName}님</span>
           <AiOutlineDown />
         </Space>
       </Dropdown>
@@ -52,7 +61,7 @@ function LoggedIn() {
   )
 };
 
-const Content = () => {
+const Content = ({loginUserName, loginRole, loginUserOrgName}) => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   let sessionStorage = window.sessionStorage;
 
@@ -71,19 +80,16 @@ const Content = () => {
         <div className={style.userIcon}>
           <img src={userIcon} style={{ width: "48px" }} />
         </div>
-        <div className={style.userInfo}>
-
-          <p style={{ fontSize: "16px", color: "black", fontWeight: "bold" }}>사용자 이름</p>
-          <p style={{ fontSize: "12px", color: "#969696" }}>회원 등급 (개인, 단체)</p>
-          {/* 리코일 사용
-          <p style={{ fontSize: "16px", color: "black", fontWeight: "bold" }}>{LoginUserID}</p>
-          <p style={{ fontSize: "12px", color: "#969696" }}>{LoginRole}</p> */}
+        <div className={style.userInfo}>          
+          <p style={{ fontSize: "16px", color: "black", fontWeight: "bold" }}>{loginUserName}</p>
+          <p style={{ fontSize: "12px", color: "#969696" }}>
+            {loginRole==='ORGANIATION' ? `단체 (${loginUserOrgName})` : '개인'}
+          </p>
         </div>
       </div>
       <div className={style.tabWrap}>
         <Link to="/mypage" style={{color: 'black'}}><p>마이페이지</p></Link>
         <p onClick={handleLogOut}>로그아웃</p>
-        {/* <p>로그아웃</p> */}
       </div>
     </div>
   )

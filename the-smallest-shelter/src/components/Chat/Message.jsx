@@ -1,8 +1,11 @@
 import React from 'react';
-import style from './ChatPage.module.css'
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { SentUser } from '../../states/ChatState';
+import { LoginUserId } from '../../states/LoginState';
+import style from './Chat.module.css'
 
-function Message({ message, sentUser, receivedUser, time }) {
-  const currUserId = 'JNVe6U0iGlP4A5Pm65UfXgZju0Z2';  // 현재 사용자 id (나중에 리코일로 가져올 것)
+function Message({ message, sentUser, time }) {
+  const loginUserId = useRecoilValue(LoginUserId) 
   const date = new Date(time);
   const year = date.getFullYear().toString(); //년도
   const month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리 (01, 02 ... 12)
@@ -27,7 +30,7 @@ function Message({ message, sentUser, receivedUser, time }) {
   }
 
   const isMessageMine = (sentUser) => {
-    return currUserId === sentUser.id;
+    return loginUserId === sentUser.id;
   }
 
   return (

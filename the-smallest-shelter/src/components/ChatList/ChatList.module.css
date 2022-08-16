@@ -1,0 +1,21 @@
+.container {
+  border: 1px solid pink;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.chatRoomList {
+  border: 1px solid red;
+  margin: 16px 48px;
+}
+
+.chatRoomList ul {
+  padding: 0;
+  list-style: none;
+}
+
+.empty {
+  height: 100%;
+  margin: 30px 60px;
+}

@@ -12,6 +12,7 @@ import {
 } from 'recoil';
 import { LoginRole } from '../../states/LoginState';
 import { myInfoDummy } from './dataMyInfo';
+import ChatList from "../ChatList/ChatList";
 
 class Tabs extends Component {
   static childContextTypes = {
@@ -167,7 +168,7 @@ function MyPage() {
             <TabPanel><MyLikeAnimal isRole={isRole} userID={isUserID}/></TabPanel>
             <TabPanel>
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',  margin: '0 auto'}}>
-              <ChatHistory/>
+              <ChatList/>
             </div>
             </TabPanel>
           </TabPanels>

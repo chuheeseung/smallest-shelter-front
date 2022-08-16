@@ -4,25 +4,26 @@ import { child, onChildAdded, ref } from 'firebase/database';
 import ChatForm from './ChatForm';
 import ChatHeader from './ChatHeader';
 import Message from './Message';
-import style from './ChatPage.module.css';
+import style from './Chat.module.css';
 
-export class ChatClass extends Component {
+export class Chat extends Component {
+
   state = {
     messages: [], // 모든 쪽지 내역
-    currUserId: 'JNVe6U0iGlP4A5Pm65UfXgZju0Z2',  // 현재 사용자 id
     messagesRef: ref(dbService, "messages"),
-    user: {
-      id: 'VRHxfEj1c1g0pbsAiYut1x2VzvP2',
-      name: "유행사",
-      image: "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon"
-    }
+    currUser: this.props.currUser,
+    organization: this.props.organization,
+    chatRoomId: ''
   }
 
   componentDidMount() {
-    const chatRoomId = 'JNVe6U0iGlP4A5Pm65UfXgZju0Z2-VRHxfEj1c1g0pbsAiYut1x2VzvP2';
+    const {currUser, organization} = this.state;
+
+    const chatRoomId = this.getChatRoomId(currUser.id, organization.orgId);
     if (chatRoomId) {
       this.addMessagesListeners(chatRoomId)
     }
+    this.setState({chatRoomId: chatRoomId})
   }
 
   addMessagesListeners = (chatRoomId) => {
@@ -36,11 +37,17 @@ export class ChatClass extends Component {
     })
   }
 
+  getChatRoomId = (currUserId, userId) => {
+    return userId < currUserId
+      ? `${userId}-${currUserId}`
+      : `${currUserId}-${userId}`
+  }
+
   render() {
-    const { messages, user } = this.state;
+    const { messages, chatRoomId } = this.state;
     return (
       <div className={style.chatContainer}>
-        <ChatHeader user={user}/>
+        <ChatHeader/>
         <div className={style.chatWrap}>
           {messages.length > 0 &&
             messages.map((message) => (
@@ -54,10 +61,10 @@ export class ChatClass extends Component {
             ))
           }
         </div>
-        <ChatForm/>
+        <ChatForm chatRoomId={chatRoomId}/>
       </div>
     );
   }
 }
 
-export default ChatClass;
+export default Chat;
