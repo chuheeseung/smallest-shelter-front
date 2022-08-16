@@ -1,11 +1,15 @@
 import React from 'react';
 import style from "./Header.module.css";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logo from '../../assets/img/Group8700.png';
 import LoggedIn from './LoggedIn';
+import { useRecoilValue } from 'recoil';
+import { LoginRole, LoginState } from '../../states/LoginState';
 
 function Header() {
-  const navigate = useNavigate();
+  const loginState = useRecoilValue(LoginState);
+  const loginRole = useRecoilValue(LoginRole);
+
   return (
     <div className={style.headerWrap}>
       <div className={style.headerLogo}>
@@ -13,13 +17,12 @@ function Header() {
         <Link to="/" style={{color: "black", textDecoration: "none",fontSize: "20px", fontWeight: "normal"}}>
           <span style={{marginRight: "24px"}}>세작소</span>
         </Link>
-        
-        <Link to='/register' style={{ textDecoration: "none", color: "black",fontSize: "14px" }}>등록하기</Link>
+
+        {loginRole === "ORGANIZATION" &&  <Link to='/register' style={{ textDecoration: "none", color: "black",fontSize: "14px" }}>등록하기</Link>}
       </div>
 
       <div className={style.headerRight}>
-        {/* <NotLoggedIn/> */}
-        <LoggedIn/>
+        {loginState ? <LoggedIn/> : <NotLoggedIn/>}
       </div>
     </div>
   );

@@ -3,9 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { AiOutlineStar, AiOutlineHeart, AiFillHeart, AiOutlineLike } from "react-icons/ai";
 import { FiMail } from 'react-icons/fi';
-
 import { Checkbox, Dropdown} from 'antd';
-
 import 'antd/dist/antd.min.css';
 import { createTheme } from '@material-ui/core/styles';
 import Popover from "@material-ui/core/Popover";
@@ -14,39 +12,38 @@ import { Link, useNavigate } from 'react-router-dom';
 import ChatPage from '../Chat/ChatPage';
 
 import { 
-    useRecoilState, 
+    useRecoilState, useRecoilValue, 
   } from 'recoil';
-import { LoginUserToken, LoginRole, LoginUserIdx } from '../../states/LoginState';
-
+import { LoginUserToken, LoginRole } from '../../states/LoginState';
 
 function Banner(props) {
     const [userToken, setUserToken] = useRecoilState(LoginUserToken);
     const [isRole, setIsRole] = useRecoilState(LoginRole);
-    const [userID, setUserID] = useRecoilState(LoginUserIdx);
+
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const [likeHeart, setLikeHeart] = useState("true");
     const [checkAdopted, setCheckAdopted]= useState("true");
-    // 임시
+    
     const currUser = {
-        "id": "JNVe6U0iGlP4A5Pm65UfXgZju0Z2",
+        "id": loginUserId,
         "image": "http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon",
-        "name": "입양희망자"
+        "name": loginUserName
     };
     const user = {
         "id": "VRHxfEj1c1g0pbsAiYut1x2VzvP2",
         "image": "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon",
         "name": "유행사"
     }
-    // const chatRoomId = getChatRoomId(currUser, user);
-    // function getChatRoomId(currUser, user) {
-    //     const currUserId = currUser.id
-    //     const userId = user.id
-    //     return userId < currUserId
-    //         ? `${userId}-${currUserId}`
-    //         : `${currUserId}-${userId}`
-    // }
-    
+    const chatRoomId = getChatRoomId(currUser, user);
+    function getChatRoomId(currUser, user) {
+        const currUserId = currUser.id
+        const userId = user.id
+        return userId < currUserId
+            ? `${userId}-${currUserId}`
+            : `${currUserId}-${userId}`
+    }
+
     const onChange = (e) => {
         console.log(`checked = ${e.target.checked}`);
         console.log(userToken, isRole);
@@ -55,51 +52,17 @@ function Banner(props) {
         console.log(checked);
 
         // axios.patch(`https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=30`, {animal_id: 30})
-        // axios.post(`https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=30`,
-        //     {
-        //         params:{animal_id: 30},
-        //         headers: {
-        //             // withCredentials: true,
-        //             // 'Accept': 'application/json',
-        //             'Authorization': userToken
-        //     }}
-        //     ).then((response) => {
-        //         console.log(response);
-        //     });
-
-    const testToken='Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnYW5hMDMwMyIsImlkIjo3LCJleHAiOjE2NjAzMDgzMDUsInVzZXJuYW1lIjoiZ2FuYTAzMDMifQ.OFgIFb8lh6oRR-m4rZucDS8VRHz2F2wlVoIeL6ftgZu_qWr_jB3PhqxgD_w_jrIfxyl6bEObzJMNrlnM09ohkQ'
-    const test=30;
-    const userii=16;
-        axios({
-            headers: {
-                Authorization: testToken,
-                withCredentials: true,
-                'Accept': 'application/json',
-            },
-            method: 'patch',
-            url: `https://sjs.hana-umc.shop/auth/private/animal/like?user_id=${userii}&animal_id=${test}`,
-            params:{
-                user_id:16,
-                animal_id:30
-            }
-        }).then(
-          (response) => {console.log(response.data);},
-        )
-        // console.log("유저 토큰 : ", testToken, "유저 아이디: ", userID)
-        // axios({
-        //     headers: {
-        //         Authorization: testToken,
-        //         withCredentials: true,
-        //         'Accept': 'application/json',
-        //     },
-        //     method: 'patch',
-        //     url: `https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=${test}`,
-        //     params:{
-        //         animal_id:92
-        //     }
-        // }).then(
-        //   (response) => {console.log(response);},
-        // )
+        axios.patch('https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=30',
+        {   params:{animal_id: 30}, 
+            headers: {'Authorization': userToken}}
+            // headers: {
+            //     // withCredentials: true,
+            //     // 'Accept': 'application/json',
+            //     'Authorization': userToken,
+            // },
+        ).then((response) => {
+            console.log(response);
+        });
     }
         
 

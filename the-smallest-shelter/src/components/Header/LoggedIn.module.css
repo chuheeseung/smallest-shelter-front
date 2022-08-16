@@ -1,5 +1,5 @@
-.message {
-  transform: 0;
+* {
+  font-family: "SpoqaHanSansNeo-Medium";
 }
 
 .dropdownWrap {
@@ -18,11 +18,12 @@
   padding-top: 32px;
   padding-bottom: 32px;
   border-bottom: 1px solid lightgray;
-  justify-content: space-evenly;
 }
 
 .userIcon {
   width: 48px;
+  margin-left: 40px;
+  margin-right: 24px;
 }
 
 .userInfo p {

@@ -16,12 +16,15 @@ import practice_off from '../../assets/img/practice_off.png';
 import lack_on from '../../assets/img/lack_on.png';
 import lack_off from '../../assets/img/lack_off.png';
 import RadioGroup from './RadioGroup';
+import { useRecoilValue } from 'recoil';
+import { LoginUserIdx, LoginUserToken } from '../../states/LoginState';
 const { Option } = Select;
 let index = 0;
 
-
 function Register() {
     const navigate = useNavigate();
+    const loginUserIdx = useRecoilValue(LoginUserIdx);
+    const loginUserToken = useRecoilValue(LoginUserToken);
 
     const [name, setName] = useState("");
     const [year, setYear] = useState();
@@ -93,11 +96,12 @@ function Register() {
                 withCredentials: true,
                 "Access-Control-Allow-Origin": "http://localhost:3000",
                 'Accept': 'application/json',
+                'Authorizatopn': loginUserToken
             },
             method: 'post',
-            url: 'https://sjs.hana-umc.shop/animal/join',
+            url: 'https://sjs.hana-umc.shop/auth/organization/animal/join',
             data: {
-                userIdx: 1,
+                userIdx: loginUserIdx,
                 name: name,
                 year: year,
                 month: month,

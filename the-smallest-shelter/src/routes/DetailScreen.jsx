@@ -15,9 +15,11 @@ import {
     // useRecoilValue, 
   } from 'recoil';
   import { LoginRole } from '../states/LoginState';
+import { Organization } from "../states/ChatState";
 
 function DetailScreen() {
     const [isRole, setIsRole] = useRecoilState(LoginRole);
+    const [organization, setOrganization] = useRecoilState(Organization);
 
     const location = useLocation();
     const id = location.state.id;
@@ -67,6 +69,14 @@ function DetailScreen() {
             setPostData(detailData.post);
             setRecommand(detailData.recommandAnimal);
             console.log(response.data.result);
+
+            setOrganization({
+                //orgId: detailData.organizationMemberId,
+                orgId: "test1212",
+                orgName: detailData.organizationName,
+                //orgImg: detailData.organizationMemberImgUrl
+                orgImg: "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon"
+            })
         })
     }
 
