@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import axios from "axios";
 import styled from "styled-components";
 import { AiOutlineStar, AiOutlineHeart, AiFillHeart, AiOutlineLike } from "react-icons/ai";
@@ -8,21 +8,19 @@ import 'antd/dist/antd.min.css';
 import { createTheme } from '@material-ui/core/styles';
 import Popover from "@material-ui/core/Popover";
 import SuccessMark from "../../assets/img/SuccessMark.png";
-import Chat from '../Chat/Chat';
+import { Link, useNavigate } from 'react-router-dom';
+import ChatPage from '../Chat/ChatPage';
+
 import { 
     useRecoilState, useRecoilValue, 
   } from 'recoil';
-import { LoginUserToken, LoginRole, LoginUserId, LoginUserName } from '../../states/LoginState';
-import { ChatRoodId, Organization } from '../../states/ChatState';
+import { LoginUserToken, LoginRole } from '../../states/LoginState';
 
 function Banner(props) {
     const [userToken, setUserToken] = useRecoilState(LoginUserToken);
     const [isRole, setIsRole] = useRecoilState(LoginRole);
-    
-    const organization = useRecoilValue(Organization);
-    const loginUserId = useRecoilValue(LoginUserId);
-    const loginUserName = useRecoilValue(LoginUserName);
 
+    const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const [likeHeart, setLikeHeart] = useState("true");
     const [checkAdopted, setCheckAdopted]= useState("true");
@@ -32,16 +30,19 @@ function Banner(props) {
         "image": "http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon",
         "name": loginUserName
     };
-
-    // const chatRoomId = getChatRoomId(currUser, organization);
-
-    // function getChatRoomId(currUser, organization) {
-    //     const currUserId = currUser.id
-    //     const OrganizationId = organization.orgId
-    //     return OrganizationId < currUserId
-    //         ? `${OrganizationId}-${currUserId}`
-    //         : `${currUserId}-${OrganizationId}`
-    // }
+    const user = {
+        "id": "VRHxfEj1c1g0pbsAiYut1x2VzvP2",
+        "image": "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon",
+        "name": "유행사"
+    }
+    const chatRoomId = getChatRoomId(currUser, user);
+    function getChatRoomId(currUser, user) {
+        const currUserId = currUser.id
+        const userId = user.id
+        return userId < currUserId
+            ? `${userId}-${currUserId}`
+            : `${currUserId}-${userId}`
+    }
 
     const onChange = (e) => {
         console.log(`checked = ${e.target.checked}`);
@@ -62,7 +63,8 @@ function Banner(props) {
         ).then((response) => {
             console.log(response);
         });
-    }   
+    }
+        
 
     const handleClick = event => {
         setAnchorEl(event.currentTarget);
@@ -87,22 +89,22 @@ function Banner(props) {
           }
         }
       });
-      const likedRes = () => {
-        console.log("좋아요 누름");
-        axios.get('https://sjs.hana-umc.shop/posts/1')
-        .then((res) => {
-          let { data } = res;
-          let { animalIdx, isLike } = data;
+    //   const likedRes = () => {
+    //     console.log("좋아요 누름");
+    //     axios.get('https://sjs.hana-umc.shop/posts/1')
+    //     .then((res) => {
+    //       let { data } = res;
+    //       let { animalIdx, isLike } = data;
           
-          console.log('animalIdx : ' + animalIdx);
-          console.log('isLike : ' +isLike);
-          setLikeHeart(isLike);
-        })
-        .catch((err) => {
-          console.log(err);
+    //       console.log('animalIdx : ' + animalIdx);
+    //       console.log('isLike : ' +isLike);
+    //       setLikeHeart(isLike);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
           
-        });
-      }
+    //     });
+    //   }
         return (
             <RootBanner>
                 <DetailTitle>동물 상세 정보</DetailTitle>
@@ -199,7 +201,7 @@ function Banner(props) {
                                         ? <AiOutlineHeart size="22"/>
                                         : <AiFillHeart size="22"/>
                                     }
-                                    <Dropdown overlay={<Chat organization={organization} currUser={currUser}/>} trigger={['click']}><FiMail size="22" style={{marginLeft:"22px", color: 'black'}}/></Dropdown>
+                                        <Dropdown overlay={<ChatPage/>} trigger={['click']}><FiMail size="22" style={{marginLeft:"22px", color: 'black'}}/></Dropdown>
                                 </>
                                 : null
                             }
