@@ -158,7 +158,7 @@ function MyPage() {
               }
 
             <Tab> {/*<Tab isDisabled>*/}
-              쪽지목록
+              쪽지 목록
             </Tab>
           </TabList>
           <TabPanels>
@@ -167,7 +167,7 @@ function MyPage() {
             </TabPanel>
             <TabPanel><MyLikeAnimal isRole={isRole} userID={isUserID}/></TabPanel>
             <TabPanel>
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',  margin: '0 auto'}}>
+            <div style={{display: 'flex', flexDirection: 'column', height: '100%', width: '100%'}}>
               <ChatList/>
             </div>
             </TabPanel>
