@@ -11,34 +11,33 @@
     background-color: hsl(199, 94%, 67%);
   }
    */
-  .tab {
-    font-weight: bold;
-    padding: 28px 0px 28px 20px;
-    margin:10px;
-    background: #EFEFEF;
-    text-align: left;
-    color: #333333;
-    font-size: 17px;
-    cursor: pointer;
-    border-radius: 15px;
-    height: 80px;
-  }
-  
-  .tab:hover {
-    color: #FBC22E;
-  }
-  
-  .tab:active {
-    transform: scale(0.95);
-    color: #FBC22E;
-  }
-  
-  .tab.active {
-    background-color: #FBC22E;
-    color:white;
-  }
-  
-  .tab.disabled {
-    opacity: 0.25;
-  }
-  
+.tab {
+  font-weight: bold;
+  padding: 28px 0px 28px 20px;
+  margin: 10px;
+  background: #efefef;
+  text-align: left;
+  color: #333333;
+  font-size: 17px;
+  cursor: pointer;
+  border-radius: 15px;
+  height: 80px;
+}
+
+.tab:hover {
+  color: #fbc22e;
+}
+
+.tab:active {
+  transform: scale(0.95);
+  color: #fbc22e;
+}
+
+.tab.active {
+  background-color: #fbc22e;
+  color: white;
+}
+
+.tab.disabled {
+  opacity: 0.25;
+}
