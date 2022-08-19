@@ -8,7 +8,16 @@ import { storeService } from '../../fbase';
 import dummy from '../Chat/DirectMessageData.json';
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { LoginRole, LoginState, LoginUserId, LoginUserName, LoginUserOrgName } from "../../states/LoginState";
+import { 
+  LoginState, 
+  LoginRole, 
+  LoginUserIdx, 
+  LoginUserName, 
+  LoginUserId, 
+  LoginUserPw, 
+  LoginUserToken, 
+  LoginUserOrgName 
+} from '../../states/LoginState';
 import { Received } from "../../states/ChatState";
 
 function LoggedIn() {
@@ -63,15 +72,35 @@ function LoggedIn() {
 
 const Content = ({loginUserName, loginRole, loginUserOrgName}) => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+    const [isRole, setIsRole] = useRecoilState(LoginRole);
+    const [isUserIdx, setIsUserIdx] = useRecoilState(LoginUserIdx);
+    const [isUserName, setIsUserName] = useRecoilState(LoginUserName);
+    const [savedLoginId, setSavedLoginId] = useRecoilState(LoginUserId);
+    const [savedLoginPw, setSavedLoginPw] = useRecoilState(LoginUserPw);
+    const [savedUserToken, setSavedUserToken] = useRecoilState(LoginUserToken);
+    const [userOrgName, setUserOrgName] = useRecoilState(LoginUserOrgName);
   let sessionStorage = window.sessionStorage;
 
   const handleLogOut = () => {
-    console.log(isLoggedIn);
 
-    sessionStorage.removeItem('id');
-    sessionStorage.removeItem('pw');
+    sessionStorage.removeItem("userIdx");
+    sessionStorage.removeItem("name");
+    sessionStorage.removeItem("role");
+    sessionStorage.removeItem("organizationName");
+    sessionStorage.removeItem("bearer_token");
+
     setIsLoggedIn(false);
-    // window.location.href = '/';
+    setIsUserIdx(0);
+    setIsRole("");
+    setIsUserName("");
+    setUserOrgName("");
+    setSavedLoginId("");
+    setSavedLoginPw("");
+    setSavedUserToken("");
+
+    console.log("로그아웃");
+    
+    window.location.href = '/';
   };
 
   return (
