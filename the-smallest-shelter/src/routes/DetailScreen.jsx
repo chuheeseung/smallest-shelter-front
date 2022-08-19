@@ -15,13 +15,10 @@ import {
   // useRecoilValue,
 } from 'recoil';
 import { LoginRole } from '../states/LoginState';
-import { Organization } from '../states/ChatState';
 
 function DetailScreen() {
   //recoil : 단체 여부
   const [isRole, setIsRole] = useRecoilState(LoginRole);
-  //채팅에서 쓰일 state
-  const [organization, setOrganization] = useRecoilState(Organization);
 
   //동물 id 넘어옴
   const location = useLocation();
@@ -38,6 +35,7 @@ function DetailScreen() {
   const [gender, setGender] = useState('');
   const [illness, setIllness] = useState([]);
   const [isAdopted, setIsAdopted] = useState(false);
+
   //동물 특징
   const [socialization, setSocialization] = useState('');
   const [separation, setSeparation] = useState('');
@@ -53,6 +51,8 @@ function DetailScreen() {
   const [address, setAddress] = useState('');
   const [postData, setPostData] = useState([]);
   const [recommand, setRecommand] = useState([]);
+  const [organization, setOrganization] = useState({});
+
   ReactModal.setAppElement('#root');
 
   const getPosts = async () => {
@@ -87,14 +87,13 @@ function DetailScreen() {
       setRecommand(detailData.recommandAnimal);
       console.log(response.data.result);
 
-      setOrganization({
-        //orgId: detailData.organizationMemberId,
-        orgId: 'test1212',
-        orgName: detailData.organizationName,
-        //orgImg: detailData.organizationMemberImgUrl
-        orgImg:
-          'http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon',
-      });
+      const obj= {
+        id: detailData.organizationMemberId,
+        name: detailData.organizationName,
+        image: detailData.organizationMemberImgUrl
+      }
+      setOrganization(obj)
+      console.log(obj)
     });
   };
 
@@ -125,6 +124,7 @@ function DetailScreen() {
           toilet={toilet}
           bark={bark}
           bite={bite}
+          organization={organization}
         />
         <PostList>
           <PostListTitle>

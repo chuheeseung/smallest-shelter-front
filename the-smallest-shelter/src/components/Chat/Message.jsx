@@ -5,8 +5,8 @@ import { LoginUserId } from '../../states/LoginState';
 import style from './Chat.module.css'
 import styled from 'styled-components'
 
-function Message({ message, sentUser, time }) {
-  const loginUserId = useRecoilValue(LoginUserId) 
+function Message({ message, sentUser, time, user }) {
+  const loginUserId = useRecoilValue(LoginUserId)
   const date = new Date(time);
   const year = date.getFullYear().toString(); //년도
   const month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리 (01, 02 ... 12)
@@ -14,7 +14,7 @@ function Message({ message, sentUser, time }) {
   const hour = ("0" + date.getHours()).slice(-2); //시 2자리 (00, 01 ... 23)
   const minute = ("0" + date.getMinutes()).slice(-2); //분 2자리 (00, 01 ... 59)
   // const second = ("0" + date.getSeconds()).slice(-2); //초 2자리 (00, 01 ... 59)
-  const returnDate = hour >= 12 ? `오후 ${hour%12}:${minute}`: `${hour}:${minute}`;
+  const returnDate = hour >= 12 ? `오후 ${hour % 12}:${minute}` : `${hour}:${minute}`;
 
   const getTime = (hour, minute) => {
     let time = '';
@@ -24,7 +24,7 @@ function Message({ message, sentUser, time }) {
       if (hour == 12) {
         time = `오후 ${hour}:${minute}`;
       } else {
-        time = `오후 ${hour%12}:${minute}`;
+        time = `오후 ${hour % 12}:${minute}`;
       }
     }
     return time;
@@ -42,18 +42,25 @@ function Message({ message, sentUser, time }) {
           width={32}
           height={32}
           className="mr-3"
-          src={sentUser.image}
-          alt={sentUser.name}
+          src={user.image}
+          alt={user.name}
         />
       }
       <div className={style.userInfo} style={{ textAlign: isMessageMine(sentUser) ? "right" : "left" }}>
-        <UserName isMessageMine={isMessageMine(sentUser)}>{sentUser.name}</UserName>
+        {isMessageMine(sentUser)
+          ? <UserName isMessageMine={isMessageMine(sentUser)}>
+            {sentUser.name}
+          </UserName>
+          : <UserName isMessageMine={isMessageMine(sentUser)}>
+            {user.name}
+          </UserName>
+        }
         <div>
-          {isMessageMine(sentUser) && <span style={{fontSize: '10px', marginRight: '6px'}}>{getTime(hour, minute)}</span>}
-          <span className={style.message} style={{ backgroundColor: isMessageMine(sentUser) ? "#FFE9B1" : "#F1F3F5"}}>
+          {isMessageMine(sentUser) && <span style={{ fontSize: '10px', marginRight: '6px' }}>{getTime(hour, minute)}</span>}
+          <span className={style.message} style={{ backgroundColor: isMessageMine(sentUser) ? "#FFE9B1" : "#F1F3F5" }}>
             {message}
           </span>
-          {!isMessageMine(sentUser) && <span style={{fontSize: '10px', marginLeft: '6px'}}>{getTime(hour, minute)}</span>}
+          {!isMessageMine(sentUser) && <span style={{ fontSize: '10px', marginLeft: '6px' }}>{getTime(hour, minute)}</span>}
         </div>
       </div>
       {isMessageMine(sentUser) &&
@@ -72,7 +79,7 @@ function Message({ message, sentUser, time }) {
 
 export default Message;
 
-const UserName= styled.span`
+const UserName = styled.span`
   margin: ${(props) => props.isMessageMine ? "0 4px 4px 0" : "0 0 4px 4px"};
   font-size: 11px;
 `;
