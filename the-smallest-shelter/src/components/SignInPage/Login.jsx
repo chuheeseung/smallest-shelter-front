@@ -14,6 +14,7 @@ import {
   LoginUserPw,
   LoginUserToken,
   LoginUserOrgName,
+  LoginImageIndex,
 } from '../../states/LoginState';
 import { loginResponse } from './loginDummy';
 
@@ -31,6 +32,8 @@ function Login() {
   const [savedLoginPw, setSavedLoginPw] = useRecoilState(LoginUserPw);
   const [savedUserToken, setSavedUserToken] = useRecoilState(LoginUserToken);
   const [userOrgName, setUserOrgName] = useRecoilState(LoginUserOrgName);
+  const [loginImageIndex, setLoginImageIndex] = useRecoilState(LoginImageIndex);
+
   let sessionStorage = window.sessionStorage;
 
   const [id, setId] = useState('');
@@ -70,88 +73,69 @@ function Login() {
 
   const onSubmitButton = async (e) => {
     // if(idValid && pwValid) {
-    if (idValid && pwValid) {
-      e.preventDefault();
+    e.preventDefault();
 
-      console.log(`id: ${id}, pw: ${pw}`);
+    const res = await axios({
+      headers: {
+        withCredentials: true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        Accept: 'application/json',
+      },
+      method: 'POST',
+      url: 'https://sjs.hana-umc.shop/login',
+      data: {
+        username: id,
+        password: pw,
+      },
+    })
+      .then((response) => {
+        console.log(response);
 
-      const res = await axios({
-        headers: {
-          withCredentials: true,
-          'Access-Control-Allow-Origin': 'http://localhost:3000',
-          Accept: 'application/json',
-        },
-        method: 'POST',
-        url: 'http://sjs.hana-umc.shop:8080/login',
-        data: {
-          username: id,
-          password: pw,
-        },
+        // recoil
+        sessionStorage.setItem('userIdx', response.data.userIdx);
+        sessionStorage.setItem('name', response.data.name);
+        sessionStorage.setItem('role', response.data.role);
+        sessionStorage.setItem(
+          'organizationName',
+          response.data.organizationName
+        );
+
+        setIsLoggedIn(true);
+        setIsUserIdx(response.data.userIdx);
+        setIsRole(response.data.role);
+        setIsUserName(response.data.name);
+        setUserOrgName(response.data.organizationName);
+        setSavedLoginId(id);
+        setSavedLoginPw(pw);
+        setLoginImageIndex(response.profileImgUrl);
+
+        console.log('isLoggedIn : ', isLoggedIn);
+        console.log('isUserIdx : ', isUserIdx);
+        console.log('isRole : ', isRole);
+        console.log('isUserName : ', isUserName);
+        console.log('userOrgName : ', userOrgName);
+        console.log('savedLoginId : ', savedLoginId);
+        console.log('savedLoginPw : ', savedLoginPw);
+        console.log('loginImageIndex : ', loginImageIndex);
+
+        // authorization token
+        let userTokenString = response.headers.authorization;
+
+        // let userTokenList = userTokenString.split(' ');
+        sessionStorage.setItem('bearer_token', userTokenString);
+        setSavedUserToken(userTokenString);
+
+        console.log(savedUserToken);
+
+        alert('로그인에 성공했습니다!');
+
+        navigate('/');
       })
-        .then((response) => {
-          console.log(response);
+      .catch((error) => {
+        console.log(error);
+      });
 
-          // recoil
-          sessionStorage.setItem('userIdx', response.data.userIdx);
-          sessionStorage.setItem('name', response.data.name);
-          sessionStorage.setItem('role', response.data.role);
-          sessionStorage.setItem(
-            'organizationName',
-            response.data.organizationName
-          );
-
-          // recoil
-          sessionStorage.setItem('userIdx', response.data.userIdx);
-          sessionStorage.setItem('name', response.data.name);
-          sessionStorage.setItem('role', response.data.role);
-          sessionStorage.setItem(
-            'organizationName',
-            response.data.organizationName
-          );
-
-          setIsLoggedIn(true);
-          setIsUserIdx(response.data.userIdx);
-          setIsRole(response.data.role);
-          setIsUserName(response.data.name);
-          setUserOrgName(response.data.organizationName);
-          setSavedLoginId(id);
-          setSavedLoginPw(pw);
-
-          console.log('isLoggedIn : ', isLoggedIn);
-          console.log('isUserIdx : ', isUserIdx);
-          console.log('isRole : ', isRole);
-          console.log('isUserName : ', isUserName);
-          console.log('userOrgName : ', userOrgName);
-          console.log('savedLoginId : ', savedLoginId);
-          console.log('savedLoginPw : ', savedLoginPw);
-
-          // authorization token
-          let userTokenString = response.headers.authorization;
-
-          // let userTokenList = userTokenString.split(' ');
-          sessionStorage.setItem('bearer_token', userTokenString);
-          setSavedUserToken(userTokenString);
-
-          console.log(savedUserToken);
-
-          alert('로그인에 성공했습니다!');
-
-          let userTokenList = userTokenString.split(' ');
-          sessionStorage.setItem('bearer_token', userTokenList[1]);
-          setSavedUserToken(userTokenList[1]);
-
-          console.log(savedUserToken);
-
-          alert('로그인에 성공했습니다!');
-
-          navigate('/');
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-      // }
-    }
+    // }
 
     // if(id === User.id && pw === User.pw) {
     //     alert("로그인에 성공했습니다!");
