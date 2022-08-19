@@ -11,8 +11,6 @@ function ChatForm({ chatRoomId }) {
   const messagesRef = ref(dbService, "messages");
 
   const [content, setContent] = useState("");
-  const [errors, setErrors] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   const loginUserId = useRecoilValue(LoginUserId);
   const loginUserName = useRecoilValue(LoginUserName);
@@ -28,7 +26,10 @@ function ChatForm({ chatRoomId }) {
   };
 
   const createMessage = () => {
+    const chatRoomId = getChatRoomId(loginUserId, userId);
+
     const message = {
+      roomId: chatRoomId,
       content: content,
       time: Date.now(),
       sentUser: {
@@ -38,8 +39,8 @@ function ChatForm({ chatRoomId }) {
       },
       receivedUser: {
         id: userId,
-        name: "받는 사람 이름",
-        image: '받는 사람 이미지'
+        name: "KARA",
+        image: 'http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon'
        // name: organization.orgName,
         //image: organization.orgImg
       },
@@ -48,32 +49,25 @@ function ChatForm({ chatRoomId }) {
     return message;
   }
 
+  const getChatRoomId = (currUserId, userId) => {
+    return userId < currUserId
+      ? `${userId}-${currUserId}`
+      : `${currUserId}-${userId}`
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!content) {
-      setErrors(prev => prev.concat("Type contents first"));
-      return;
-    }
-    setLoading(true);
     try {
       // realtime database 저장
       await set(push(child(messagesRef, chatRoomId)), createMessage());
-      setLoading(false);
       setContent("");
-      setErrors([]);
     } catch (error) {
-      setErrors(prev => prev.concat(error.message));
-      setLoading(false);
-      setTimeout(() => {
-        setErrors([]);
-      }, 5000)
+      console.log(error.message)
     }
   }
 
   return (
     <div className={style.chatForm}>
-      {/* <div className={style.icon}><CgSmile size={21} color="gray" /></div> */}
       <form onSubmit={handleSubmit}>
         <div className={style.inputWrap}>
           <textarea

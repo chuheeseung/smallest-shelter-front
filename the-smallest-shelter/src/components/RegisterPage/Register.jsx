@@ -71,11 +71,13 @@ function Register() {
         let imgUrl = "";
 
         if (image !== "") {
-            const fileRef = ref(storageService, `images/${name}/`);
+            const fileRef = ref(storageService, `images/${name}/register/`);
             const uploadFile = await uploadString(fileRef, image, "data_url");
             imgUrl = await getDownloadURL(uploadFile.ref);
         }
         console.log(`
+        userIdx: ${loginUserIdx},
+        userToken: ${loginUserToken}
         name: ${name},
         year: ${year},
         month: ${month},
@@ -96,7 +98,7 @@ function Register() {
                 withCredentials: true,
                 "Access-Control-Allow-Origin": "http://localhost:3000",
                 'Accept': 'application/json',
-                'Authorizatopn': loginUserToken
+                'Authorization': `Bearer ${loginUserToken}`
             },
             method: 'post',
             url: 'https://sjs.hana-umc.shop/auth/organization/animal/join',
