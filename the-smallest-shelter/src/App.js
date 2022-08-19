@@ -6,6 +6,7 @@ import OrganizationSignUp from './components/SignUpPage/OrganizationSignUp';
 import PrivateSignUp from './components/SignUpPage/PrivateSignUp';
 import DetailScreen from './routes/DetailScreen';
 import ListviewScreen from './routes/ListviewScreen';
+import NotFound from './routes/NotFound';
 import RegisterScreen from './routes/RegisterScreen';
 import SignInScreen from './routes/SignInScreen';
 import SignUpScreen from './routes/SignUpScreen';
@@ -22,7 +23,8 @@ const App = () => {
                 <Route path="/signin" element={<SignInScreen />} />
                 <Route path="/signup" element={<SignUpScreen />} />
                 <Route path="/signup/private" element={<PrivateSignUp />} />
-                <Route path="/signup/organization" element={<OrganizationSignUp/>} />
+                <Route path="/signup/organization" element={<OrganizationSignUp />} />
+                <Route path="/*" element={<NotFound />} />
             </Routes>
           <Footer/>
       </BrowserRouter>
