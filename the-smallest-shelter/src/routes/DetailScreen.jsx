@@ -100,15 +100,6 @@ function DetailScreen() {
 
   useEffect(() => {
     getPosts();
-    console.log(
-      name,
-      imgUrl,
-      species,
-      gender,
-      illness,
-      isAdopted,
-      organizationMemberId
-    );
   }, []);
 
   return (
@@ -129,6 +120,11 @@ function DetailScreen() {
           organizationName={organizationName}
           phoneNumber={phoneNumber}
           address={address}
+          socialization={socialization}
+          separation={separation}
+          toilet={toilet}
+          bark={bark}
+          bite={bite}
         />
         <PostList>
           <PostListTitle>

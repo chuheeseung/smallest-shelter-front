@@ -13,7 +13,7 @@ import 'antd/dist/antd.min.css';
 import { createTheme } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import SuccessMark from '../../assets/img/SuccessMark.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Chat from '../Chat/Chat';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -25,6 +25,7 @@ import {
 } from '../../states/LoginState';
 
 import { Organization } from '../../states/ChatState';
+import BannerInfo from './BannerInfo';
 
 function Banner(props) {
   const [userToken, setUserToken] = useRecoilState(LoginUserToken);
@@ -45,25 +46,6 @@ function Banner(props) {
   };
   const organization = useRecoilValue(Organization);
   // recoil로 얻어오기
-  const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-    console.log(userToken, isRole);
-    let checked = `${e.target.checked}`;
-    setCheckAdopted(checked);
-    console.log(checked);
-
-    axios
-      .patch(
-        'https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=30',
-        {
-          params: { animal_id: props.id },
-          headers: { Authorization: userToken },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-      });
-  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -76,11 +58,11 @@ function Banner(props) {
   const theme2 = createTheme({
     overrides: {
       MuiPopover: {
-        root: {},
+        root: { height: '180px' },
         paper: {
           padding: '20px',
           borderRadius: '20px',
-          height: '120px',
+          height: '180px',
           border: '1px solid #D2D2D2',
         },
       },
@@ -143,48 +125,22 @@ function Banner(props) {
               </createTheme>
             </PetName>
 
-            <PetParagraph>
-              <InfoParagraph>
-                <InfoItem1>동물종류</InfoItem1>
-                <InfoItem1>성별</InfoItem1>
-                <InfoItem1>질병</InfoItem1>
-                <InfoItem1>나이</InfoItem1>
-                {props.isOrganization == 'ORGANIZATION' ? ( //단체이면 입양상태 체크 가능
-                  <div style={{ marginTop: '19px' }}>
-                    <Checkbox onChange={onChange} />
-                  </div>
-                ) : (
-                  <div style={{ marginTop: '19px' }}>
-                    <Checkbox onChange={onChange} />
-                  </div>
-                )}
-              </InfoParagraph>
-              <InfoParagraph>
-                <InfoItem2>
-                  {`${props.species}` == 'CAT' ? <>고양이</> : <>강아지</>}
-                </InfoItem2>
-                <InfoItem2>
-                  {`${props.gender}` == 'MALE' ? <>남</> : <>여</>}
-                </InfoItem2>
-                {props.illness.length != 0 ? (
-                  <InfoItem2>
-                    {props.illness.map((item) => {
-                      return <>{item.illnessName} &nbsp;</>;
-                    })}
-                  </InfoItem2>
-                ) : (
-                  <InfoItem2>-</InfoItem2>
-                )}
-
-                <InfoItem2>
-                  {props.year}살 {props.month}개월{' '}
-                  {props.isGuessed == true ? '추정' : ''}
-                </InfoItem2>
-                {props.isOrganization == 'ORGANIZATION' ? (
-                  <InfoItem2>입양 상태</InfoItem2>
-                ) : null}
-              </InfoParagraph>
-            </PetParagraph>
+            <BannerInfo
+              isOrganization={isRole}
+              id={props.animalIdx}
+              name={props.name}
+              species={props.species}
+              year={props.year}
+              month={props.month}
+              isGuessed={props.isGuessed}
+              gender={props.gender}
+              illness={props.illness}
+              socialization={props.socialization}
+              separation={props.separation}
+              toilet={props.toilet}
+              bark={props.bark}
+              bite={props.bite}
+            />
           </PetInfo>
         </Profile>
         <ProfileIcon>
@@ -267,12 +223,13 @@ const PetName = styled.h1`
 `;
 
 const GroupTitle = styled.div`
+  margin: 10px;
   color: #fbc22e;
   font-weight: 700;
 `;
 
 const GroupInfo = styled.div`
-  margin-top: 3px;
+  margin: 3px 40px 10px 10px;
   color: #333333;
   font-size: 12px;
   font-weight: 700;
