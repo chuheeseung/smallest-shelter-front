@@ -15,13 +15,14 @@ import {
     useRecoilState, useRecoilValue, 
   } from 'recoil';
 import { LoginUserToken, LoginRole, LoginUserId, LoginUserName } from '../../states/LoginState';
+import { Organization } from '../../states/ChatState';
 
 function Banner(props) {
     const [userToken, setUserToken] = useRecoilState(LoginUserToken);
     const [isRole, setIsRole] = useRecoilState(LoginRole);
     const loginUserId = useRecoilValue(LoginUserId);
     const loginUserName = useRecoilValue(LoginUserName)
-
+    
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const [likeHeart, setLikeHeart] = useState("true");
@@ -32,20 +33,10 @@ function Banner(props) {
         "image": "http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon",
         "name": loginUserName
     };
-    const user = {
-        "id": "VRHxfEj1c1g0pbsAiYut1x2VzvP2",
-        "image": "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon",
-        "name": "유행사"
-    }
-    const chatRoomId = getChatRoomId(currUser, user);
-    function getChatRoomId(currUser, user) {
-        const currUserId = currUser.id
-        const userId = user.id
-        return userId < currUserId
-            ? `${userId}-${currUserId}`
-            : `${currUserId}-${userId}`
-    }
 
+    // recoil로 얻어오기
+    const organization = useRecoilValue(Organization);
+   
     const onChange = (e) => {
         console.log(`checked = ${e.target.checked}`);
         console.log(userToken, isRole);
@@ -203,7 +194,7 @@ function Banner(props) {
                                         ? <AiOutlineHeart size="22"/>
                                         : <AiFillHeart size="22"/>
                                     }
-                                        <Dropdown overlay={<Chat/>} trigger={['click']}><FiMail size="22" style={{marginLeft:"22px", color: 'black'}}/></Dropdown>
+                                        <Dropdown overlay={<Chat currUser={currUser} organization={organization}/>} trigger={['click']}><FiMail size="22" style={{marginLeft:"22px", color: 'black'}}/></Dropdown>
                                 </>
                                 : null
                             }
