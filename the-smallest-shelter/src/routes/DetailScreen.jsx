@@ -15,16 +15,14 @@ import {
     // useRecoilValue, 
   } from 'recoil';
   import { LoginRole } from '../states/LoginState';
-import { Organization } from "../states/ChatState";
 
 function DetailScreen() {
     const [isRole, setIsRole] = useRecoilState(LoginRole);
-    const [organization, setOrganization] = useRecoilState(Organization);
 
     const location = useLocation();
     const id = location.state.id;
     // const [detailData, setDetailData]=useState([]);
-
+    const [organization, setOrganization] = useState({});
     const [organizationMemberId, setOrganizationMemberId] = useState(0);
     const [name, setName] = useState("");
     const [imgUrl, setImgUrl] = useState("");
@@ -45,7 +43,7 @@ function DetailScreen() {
     const getPosts = async () => {
         await axios({
             method: "GET",
-            url: "https://sjs.hana-umc.shop/animal/1",
+            url: `https://sjs.hana-umc.shop/animal/${id}`,
             headers: {
                 withCredentials: true,
                 'Accept': 'application/json',
@@ -71,11 +69,9 @@ function DetailScreen() {
             console.log(response.data.result);
 
             setOrganization({
-                //orgId: detailData.organizationMemberId,
-                orgId: "test1212",
-                orgName: detailData.organizationName,
-                //orgImg: detailData.organizationMemberImgUrl
-                orgImg: "http://gravatar.com/avatar/0f7c362b0125aaff368169c8acc4dd39?d=identicon"
+                id: detailData.organizationMemberId,
+                name: detailData.organizationName,
+                image: detailData.organizationMemberImgUrl
             })
         })
     }
@@ -103,6 +99,7 @@ function DetailScreen() {
                     organizationName={organizationName}
                     phoneNumber={phoneNumber}
                     address={address}
+                    organization={organization}
                 />
                 <PostList>
                     <PostListTitle>

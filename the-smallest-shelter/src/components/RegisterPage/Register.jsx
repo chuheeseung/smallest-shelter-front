@@ -26,7 +26,7 @@ function Register() {
     const loginUserIdx = useRecoilValue(LoginUserIdx);
     const loginUserToken = useRecoilValue(LoginUserToken);
 
-    const [name, setName] = useState("");
+    const [name, setName] = useState();
     const [year, setYear] = useState();
     const [month, setMonth] = useState();
     const [isGuessed, setIsGuessed] = useState(false);
@@ -152,7 +152,6 @@ function Register() {
                                 placeholder="이름을(를) 입력하세요"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                required
                                 className={style.nameInput} />
                         </p>
                         <p className={style.genderInput}>

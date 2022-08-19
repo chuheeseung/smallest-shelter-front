@@ -4,7 +4,6 @@ import MyInfo from '../MyPage/MyInfo';
 import './MyPage.css';
 import MyLikeAnimal from './MyLikeAnimal';
 import styled from 'styled-components';
-import ChatHistory from '../ChatHistory/ChatHistory';
 import axios from 'axios';
 import {
   useRecoilState,

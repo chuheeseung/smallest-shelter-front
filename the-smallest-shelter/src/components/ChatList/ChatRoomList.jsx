@@ -16,6 +16,8 @@ export class ChatRoomList extends Component {
     currChatRoomId: '',
     user: {}, // 클릭한 채팅방 상대 계정
     allUser: {}, // 채팅방 목록 가져올 때 상대 계정
+    animal: {},
+    currAnimal: ''
   };
 
   // 사용자가 포함되어 있는 채팅방의 상대 정보 얻어오기
@@ -24,70 +26,57 @@ export class ChatRoomList extends Component {
 
     onValue(messagesRef, (snapshot) => {
       const userInfo = [];
-
-      Object.values(snapshot.val()).map((user, idx) => {
-        console.log(user)
-        // if () {
-        //   if (Object.values(user)[0].sentUser.id !== loginUserId)) {
-        //     userInfo.push(Object.values(user)[idx].sentUser)
-        //   }
-        // }
-        (Object.values(user)[0].sentUser.id !== loginUserId
-        && Object.values(user)[0].sentUser.id !== loginUserId)
-        && userInfo.push(Object.values(user)[idx].sentUser)
-        // user.roomId.includes(this.loginUserId) && console.log(user)
-        // user && userInfo.push(Object.values(user)[idx].sentUser)
-      });
+      const animalInfo = [];
+      Object.values(snapshot.val()).map((user) => {
+        Object.values(user)[0].roomId.includes(loginUserId) 
+        && 
+        (Object.values(user)[0].sentUser.id !== loginUserId 
+        ? userInfo.push(Object.values(user)[0].sentUser) && animalInfo.push(Object.values(user)[0].animalInfo)
+        : userInfo.push(Object.values(user)[0].receivedUser) && animalInfo.push(Object.values(user)[0].animalInfo))
+      })
       this.setState({
         allUser: userInfo,
+        animal: animalInfo
       });
     });
   }
 
-  changeChatRoom = (room) => {
-    this.setState({ currChatRoomId: room })
+  changeChatRoom = (room, user, animalName) => {
+    this.setState({ currChatRoomId: room, currAnimal: animalName })
     let messagesArray = [];
-    let { messagesRef, loginUserId } = this.state;
+    let { messagesRef } = this.state;
 
-    onValue(child(messagesRef, room), (snapshot) => {
-      const values = Object.values(snapshot.val());
-      const userInfo = values.filter(
-        (message) => message.sentUser.id !== loginUserId
-      );
-      userInfo.length > 0 && this.setState({ user: userInfo[0].sentUser })
-    });
-
-    onChildAdded(child(messagesRef, room), (snapshot) => {
+    onChildAdded(child(messagesRef, room), snapshot => {
       messagesArray.push({
         id: snapshot.key,
         message: snapshot.val(),
       });
-
       this.setState({
+        user: user,
         messages: messagesArray,
         chatRoomClick: true,
       });
     });
   };
 
-  getChatRoomId = (currUserId, userId) => {
+  getChatRoomId = (currUserId, userId, animalIdx) => {
     return userId < currUserId
-      ? `${userId}-${currUserId}`
-      : `${currUserId}-${userId}`;
+      ? `${userId}-${currUserId}-${animalIdx}`
+      : `${currUserId}-${userId}-${animalIdx}`;
   };
 
-  renderChatRooms = (allUser, loginUserId) =>
+  renderChatRooms = (allUser, loginUserId, animal) =>
     allUser.length > 0 &&
     allUser.map((user, idx) => (
       <div
         key={idx}
         onClick={() =>
-          this.changeChatRoom(this.getChatRoomId(loginUserId, user.id))
+          this.changeChatRoom(this.getChatRoomId(loginUserId, user.id, animal[idx].animalIdx), user, animal[idx].animalName)
         }
         className={style.chatRoomInfo}
       >
         <img src={user.image} alt="상대방 이미지" />
-        <span>{user.name}</span>
+        <span>{user.name} ({animal[idx].animalName})</span>
       </div>
     ))
 
@@ -99,6 +88,8 @@ export class ChatRoomList extends Component {
       chatRoomClick,
       user,
       allUser,
+      animal,
+      currAnimal
     } = this.state;
 
     return (
@@ -106,43 +97,33 @@ export class ChatRoomList extends Component {
         <div className={style.chatRoomWrap}>
           <div className={style.chatRoomHeader}></div>
           <div className={style.chatRoomList}>
-            {this.renderChatRooms(allUser, loginUserId)}
+            {this.renderChatRooms(allUser, loginUserId, animal)}
           </div>
         </div>
         <div>
           {chatRoomClick
-            ? (<div className={style.chatContainer}>
-          {chatRoomClick ? (
-            <div className={style.chatContainer}>
-              <div className={chatStyle.headerWrap}>{user.name}</div>
-              <div className={style.chatWrap}>
-                {messages.length > 0 &&
-                  messages.map((message) => (
-                    <Message
-                      key={message.id}
-                      message={message.message.content}
-                      sentUser={message.message.sentUser}
-                      receivedUser={message.message.receivedUser}
-                      time={message.message.time}
-                    />
-                  ))
-                }
-              </div>
-              <ChatForm chatRoomId={currChatRoomId} />
-            </div>)
-            : <div className={style.empty}>
-              <div><FiCheckCircle size={64} color="#969696" /></div>
-              <p>대화할 사용자를 선택해주세요.</p>
-            </div>}
-              </div>
-          ) : (
-            <div className={style.empty}>
-              <div>
-                <FiCheckCircle size={64} color='#969696' />
-              </div>
-              <p>대화할 사용자를 선택해주세요.</p>
+          ? (<div className={style.chatContainer}>
+            <div className={style.headerWrap}>{user.name} ({currAnimal})</div>
+            <div className={style.chatWrap}>
+              {messages.length > 0 &&
+                messages.map((message) => (
+                  <Message
+                    key={message.id}
+                    message={message.message.content}
+                    sentUser={message.message.sentUser}
+                    receivedUser={message.message.receivedUser}
+                    user={user}
+                    time={message.message.time}
+                  />
+                ))
+              }
             </div>
-          )}
+            <ChatForm chatRoomId={currChatRoomId} userInfo={user} animalInfo={animal} organization="undefined"/>
+          </div>)
+          :  <div className={style.empty}>
+              <div><FiCheckCircle size={64} color="#969696"/></div>
+              <p>대화할 사용자를 선택해주세요.</p>
+            </div>}    
         </div>
       </div>
     );

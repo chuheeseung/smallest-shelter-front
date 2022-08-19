@@ -15,27 +15,24 @@ import {
     useRecoilState, useRecoilValue, 
   } from 'recoil';
 import { LoginUserToken, LoginRole, LoginUserId, LoginUserName } from '../../states/LoginState';
-import { Organization } from '../../states/ChatState';
 
 function Banner(props) {
     const [userToken, setUserToken] = useRecoilState(LoginUserToken);
     const [isRole, setIsRole] = useRecoilState(LoginRole);
     const loginUserId = useRecoilValue(LoginUserId);
-    const loginUserName = useRecoilValue(LoginUserName)
-    
+    const loginUserName = useRecoilValue(LoginUserName);
+
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const [likeHeart, setLikeHeart] = useState("true");
     const [checkAdopted, setCheckAdopted]= useState("true");
-    
+    const animalInfo = {"animalIdx": String(props.animalIdx), "animalName": props.name}
+
     const currUser = {
         "id": loginUserId,
         "image": "http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon",
         "name": loginUserName
     };
-
-    // recoil로 얻어오기
-    const organization = useRecoilValue(Organization);
    
     const onChange = (e) => {
         console.log(`checked = ${e.target.checked}`);
@@ -194,7 +191,16 @@ function Banner(props) {
                                         ? <AiOutlineHeart size="22"/>
                                         : <AiFillHeart size="22"/>
                                     }
-                                        <Dropdown overlay={<Chat currUser={currUser} organization={organization}/>} trigger={['click']}><FiMail size="22" style={{marginLeft:"22px", color: 'black'}}/></Dropdown>
+                                        <Dropdown 
+                                            overlay={<Chat 
+                                                currUser={currUser} 
+                                                organization={props.organization} 
+                                                animalIdx={props.animalIdx}
+                                                animalName={props.name}
+                                                animalInfo={animalInfo} />} 
+                                            trigger={['click']}>
+                                            <FiMail size="22" style={{marginLeft:"22px", color: 'black'}}/>
+                                        </Dropdown>
                                 </>
                                 : null
                             }

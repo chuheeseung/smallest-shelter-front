@@ -70,21 +70,21 @@ export default function ListviewScreen() {
         });
     };
 
-    // useEffect(() => {
-    //     axios.get("https://sjs.hana-umc.shop/animals",
-    //         {params: {page: pageNum}},
-    //         {withCredentials: true}
-    //     ).then((res) => {
-    //         console.log(res.data.result)
-    //         setCardList(res.data.result.animal);
-    //         console.log(userToken);
-    //     })
-    // }, []);
+    useEffect(() => {
+        axios.get("https://sjs.hana-umc.shop/animals",
+            {params: {page: pageNum}},
+            {withCredentials: true}
+        ).then((res) => {
+            console.log(res.data.result)
+            setCardList(res.data.result.animal);
+            console.log(userToken);
+        })
+    }, []);
     
 
-    useEffect(() => { 
-        setCardList(dummy.results);
-    }, []);
+    // useEffect(() => { 
+    //     setCardList(dummy.results);
+    // }, []);
 
     return (
         <>

@@ -1,19 +1,30 @@
 .container {
-  height: 100%;
-  width: 80%;
+  height: 70vh;
+  width: 100%;
   display: flex;
   flex-direction: row;
   position: absolute;
 }
 
+.headerWrap {
+  background-color: #FBC22E;
+  text-align: center;
+  color: #fff;
+  font-size: 13px;
+  height: 48px;
+  line-height: 48px;
+  font-weight: bold;
+}
+
 .chatRoomWrap {
-  width: 270px;
+  min-width: 240px;
   display: flex;
   flex-direction: column;
 }
 
 .chatRoomHeader {
-  height: 50px;
+  height: 52px;
+  width: 100%;
   background-color: #fbc22e;
   border-top-left-radius: 15px;
 }
@@ -41,7 +52,7 @@
 .empty {
   position: relative;
   top: 50%;
-  left: 250%;
+  left: 200%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
@@ -51,12 +62,13 @@
 
 .chatContainer {
   height: 100%;
-  border: 1px solid lightgray;
+  min-width: 400px;
+  border-left: 1px solid lightgray;
   font-family: 'SpoqaHanSansNeo-Medium';
   background-color: #fff;
 }
 
 .chatWrap {
-  height: 440px;
+  height: 70%;
   overflow-y: scroll;
 }

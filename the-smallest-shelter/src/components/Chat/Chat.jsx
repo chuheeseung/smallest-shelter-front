@@ -13,13 +13,14 @@ export class Chat extends Component {
     messagesRef: ref(dbService, "messages"),
     currUser: this.props.currUser,
     organization: this.props.organization,
-    chatRoomId: ''
+    chatRoomId: '',
+    animalInfo: this.props.animalInfo
   }
 
   componentDidMount() {
-    const {currUser, organization} = this.state;
+    const {currUser, organization, animalInfo} = this.state;
 
-    const chatRoomId = this.getChatRoomId(currUser.id, organization.orgId);
+    const chatRoomId = this.getChatRoomId(currUser.id, organization.id, animalInfo);
     if (chatRoomId) {
       this.addMessagesListeners(chatRoomId)
     }
@@ -37,17 +38,19 @@ export class Chat extends Component {
     })
   }
 
-  getChatRoomId = (currUserId, userId) => {
+  getChatRoomId = (currUserId, userId, animalInfo) => {
     return userId < currUserId
-      ? `${userId}-${currUserId}`
-      : `${currUserId}-${userId}`
+    ? `${userId}-${currUserId}-${animalInfo.animalIdx}`
+    : `${currUserId}-${userId}-${animalInfo.animalIdx}`
+      // ? `${userId}-${currUserId}-${String(this.props.animalIdx)}`
+      // : `${currUserId}-${userId}-${String(this.props.animalIdx)}`
   }
 
   render() {
-    const { messages, chatRoomId } = this.state;
+    const { messages, chatRoomId, organization, animalInfo} = this.state;
     return (
       <div className={style.chatContainer}>
-        <ChatHeader/>
+        <ChatHeader organization={organization} animalName={animalInfo.animalName}/>
         <div className={style.chatWrap}>
           {messages.length > 0 &&
             messages.map((message) => (
@@ -55,13 +58,13 @@ export class Chat extends Component {
                 key={message.id}
                 message={message.content}
                 sentUser={message.sentUser}
-                receivedUser={message.receivedUser}
+                user={organization}
                 time={message.time}
               />
             ))
           }
         </div>
-        <ChatForm chatRoomId={chatRoomId}/>
+        <ChatForm chatRoomId={chatRoomId} organization={organization} animalInfo={animalInfo}/>
       </div>
     );
   }
