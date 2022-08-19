@@ -16,7 +16,8 @@ import {
   LoginUserId, 
   LoginUserPw, 
   LoginUserToken, 
-  LoginUserOrgName 
+  LoginUserOrgName, 
+  LoginImageIndex
 } from '../../states/LoginState';
 import { Received } from "../../states/ChatState";
 
@@ -72,13 +73,15 @@ function LoggedIn() {
 
 const Content = ({loginUserName, loginRole, loginUserOrgName}) => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
-    const [isRole, setIsRole] = useRecoilState(LoginRole);
-    const [isUserIdx, setIsUserIdx] = useRecoilState(LoginUserIdx);
-    const [isUserName, setIsUserName] = useRecoilState(LoginUserName);
-    const [savedLoginId, setSavedLoginId] = useRecoilState(LoginUserId);
-    const [savedLoginPw, setSavedLoginPw] = useRecoilState(LoginUserPw);
-    const [savedUserToken, setSavedUserToken] = useRecoilState(LoginUserToken);
-    const [userOrgName, setUserOrgName] = useRecoilState(LoginUserOrgName);
+  const [isRole, setIsRole] = useRecoilState(LoginRole);
+  const [isUserIdx, setIsUserIdx] = useRecoilState(LoginUserIdx);
+  const [isUserName, setIsUserName] = useRecoilState(LoginUserName);
+  const [savedLoginId, setSavedLoginId] = useRecoilState(LoginUserId);
+  const [savedLoginPw, setSavedLoginPw] = useRecoilState(LoginUserPw);
+  const [savedUserToken, setSavedUserToken] = useRecoilState(LoginUserToken);
+  const [userOrgName, setUserOrgName] = useRecoilState(LoginUserOrgName);
+  const [loginImageIndex, setLoginImageIndex] = useRecoilState(LoginImageIndex);
+
   let sessionStorage = window.sessionStorage;
 
   const handleLogOut = () => {
@@ -97,6 +100,7 @@ const Content = ({loginUserName, loginRole, loginUserOrgName}) => {
     setSavedLoginId("");
     setSavedLoginPw("");
     setSavedUserToken("");
+    setLoginImageIndex(0);
 
     console.log("로그아웃");
     
