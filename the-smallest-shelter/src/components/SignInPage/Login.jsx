@@ -67,86 +67,84 @@ function Login() {
 
   const onSubmitButton = async (e) => {
     // if (idValid && pwValid) {
-    //   e.preventDefault();
+    e.preventDefault();
 
-    //   console.log(`id: ${id}, pw: ${pw}`);
+    console.log(`id: ${id}, pw: ${pw}`);
 
-    //   const res = await axios({
-    //     headers: {
-    //       withCredentials: true,
-    //       'Access-Control-Allow-Origin': 'http://localhost:3000',
-    //       Accept: 'application/json',
-    //     },
-    //     method: 'POST',
-    //     url: 'https://sjs.hana-umc.shop/login',
-    //     data: {
-    //       username: id,
-    //       password: pw,
-    //     },
-    //   })
-    //     .then((response) => {
-    //       console.log(response);
+    const res = await axios({
+      headers: {
+        withCredentials: true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        Accept: 'application/json',
+      },
+      method: 'POST',
+      url: 'https://sjs.hana-umc.shop/login',
+      data: {
+        username: id,
+        password: pw,
+      },
+    })
+      .then((response) => {
+        // authorization token
+        let userTokenString = response.headers.authorization;
 
-    //       // recoil
-    //       sessionStorage.setItem('userIdx', response.data.userIdx);
-    //       sessionStorage.setItem('name', response.data.name);
-    //       sessionStorage.setItem('role', response.data.role);
-    //       sessionStorage.setItem(
-    //         'organizationName',
-    //         response.data.organizationName
-    //       );
+        // recoil
+        sessionStorage.setItem('userIdx', response.data.userIdx);
+        sessionStorage.setItem('name', response.data.name);
+        sessionStorage.setItem('role', response.data.role);
+        sessionStorage.setItem(
+          'organizationName',
+          response.data.organizationName
+        );
+        sessionStorage.setItem('bearer_token', userTokenString);
 
-    //       setIsLoggedIn(true);
-    //       setIsUserIdx(response.data.userIdx);
-    //       setIsRole(response.data.role);
-    //       setIsUserName(response.data.name);
-    //       setUserOrgName(response.data.organizationName);
-    //       setSavedLoginId(id);
-    //       setSavedLoginPw(pw);
+        setIsLoggedIn(true);
+        setIsUserIdx(response.data.userIdx);
+        setIsRole(response.data.role);
+        setIsUserName(response.data.name);
+        setUserOrgName(response.data.organizationName);
+        setSavedLoginId(id);
+        setSavedLoginPw(pw);
 
-    //       console.log('isLoggedIn : ', isLoggedIn);
-    //       console.log('isUserIdx : ', isUserIdx);
-    //       console.log('isRole : ', isRole);
-    //       console.log('isUserName : ', isUserName);
-    //       console.log('userOrgName : ', userOrgName);
-    //       console.log('savedLoginId : ', savedLoginId);
-    //       console.log('savedLoginPw : ', savedLoginPw);
+        console.log('isLoggedIn : ', isLoggedIn);
+        console.log('isUserIdx : ', isUserIdx);
+        console.log('isRole : ', isRole);
+        console.log('isUserName : ', isUserName);
+        console.log('userOrgName : ', userOrgName);
+        console.log('savedLoginId : ', savedLoginId);
+        console.log('savedLoginPw : ', savedLoginPw);
 
-    //       // authorization token
-    //       let userTokenString = response.headers.authorization;
+        // let userTokenList = userTokenString.split(' ');
+        setSavedUserToken(userTokenString);
 
-    //       // let userTokenList = userTokenString.split(' ');
-    //       sessionStorage.setItem('bearer_token', userTokenString);
-    //       setSavedUserToken(userTokenString);
+        console.log(savedUserToken);
 
-    //       console.log(savedUserToken);
+        alert('로그인에 성공했습니다!');
 
-    //       alert('로그인에 성공했습니다!');
-
-    //       navigate('/');
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
+        navigate('/');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     // }
 
-    if (id === User.id && pw === User.pw) {
-      alert('로그인에 성공했습니다!');
-      sessionStorage.setItem('id', id);
-      sessionStorage.setItem('pw', pw);
+    // if (id === User.id && pw === User.pw) {
+    //   alert('로그인에 성공했습니다!');
+    //   sessionStorage.setItem('id', id);
+    //   sessionStorage.setItem('pw', pw);
 
-      // setSavedLoginId(sessionStorage.getItem("id"));
-      // setSavedLoginPw(sessionStorage.getItem("pw"));
-      setSavedLoginId(id);
-      setSavedLoginPw(pw);
+    //   // setSavedLoginId(sessionStorage.getItem("id"));
+    //   // setSavedLoginPw(sessionStorage.getItem("pw"));
+    //   setSavedLoginId(id);
+    //   setSavedLoginPw(pw);
 
-      setIsLoggedIn(true);
-      setIsRole(loginResponse.result.role);
-      setIsUserIdx(loginResponse.result.userIdx);
-      window.location.href = '/';
-    } else {
-      alert('등록되지 않은 회원입니다.');
-    }
+    //   setIsLoggedIn(true);
+    //   setIsRole(loginResponse.result.role);
+    //   setIsUserIdx(loginResponse.result.userIdx);
+    //   window.location.href = '/';
+    // } else {
+    //   alert('등록되지 않은 회원입니다.');
+    // }
   };
 
   useEffect(() => {

@@ -112,33 +112,35 @@ function MyPage() {
   const [isProfileUrl, setIsProfileUrl] = useState('');
   const [myDataInfo, setMyDataInfo] = useState([]);
 
-  // const getPosts = async () => {
-  //  const mypageRes= await axios({
-  //     headers: {
-  //         withCredentials: true,
-  //         'Accept': 'application/json',
-  //     },
-  //     method: 'get',
-  //     url: 'https://sjs.hana-umc.shop/post?animal_id=1&post_id=1',
-  //     params:{
-  //         animal_id:1,
-  //         post_id:1
-  //     }
-  // }).then(setMyDataInfo(mypageRes.result)
-  //   // dummyInfo = mypageRes.result,
-  //   // console.log("isRole: ", isRole),
-  //   // console.log("data: ",mypageRes.result),
-  //   // setIsUserID(dummyInfo.userIdx),
-  //   // setIsName(dummyInfo.name),
-  //   // setIsPhoneNumber(dummyInfo.phoneNumber),
-  //   // setIsAddress(dummyInfo.address),
-  //   // setIsEmail(dummyInfo.email),
-  //   // setIsProfileUrl(dummyInfo.profileImgUrl),
-  // )};
+  const getPosts = async () => {
+    const mypageRes = await axios({
+      headers: {
+        withCredentials: true,
+        Accept: 'application/json',
+      },
+      method: 'get',
+      url: 'https://sjs.hana-umc.shop/post?animal_id=1&post_id=1',
+      params: {
+        animal_id: 1,
+        post_id: 1,
+      },
+    }).then(
+      setMyDataInfo(mypageRes.result)
+      // dummyInfo = mypageRes.result,
+      // console.log("isRole: ", isRole),
+      // console.log("data: ",mypageRes.result),
+      // setIsUserID(dummyInfo.userIdx),
+      // setIsName(dummyInfo.name),
+      // setIsPhoneNumber(dummyInfo.phoneNumber),
+      // setIsAddress(dummyInfo.address),
+      // setIsEmail(dummyInfo.email),
+      // setIsProfileUrl(dummyInfo.profileImgUrl),
+    );
+  };
 
-  // useEffect(() => {
-  //   getPosts();
-  // },[]);
+  useEffect(() => {
+    getPosts();
+  }, []);
 
   return (
     <div>
