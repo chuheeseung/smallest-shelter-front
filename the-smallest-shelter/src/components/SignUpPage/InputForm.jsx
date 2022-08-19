@@ -29,8 +29,6 @@ import { LoginUserImage } from '../../states/LoginState';
 function InputForm({ selectType }) {
     const navigate = useNavigate();
 
-    const [image, setImage] = useRecoilState(LoginUserImage);
-
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
     const [name, setName] = useState('');
@@ -118,19 +116,19 @@ function InputForm({ selectType }) {
 
     const getRandomImage = () => {
         const randomIndex = Math.floor(Math.random() * imageArr.length);
-        const profileImage = imageArr[randomIndex];
+        // const profileImage = imageArr[randomIndex];
 
-        setImage(profileImage);
-        console.log(image);
+        // setImage(profileImage);
+        // console.log(image);
         
-        return profileImage;
+        return randomIndex;
     };
 
     const onSubmitButton = async (e) => {
         e.preventDefault();
 
         if(idValid && pwValid && name.length > 0 && phoneNumValid && addr.length > 0 && emailValid) {
-            const profileImage = getRandomImage();
+            const profileImageIndex = getRandomImage();
 
             if(selectType == "private") {
                 const res = await axios({
@@ -148,13 +146,13 @@ function InputForm({ selectType }) {
                         phoneNumber: phoneNum,
                         address: addr,
                         email: email,
-                        profileImgUrl: "url",
+                        profileImgUrl: profileImageIndex,
                         role: "PRIVATE",
                         organizationName: null
                     }
                 })
                 .then((res) => {
-                    console.log(res);
+                    alert("개인 회원가입이 완료되었습니다!");
                     navigate('/');
                 })
                 .catch((err) => {
@@ -177,7 +175,7 @@ function InputForm({ selectType }) {
                         phoneNumber: phoneNum,
                         address: addr,
                         email: email,
-                        profileImgUrl: "url",
+                        profileImgUrl: profileImageIndex,
                         role: "ORGANIZATION",
                         organizationName: organizationName
                     },

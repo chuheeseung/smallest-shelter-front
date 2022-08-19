@@ -51,8 +51,8 @@ export const LoginUserOrgName = atom({ // 로그인 유저 단체 계정 (KARA, 
   effects_UNSTABLE: [persistAtom],
 });
 
-export const LoginUserImage = atom({
-  key: 'LoginUserImage',
-  default: '',
+export const LoginImageIndex = atom({
+  key: 'LoginImageIndex',
+  default: 0,
   effects_UNSTABLE: [persistAtom],
 })

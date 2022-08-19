@@ -7,15 +7,16 @@ import { Link } from "react-router-dom";
 import { storeService } from '../../fbase';
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
 import { useRecoilValue, useRecoilState } from "recoil";
-import {
-  LoginState,
-  LoginRole,
-  LoginUserIdx,
-  LoginUserName,
-  LoginUserId,
-  LoginUserPw,
-  LoginUserToken,
-  LoginUserOrgName
+import { 
+  LoginState, 
+  LoginRole, 
+  LoginUserIdx, 
+  LoginUserName, 
+  LoginUserId, 
+  LoginUserPw, 
+  LoginUserToken, 
+  LoginUserOrgName, 
+  LoginImageIndex
 } from '../../states/LoginState';
 
 function LoggedIn() {
@@ -44,6 +45,8 @@ const Content = ({ loginUserName, loginRole, loginUserOrgName }) => {
   const [savedLoginPw, setSavedLoginPw] = useRecoilState(LoginUserPw);
   const [savedUserToken, setSavedUserToken] = useRecoilState(LoginUserToken);
   const [userOrgName, setUserOrgName] = useRecoilState(LoginUserOrgName);
+  const [loginImageIndex, setLoginImageIndex] = useRecoilState(LoginImageIndex);
+
   let sessionStorage = window.sessionStorage;
 
   const handleLogOut = () => {
@@ -61,6 +64,7 @@ const Content = ({ loginUserName, loginRole, loginUserOrgName }) => {
     setSavedLoginId("");
     setSavedLoginPw("");
     setSavedUserToken("");
+    setLoginImageIndex(0);
 
     console.log("로그아웃");
 
