@@ -4,11 +4,11 @@ import { LoginUserId } from '../../states/LoginState';
 import ChatRoomList from './ChatRoomList';
 
 function ChatList() {
-  const loginUserId = useRecoilValue(LoginUserId) // 현재 사용자 id
+  const loginUserId = useRecoilValue(LoginUserId); // 현재 사용자 id
 
   return (
     <div>
-      <ChatRoomList loginUserId={loginUserId}/>
+      <ChatRoomList loginUserId={loginUserId} />
     </div>
   );
 }

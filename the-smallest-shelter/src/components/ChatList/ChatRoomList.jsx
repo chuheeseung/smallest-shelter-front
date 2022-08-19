@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { dbService } from "../../fbase";
-import { child, onChildAdded, onValue, ref } from "firebase/database";
+import React, { Component } from 'react';
+import { dbService } from '../../fbase';
+import { child, onChildAdded, onValue, ref } from 'firebase/database';
 import style from './ChatList.module.css';
 import chatStyle from '../Chat/Chat.module.css';
 import Message from "../Chat/Message";
@@ -8,22 +8,21 @@ import ChatForm from "../Chat/ChatForm";
 import { FiCheckCircle } from 'react-icons/fi'
 
 export class ChatRoomList extends Component {
-
   state = {
     messages: [], // 클릭한 채팅방의 채팅 내역
     chatRoomClick: false,
     loginUserId: this.props.loginUserId,
-    messagesRef: ref(dbService, "messages"),
+    messagesRef: ref(dbService, 'messages'),
     currChatRoomId: '',
-    user: {}, // 클릭한 채팅방 상대 계정 
-    allUser: {} // 채팅방 목록 가져올 때 상대 계정
-  }
+    user: {}, // 클릭한 채팅방 상대 계정
+    allUser: {}, // 채팅방 목록 가져올 때 상대 계정
+  };
 
   // 사용자가 포함되어 있는 채팅방의 상대 정보 얻어오기
   componentDidMount() {
     let { messagesRef, loginUserId } = this.state;
 
-    onValue((messagesRef), (snapshot) => {
+    onValue(messagesRef, (snapshot) => {
       const userInfo = [];
 
       Object.values(snapshot.val()).map((user, idx) => {
@@ -38,51 +37,53 @@ export class ChatRoomList extends Component {
         && userInfo.push(Object.values(user)[idx].sentUser)
         // user.roomId.includes(this.loginUserId) && console.log(user)
         // user && userInfo.push(Object.values(user)[idx].sentUser)
-      })
+      });
       this.setState({
-        allUser: userInfo
-      })
-    })
+        allUser: userInfo,
+      });
+    });
   }
 
   changeChatRoom = (room) => {
     this.setState({ currChatRoomId: room })
-    console.log(room)
     let messagesArray = [];
     let { messagesRef, loginUserId } = this.state;
 
     onValue(child(messagesRef, room), (snapshot) => {
       const values = Object.values(snapshot.val());
-      const userInfo = values.filter(message => message.sentUser.id !== loginUserId);
-
+      const userInfo = values.filter(
+        (message) => message.sentUser.id !== loginUserId
+      );
       userInfo.length > 0 && this.setState({ user: userInfo[0].sentUser })
-    })
+    });
 
-    onChildAdded(child(messagesRef, room), snapshot => {
+    onChildAdded(child(messagesRef, room), (snapshot) => {
       messagesArray.push({
         id: snapshot.key,
-        message: snapshot.val()
+        message: snapshot.val(),
       });
 
       this.setState({
         messages: messagesArray,
-        chatRoomClick: true
-      })
-    })
-  }
+        chatRoomClick: true,
+      });
+    });
+  };
 
   getChatRoomId = (currUserId, userId) => {
     return userId < currUserId
       ? `${userId}-${currUserId}`
-      : `${currUserId}-${userId}`
-  }
+      : `${currUserId}-${userId}`;
+  };
 
   renderChatRooms = (allUser, loginUserId) =>
     allUser.length > 0 &&
     allUser.map((user, idx) => (
       <div
         key={idx}
-        onClick={() => this.changeChatRoom(this.getChatRoomId(loginUserId, user.id))}
+        onClick={() =>
+          this.changeChatRoom(this.getChatRoomId(loginUserId, user.id))
+        }
         className={style.chatRoomInfo}
       >
         <img src={user.image} alt="상대방 이미지" />
@@ -91,7 +92,14 @@ export class ChatRoomList extends Component {
     ))
 
   render() {
-    const { currChatRoomId, messages, loginUserId, chatRoomClick, user, allUser } = this.state;
+    const {
+      currChatRoomId,
+      messages,
+      loginUserId,
+      chatRoomClick,
+      user,
+      allUser,
+    } = this.state;
 
     return (
       <div className={style.container}>
@@ -104,6 +112,8 @@ export class ChatRoomList extends Component {
         <div>
           {chatRoomClick
             ? (<div className={style.chatContainer}>
+          {chatRoomClick ? (
+            <div className={style.chatContainer}>
               <div className={chatStyle.headerWrap}>{user.name}</div>
               <div className={style.chatWrap}>
                 {messages.length > 0 &&
@@ -124,11 +134,19 @@ export class ChatRoomList extends Component {
               <div><FiCheckCircle size={64} color="#969696" /></div>
               <p>대화할 사용자를 선택해주세요.</p>
             </div>}
+              </div>
+          ) : (
+            <div className={style.empty}>
+              <div>
+                <FiCheckCircle size={64} color='#969696' />
+              </div>
+              <p>대화할 사용자를 선택해주세요.</p>
+            </div>
+          )}
         </div>
       </div>
-    )
+    );
   }
-
 }
 
 export default ChatRoomList;

@@ -23,9 +23,14 @@ import image82 from '../../assets/img/ProfileImg/Ellipse 82.png';
 import image83 from '../../assets/img/ProfileImg/Ellipse 83.png';
 import image84 from '../../assets/img/ProfileImg/Ellipse 84.png';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { LoginUserImage } from '../../states/LoginState';
 
 function InputForm({ selectType }) {
     const navigate = useNavigate();
+
+    const [image, setImage] = useRecoilState(LoginUserImage);
+
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
     const [name, setName] = useState('');
@@ -114,6 +119,10 @@ function InputForm({ selectType }) {
     const getRandomImage = () => {
         const randomIndex = Math.floor(Math.random() * imageArr.length);
         const profileImage = imageArr[randomIndex];
+
+        setImage(profileImage);
+        console.log(image);
+        
         return profileImage;
     };
 

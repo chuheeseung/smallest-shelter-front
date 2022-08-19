@@ -5,16 +5,22 @@ import logoImage from '../../assets/img/Group8700.png';
 import style from './Login.module.css';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { 
-    LoginState, LoginRole, LoginUserIdx, LoginUserName, 
-    LoginUserId, LoginUserPw, LoginUserToken, LoginUserOrgName 
+import {
+  LoginState,
+  LoginRole,
+  LoginUserIdx,
+  LoginUserName,
+  LoginUserId,
+  LoginUserPw,
+  LoginUserToken,
+  LoginUserOrgName,
 } from '../../states/LoginState';
 import { loginResponse } from './loginDummy';
 
 const User = {
-        id: 'test1234',
-        pw: '@test1234'
-}
+  id: 'test1234',
+  pw: '@test1234',
+};
 
 function Login() {
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);

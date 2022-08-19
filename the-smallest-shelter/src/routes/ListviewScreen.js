@@ -5,10 +5,9 @@ import Banner from '../components/ListviewPage/Banner';
 import { dummy } from '../components/ListviewPage/dataDummy';
 import style from './ListviewScreen.module.css';
 import axios from 'axios';
-
 import { 
     useRecoilState, 
-  } from 'recoil';
+} from 'recoil';
 import { LoginUserToken, LoginRole, LoginUserIdx } from '../states/LoginState';
 
 const PAGE_SIZE = 10;
@@ -62,30 +61,30 @@ export default function ListviewScreen() {
     };
 
     const handleNext = () => {
-        // axios.get("https://sjs./hana-umc.shop/animals",
-        //     {params: {page: pageNum + 1}},
-        //     {withCredentials: true}
-        // ).then((res) => {
-        //     console.log(res.data.result)
-        //     setCardList(res.data.result.animal);
-        // });
-    };
-
-    useEffect(() => {
-        axios.get("https://sjs.hana-umc.shop/animals",
-            {params: {page: pageNum}},
+        axios.get("https://sjs./hana-umc.shop/animals",
+            {params: {page: pageNum + 1}},
             {withCredentials: true}
         ).then((res) => {
             console.log(res.data.result)
             setCardList(res.data.result.animal);
-            console.log(userToken);
-        })
-    }, []);
+        });
+    };
+
+    // useEffect(() => {
+    //     axios.get("https://sjs.hana-umc.shop/animals",
+    //         {params: {page: pageNum}},
+    //         {withCredentials: true}
+    //     ).then((res) => {
+    //         console.log(res.data.result)
+    //         setCardList(res.data.result.animal);
+    //         console.log(userToken);
+    //     })
+    // }, []);
     
 
-    // useEffect(() => { 
-    //     setCardList(dummy.results);
-    // }, []);
+    useEffect(() => { 
+        setCardList(dummy.results);
+    }, []);
 
     return (
         <>
@@ -93,8 +92,7 @@ export default function ListviewScreen() {
             <Filtering getFilter={handleFilter} />
             <div className={style.dataContainer}>
                 {
-                    // cardList.slice(minValue, maxValue)
-                        cardList.map((item) => {
+                    cardList.map((item) => {
                         return (
                             <DataItem
                                 key = {item.animalIdx}
