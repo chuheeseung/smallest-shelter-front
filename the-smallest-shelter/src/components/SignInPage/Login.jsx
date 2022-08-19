@@ -40,6 +40,7 @@ function Login() {
         setId(e.target.value);
         // const regex = /^[a-z]+[a-z0-9]{5,19}$/g;
         
+        //* */
         // if(regex.test(id)) {
         //     setIdValid(true);
         // }
