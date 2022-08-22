@@ -20,31 +20,52 @@ export default function ListviewScreen() {
     const gender = filters['gender'];
     const ageBoundary = filters['age'];
     const isAdopted = filters['isAdopted'];
-    console.log(species, gender, ageBoundary, isAdopted);
-    const res = await axios({
-      headers: {
-        withCredentials: true,
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
-        Accept: 'application/json',
-      },
-      method: 'POST',
-      url: 'https://sjs.hana-umc.shop/animal/search',
-      params: {
-        page: pageNum,
-      },
-      data: {
-        species: species,
-        gender: gender,
-        ageBoundary: ageBoundary,
-        isAdopted: isAdopted,
-      },
-    })
+    // const res = await axios({
+    //   headers: {
+    //     withCredentials: true,
+    //     'Access-Control-Allow-Origin': 'http://localhost:3000',
+    //     Accept: 'application/json',
+    //   },
+    //   method: 'POST',
+    //   url: 'https://sjs.hana-umc.shop/animal/search',
+    //   params: {
+    //     page: pageNum,
+    //   },
+    //   data: {
+    //     species: species,
+    //     gender: gender,
+    //     ageBoundary: ageBoundary,
+    //     isAdopted: isAdopted,
+    //   },
+    // })
+    //   .then((response) => {
+    //     console.log(response);
+    //     setCardList(response.data.result.animal);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    let data = {
+      species: 'DOG',
+      gender: null,
+      ageBoundary: null,
+      isAdopted: null,
+    };
+    await axios
+      .post(
+        `https://sjs.hana-umc.shop/animal/search?page=0`,
+        JSON.stringify(data),
+        {
+          headers: {
+            'Content-Type': `application/json`,
+          },
+        },
+        {
+          params: { page: 0 },
+        }
+      )
       .then((response) => {
         console.log(response);
-        setCardList(response.data.result.animal);
-      })
-      .catch((error) => {
-        console.log(error);
       });
   };
 

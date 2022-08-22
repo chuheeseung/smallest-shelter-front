@@ -14,12 +14,13 @@ import {
   useRecoilState,
   // useRecoilValue,
 } from 'recoil';
-import { LoginRole } from '../states/LoginState';
+import { LoginRole, LoginUserIdx } from '../states/LoginState';
 import { Organization } from '../states/ChatState';
 
 function DetailScreen() {
   //recoil : 단체 여부
   const [isRole, setIsRole] = useRecoilState(LoginRole);
+  const [userIdx, setUserIdx] = useRecoilState(LoginUserIdx);
   //채팅에서 쓰일 state
   const [organization, setOrganization] = useRecoilState(Organization);
 
@@ -106,6 +107,7 @@ function DetailScreen() {
     <>
       <>
         <Banner
+          userIdx={userIdx}
           animalIdx={id}
           isOrganization={isRole}
           name={name}
@@ -144,7 +146,7 @@ function DetailScreen() {
           </PostContainer>
         </PostList>
         <SliderContainer>
-          {/* <SliderSection recommandAnimal={recommand}/> */}
+          <SliderSection recommandAnimal={recommand} />
         </SliderContainer>
       </>
     </>
