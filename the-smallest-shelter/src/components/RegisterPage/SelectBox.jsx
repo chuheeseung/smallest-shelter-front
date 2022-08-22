@@ -25,7 +25,6 @@ function SelectBox() {
             mode="multiple"
             value={selectedItems}
             onChange={setSelectedItems}
-            required
             style={{
                 textAlign: "center",
                 width: '180px',

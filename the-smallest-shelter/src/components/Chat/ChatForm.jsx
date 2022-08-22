@@ -2,22 +2,15 @@ import React, { useState } from 'react';
 import { dbService } from '../../fbase';
 import { child, push, ref, set } from 'firebase/database';
 import style from './Chat.module.css';
-import { CgSmile } from 'react-icons/cg';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { LoginUserId, LoginUserName } from '../../states/LoginState';
-import { Organization } from '../../states/ChatState';
 
-function ChatForm({ chatRoomId }) {
+function ChatForm({ chatRoomId, organization, userInfo, animalInfo }) {
   const messagesRef = ref(dbService, "messages");
-
   const [content, setContent] = useState("");
 
   const loginUserId = useRecoilValue(LoginUserId);
   const loginUserName = useRecoilValue(LoginUserName);
-  
-  //const organization = useRecoilValue(Organization);
-  // 상대 계정 정보
-  const userId = chatRoomId.split('-').filter(e => e !== loginUserId).join();
 
   const currUser = {
     "id": loginUserId,
@@ -26,10 +19,9 @@ function ChatForm({ chatRoomId }) {
   };
 
   const createMessage = () => {
-    const chatRoomId = getChatRoomId(loginUserId, userId);
-
     const message = {
       roomId: chatRoomId,
+      animalInfo: animalInfo,
       content: content,
       time: Date.now(),
       sentUser: {
@@ -37,22 +29,18 @@ function ChatForm({ chatRoomId }) {
         name: currUser.name,
         image: currUser.image
       },
-      receivedUser: {
-        id: userId,
-        name: "KARA",
-        image: 'http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon'
-       // name: organization.orgName,
-        //image: organization.orgImg
-      },
       checked: false,
     }
+    if (organization === 'undefined') {
+      message["receivedUser"] = {id: userInfo.id, name: userInfo.name, image: userInfo.image}
+    } else {
+      message["receivedUser"] = { 
+      id: organization.id,
+      name: organization.name,
+      image: organization.image
+      }
+    }
     return message;
-  }
-
-  const getChatRoomId = (currUserId, userId) => {
-    return userId < currUserId
-      ? `${userId}-${currUserId}`
-      : `${currUserId}-${userId}`
   }
 
   const handleSubmit = async (e) => {
@@ -62,7 +50,7 @@ function ChatForm({ chatRoomId }) {
       await set(push(child(messagesRef, chatRoomId)), createMessage());
       setContent("");
     } catch (error) {
-      console.log(error.message)
+      console.log(error)
     }
   }
 

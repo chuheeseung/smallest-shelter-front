@@ -36,7 +36,7 @@ function RadioGroup({ item, idx, checkType, setCheckVal, checkVal }) {
                 onChange={onChangeCheck}
                 checked={click === index + 1}
                 style={{ display: "none" }}
-                required
+                //required
               />
 
               {click === index + 1 && checkFlag[idx]
