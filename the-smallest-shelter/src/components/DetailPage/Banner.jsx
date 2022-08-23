@@ -86,6 +86,35 @@ function Banner(props) {
       }
     }
   });
+
+  const onChange = async (e) => {
+    console.log(`checked = ${e.target.checked}`);
+    console.log(
+      props.isOrganization,
+      'user id:',
+      props.userIdx,
+      'animal id: ',
+      props.animalIdx
+    );
+    let userId = props.userIdx;
+    let animalId = props.animalIdx;
+    let checked = `${e.target.checked}`;
+    let token = userToken;
+    setCheckAdopted(checked);
+    console.log(token);
+
+    await axios
+      .patch(
+        `https://sjs.hana-umc.shop/auth/private/animal/like?user_id=${userId}&animal_id=${animalId}`,
+        {
+          params: { user_id: `${userId}`, animal_id: `${animalId}` },
+        },
+        { headers: { Authorization: `${token}` } }
+      )
+      .then((response) => {
+        console.log(response);
+      });
+  };
   //   const likedRes = () => {
   //     console.log("좋아요 누름");
   //     axios.get('https://sjs.hana-umc.shop/posts/1')
@@ -190,6 +219,16 @@ function Banner(props) {
         </Profile>
         <ProfileIcon>
           <IconSet>
+<<<<<<< HEAD
+            {props.isOrganization == 'PRIVATE' ? ( //입양희망자인 경우
+              <>
+                <div style={{ marginTop: '19px' }}>
+                  <Checkbox onChange={onChange} />
+                </div>
+                <Dropdown
+                  overlay={
+                    <Chat currUser={currUser} organization={organization} />
+=======
             {
               props.isOrganization == "PRIVATE"//입양희망자인 경우
                 ? <>
@@ -197,6 +236,7 @@ function Banner(props) {
                     likeHeart == "false"
                       ? <AiOutlineHeart size="22" />
                       : <AiFillHeart size="22" />
+>>>>>>> 0588b3a0b034e7780f632ff5f3f43b4a46fa72a4
                   }
                   <Dropdown
                     overlay={<Chat
@@ -281,29 +321,6 @@ const GroupInfo = styled.div`
   font-weight: 700;
 `;
 
-const PetParagraph = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const InfoParagraph = styled.p`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: left;
-`;
-
-const InfoItem1 = styled.div`
-  margin-top: 20px;
-`;
-
-const InfoItem2 = styled.div`
-  margin-top: 23px;
-  font-weight: 700;
-  font-size: 13px;
-`;
 const ProfileIcon = styled.div`
   display: flex;
   flex-wrap: wrap;

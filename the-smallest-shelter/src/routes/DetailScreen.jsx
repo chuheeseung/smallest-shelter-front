@@ -14,11 +14,22 @@ import {
   useRecoilState,
   // useRecoilValue,
 } from 'recoil';
+<<<<<<< HEAD
+import { LoginRole, LoginUserIdx } from '../states/LoginState';
+import { Organization } from '../states/ChatState';
+=======
 import { LoginRole } from '../states/LoginState';
+>>>>>>> 0588b3a0b034e7780f632ff5f3f43b4a46fa72a4
 
 function DetailScreen() {
   //recoil : 단체 여부
   const [isRole, setIsRole] = useRecoilState(LoginRole);
+<<<<<<< HEAD
+  const [userIdx, setUserIdx] = useRecoilState(LoginUserIdx);
+  //채팅에서 쓰일 state
+  const [organization, setOrganization] = useRecoilState(Organization);
+=======
+>>>>>>> 0588b3a0b034e7780f632ff5f3f43b4a46fa72a4
 
   //동물 id 넘어옴
   const location = useLocation();
@@ -105,6 +116,7 @@ function DetailScreen() {
     <>
       <>
         <Banner
+          userIdx={userIdx}
           animalIdx={id}
           isOrganization={isRole}
           name={name}
@@ -144,7 +156,7 @@ function DetailScreen() {
           </PostContainer>
         </PostList>
         <SliderContainer>
-          {/* <SliderSection recommandAnimal={recommand}/> */}
+          <SliderSection recommandAnimal={recommand} />
         </SliderContainer>
       </>
     </>
