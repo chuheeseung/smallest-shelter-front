@@ -46,10 +46,10 @@ export default function ListviewScreen() {
     //     console.log(error);
     //   });
     let data = {
-      species: 'DOG',
-      gender: null,
-      ageBoundary: null,
-      isAdopted: null,
+      species: species,
+      gender: gender,
+      ageBoundary: ageBoundary,
+      isAdopted: isAdopted,
     };
     await axios
       .post(
