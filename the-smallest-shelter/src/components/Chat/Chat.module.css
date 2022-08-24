@@ -15,8 +15,8 @@
   height: 48px;
   line-height: 48px;
   font-weight: bold;
-  /* border-top-left-radius: 15px;
-  border-top-right-radius: 15px; */
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
 }
 
 .chatWrap {

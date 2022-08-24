@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
-import { useEffect } from 'react';
-import style from './Register.module.css';
 
-function RadioGroup({ item, idx, checkType, setCheckVal, checkVal }) {
-  const [click, setClick] = useState(0);
+function EditRadioGroup({ item, idx, checkType, setCheckVal, checkVal, checkInit }) {
+  const [click, setClick] = useState([]);
   const [checkFlag, setCheckFlag] = useState({});
+  const [init, setInit] = useState(true);
 
   const onChangeCheck = (e) => {
+    setInit(!init);
     const { id, value } = e.target;
-    setClick(Number(value));
+    checkInit[id] = Number(value);
+    setClick(checkInit)
 
     let tmp = [];
     tmp = checkVal;
 
     tmp[id] = checkType[Number(value)-1].text;
+    console.log(tmp)
 
-    let flagObj = {};
-    flagObj= checkFlag;
+    let flagObj = [];
+    flagObj = checkFlag
     flagObj[id] = new Array(3).fill(false).fill(true, value-1, value);
 
     setCheckVal(tmp);
@@ -35,12 +37,11 @@ function RadioGroup({ item, idx, checkType, setCheckVal, checkVal }) {
                 name={item}
                 value={check.value}
                 onChange={onChangeCheck}
-                checked={click === index + 1}
+                checked={init ? checkInit[idx] === index+1 : click[idx] === index+1}
                 style={{ display: "none" }}
-                required
               />
 
-              {click === index + 1 && checkFlag[idx][index]
+              {click[idx] === index+1 || checkInit[idx] === index+1
                 ? (<img src={check.img_on} style={{ height: '24px' }} />)
                 : (<img src={check.img_off} style={{ height: '24px' }} />)}
             </label>
@@ -51,4 +52,4 @@ function RadioGroup({ item, idx, checkType, setCheckVal, checkVal }) {
   );
 }
 
-export default RadioGroup;
+export default EditRadioGroup;

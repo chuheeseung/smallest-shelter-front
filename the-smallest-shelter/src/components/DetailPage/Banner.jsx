@@ -6,9 +6,12 @@ import {
   AiOutlineHeart,
   AiFillHeart,
   AiOutlineLike,
+  AiFillDelete,
+  AiOutlineEdit,
 } from 'react-icons/ai';
 import { FiMail } from 'react-icons/fi';
-import { Checkbox, Dropdown } from 'antd';
+import { Checkbox, Dropdown, Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.min.css';
 import { createTheme } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
@@ -20,6 +23,9 @@ import {
   useRecoilState, useRecoilValue,
 } from 'recoil';
 import { LoginUserToken, LoginRole, LoginUserId, LoginUserName } from '../../states/LoginState';
+import { onValue, ref, remove, set } from 'firebase/database';
+import { dbService } from '../../fbase';
+const { confirm } = Modal;
 
 function Banner(props) {
   const [userToken, setUserToken] = useRecoilState(LoginUserToken);
@@ -32,6 +38,7 @@ function Banner(props) {
   const [likeHeart, setLikeHeart] = useState("true");
   const [checkAdopted, setCheckAdopted] = useState("true");
   const animalInfo = { "animalIdx": String(props.animalIdx), "animalName": props.name }
+  const messagesRef = ref(dbService, "messages");
 
   const currUser = {
     "id": loginUserId,
@@ -102,6 +109,42 @@ function Banner(props) {
 
   //     });
   //   }
+
+  const onEditInfo = () => {
+    navigate(`/edit/${props.animalIdx}`)
+  }
+  const showConfirm = () => {
+    confirm({
+      title: '해당 동물 정보를 삭제하시겠습니까?',
+      icon: <ExclamationCircleOutlined />,
+      content: '삭제 시 복구가 불가합니다.',
+
+      onOk() {
+        axios.delete(`https://sjs.hana-umc.shop/auth/organization/animal/${props.animalIdx}`, {
+          headers: {
+            'Authorization': `Bearer ${userToken}`
+          }
+        })
+          .then(() => console.log("성공"))
+          .catch((err) => console.log(err))
+
+          onValue(messagesRef, (snapshot) => {
+            if (snapshot.val() !== null) {
+              Object.keys(snapshot.val()).map(id => {
+                id.includes(props.animalIdx) 
+                && remove(ref(dbService,`messages/${id}/`))
+              })
+            } else {console.log("채팅방 없음"); return}
+          })
+          navigate('/')
+          //window.location.href = "/";
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+      });
+  };
+
   return (
     <RootBanner>
       <DetailTitle>동물 상세 정보</DetailTitle>
@@ -200,14 +243,17 @@ function Banner(props) {
                   }
                   <Dropdown
                     overlay={<Chat
-                    currUser={currUser}
-                    organization={props.organization}
-                    animalInfo={animalInfo} />}
+                      currUser={currUser}
+                      organization={props.organization}
+                      animalInfo={animalInfo} />}
                     trigger={['click']}>
                     <FiMail size="22" style={{ marginLeft: "22px", color: 'black' }} />
                   </Dropdown>
                 </>
-                : null
+                : <>
+                  <AiOutlineEdit size="22" onClick={onEditInfo}/>
+                  <AiFillDelete size="22" onClick={showConfirm} style={{marginLeft: '22px'}}/>
+                </>
             }
           </IconSet>
           {

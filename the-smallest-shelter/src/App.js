@@ -5,6 +5,7 @@ import MyPage from './components/MyPage/MyPage';
 import OrganizationSignUp from './components/SignUpPage/OrganizationSignUp';
 import PrivateSignUp from './components/SignUpPage/PrivateSignUp';
 import DetailScreen from './routes/DetailScreen';
+import EditScreen from './routes/EditScreen';
 import ListviewScreen from './routes/ListviewScreen';
 import NotFound from './routes/NotFound';
 import RegisterScreen from './routes/RegisterScreen';
@@ -19,6 +20,7 @@ const App = () => {
                 <Route path="/" element={<ListviewScreen />} />
                 <Route path="/detail" element={<DetailScreen />} />
                 <Route path="/register" element={<RegisterScreen />} />
+                <Route path='/edit/:animalIdx' element={<EditScreen/>}/>
                 <Route path="/mypage" element={<MyPage />} />
                 <Route path="/signin" element={<SignInScreen />} />
                 <Route path="/signup" element={<SignUpScreen />} />

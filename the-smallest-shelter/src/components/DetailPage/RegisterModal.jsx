@@ -21,10 +21,7 @@ let index = 0;
 
 const RegisterModal = ({ isOpen, onCancel, animalIdx }) => {
   const navigate = useNavigate();
-
-  const testToken =
-    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MDMwMyIsImlkIjo4LCJleHAiOjE2NjAzMDYwOTIsInVzZXJuYW1lIjoidGVzdDAzMDMifQ.O2Jal1SViMAomLgV--FfUtULXRF34vvokT5XECv0o0Z7nnOuWjZaIPbkYFkaS4hvH0SFKcVGUgHyC4ird5g6_w';
-  const [accessToken, setAccessToken] = useRecoilState(LoginUserToken);
+  const [userToken, setUserToken] = useRecoilState(LoginUserToken);
   const [image, setImage] = useState('');
   const [historyContent, setHistoryContent] = useState('');
   const { TextArea } = Input;
@@ -43,18 +40,26 @@ const RegisterModal = ({ isOpen, onCancel, animalIdx }) => {
       const uploadFile = await uploadString(fileRef, image, 'data_url');
       imgUrl = await getDownloadURL(uploadFile.ref);
     }
-    let animalID = 92;
-    console.log('게시물 사진: ', imgUrl, '게시물 내용: ', historyContent);
+    let animalID = animalIdx;
+    let token = userToken;
+    console.log(
+      '게시물 사진: ',
+      imgUrl,
+      '게시물 내용: ',
+      historyContent,
+      '동물 id: ',
+      animalID
+    );
     await axios({
       headers: {
-        Authorization: testToken,
+        Authorization: `${token}`,
         withCredentials: true,
         Accept: 'application/json',
       },
       method: 'post',
       url: `https://sjs.hana-umc.shop/auth/organization/post/join?animal_id=${animalID}`,
       params: {
-        animal_id: 92,
+        animal_id: animalID,
       },
       data: {
         imgUrl: imgUrl,

@@ -2,10 +2,15 @@
 import React, { useRef, useState } from 'react';
 import style from './Register.module.css';
 import { BsImage } from 'react-icons/bs';
+import { useEffect } from 'react';
 
-function UploadImg({ uploadImage }) {
-  const [preview, setPreivew] = useState(""); // 미리보기 url
+function UploadImg({ uploadImage, previewUrl }) {
+  const [preview, setPreivew] = useState("") // 미리보기 url
   const fileInput = useRef();
+
+  useEffect(() => {
+    if (previewUrl) setPreivew(previewUrl)
+  }, [previewUrl])
 
   const onFileChange = (e) => {
     const theFile = e.target.files[0];
