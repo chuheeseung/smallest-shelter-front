@@ -11,6 +11,7 @@ import NotFound from './routes/NotFound';
 import RegisterScreen from './routes/RegisterScreen';
 import SignInScreen from './routes/SignInScreen';
 import SignUpScreen from './routes/SignUpScreen';
+import UpdateMember from './components/UpdatePage/UpdateMember';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
                 <Route path="/signup" element={<SignUpScreen />} />
                 <Route path="/signup/private" element={<PrivateSignUp />} />
                 <Route path="/signup/organization" element={<OrganizationSignUp />} />
+                <Route path="/update/member" element={<UpdateMember />} />
                 <Route path="/*" element={<NotFound />} />
             </Routes>
           <Footer/>

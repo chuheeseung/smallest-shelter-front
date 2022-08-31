@@ -12,6 +12,7 @@ import {
   LoginUserToken,
   LoginRole,
 } from '../../states/LoginState';
+import { imageArr } from '../SignUpPage/InputForm'; 
 
 const { Paragraph } = Typography;
 
@@ -83,7 +84,7 @@ function MyInfo(props) {
       )}
       <MyInfoProfile>
         <ProfileTitle>프로필 사진</ProfileTitle>
-        <ProfileImg src={props.profileImgUrl}></ProfileImg>
+        <ProfileImg src={imageArr[props.profileImgUrl]}></ProfileImg>
       </MyInfoProfile>
       <MyInfoDetail>
         {props.isRole == 'ORGANIZATION' ? (

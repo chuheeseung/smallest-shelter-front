@@ -3,7 +3,7 @@ import style from './DataItem.module.css';
 import AdoptedTag from '../../assets/img/adopted.png';
 import { useNavigate } from 'react-router-dom';
 
-function DataItem({ key, item }) {
+function DataItem({ item }) {
   let navigate = useNavigate();
 
   const handleClick = () => {

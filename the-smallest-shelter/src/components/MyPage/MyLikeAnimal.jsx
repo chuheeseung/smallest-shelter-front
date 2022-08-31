@@ -106,13 +106,13 @@ const DataContainer = styled.div`
   margin: auto;
 `;
 
-const ButtonWrap = styled.div`
+export const ButtonWrap = styled.div`
   width: 100%;
   margin: auto;
   text-align: center;
 `;
 
-const PageButton = styled.button`
+export const PageButton = styled.button`
   margin: 2px 6px;
   border: none;
   background-color: #fbc22e;
@@ -120,6 +120,11 @@ const PageButton = styled.button`
   color: white;
   font-size: 15px;
   cursor: pointer;
+
+  &:hover {
+    transition: all ease 0.1s;
+    transform: scale(1.02);
+  }
 `;
 
 export default MyLikeAnimal;

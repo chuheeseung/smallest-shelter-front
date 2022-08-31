@@ -18,6 +18,7 @@ import {
   LoginUserOrgName, 
   LoginImageIndex
 } from '../../states/LoginState';
+import { imageArr } from "../SignUpPage/InputForm";
 
 function LoggedIn() {
   const loginUserName = useRecoilValue(LoginUserName);
@@ -66,7 +67,7 @@ const Content = ({ loginUserName, loginRole, loginUserOrgName }) => {
     setSavedUserToken("");
     setLoginImageIndex(0);
 
-    console.log("로그아웃");
+    alert("로그아웃 되었습니다.");
 
     window.location.href = '/';
   };
@@ -75,7 +76,7 @@ const Content = ({ loginUserName, loginRole, loginUserOrgName }) => {
     <div className={style.dropdownWrap}>
       <div className={style.userInfoWrap}>
         <div className={style.userIcon}>
-          <img src={userIcon} style={{ width: "48px" }} />
+          <img src={imageArr[loginImageIndex]} style={{ width: "48px" }} />
         </div>
         <div className={style.userInfo}>
           <p style={{ fontSize: "16px", color: "black", fontWeight: "bold" }}>{loginUserName}</p>
