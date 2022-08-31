@@ -52,12 +52,6 @@ function MyLikeAnimal(props) {
     });
   }, []);
 
-  // useEffect(() => { // 처음 로딩 때 dummy를 가져와서 배열에 넣어줌
-  //     console.log(likeAnimal_dummydata.results);
-  //     setCardList(likeAnimal_dummydata.results);
-
-  // }, []);
-
   return (
     <>
       {props.isRole == 'ORGANIZATION' ? (
