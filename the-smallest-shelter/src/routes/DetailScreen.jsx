@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-// import { useLocation } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import Banner from '../components/DetailPage/Banner';
 import Posts from '../components/DetailPage/Posts';
 import SliderSection from '../components/DetailPage/SliderSection';
 import axios from 'axios';
-import { DetailResponse } from '../components/DetailPage/dataDummy';
 import styled from 'styled-components';
 import ReactModal from 'react-modal';
 import HistoryRegister from '../components/DetailPage/HistoryRegister';
@@ -88,13 +86,12 @@ function DetailScreen() {
       setRecommand(detailData.recommandAnimal);
       console.log(response.data.result);
 
-      const obj= {
+      const obj = {
         id: detailData.organizationMemberId,
         name: detailData.organizationName,
-        image: detailData.organizationMemberImgUrl
-      }
-      setOrganization(obj)
-      console.log(obj)
+        image: detailData.organizationMemberImgUrl,
+      };
+      setOrganization(obj);
     });
   };
 

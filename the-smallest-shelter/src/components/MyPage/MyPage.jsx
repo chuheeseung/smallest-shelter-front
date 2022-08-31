@@ -9,7 +9,11 @@ import {
   useRecoilState,
   // useRecoilValue,
 } from 'recoil';
-import { LoginRole } from '../../states/LoginState';
+import {
+  LoginRole,
+  LoginUserIdx,
+  LoginUserToken,
+} from '../../states/LoginState';
 import { myInfoDummy } from './dataMyInfo';
 import ChatList from '../ChatList/ChatList';
 
@@ -101,7 +105,8 @@ class TabPanel extends Component {
 //-------------------------여기가 메인-----------------------------------
 function MyPage() {
   const [isRole, setIsRole] = useRecoilState(LoginRole);
-
+  const [userIdx, setUserIdx] = useRecoilState(LoginUserIdx);
+  const [token, setToken] = useRecoilState(LoginUserToken);
   //State들
   const [isUserID, setIsUserID] = useState(0);
   const [isName, setIsName] = useState('');
@@ -112,29 +117,20 @@ function MyPage() {
   const [myDataInfo, setMyDataInfo] = useState([]);
 
   const getPosts = async () => {
+    console.log(token);
     const mypageRes = await axios({
       headers: {
+        Authorization: `Bearer ${token}`,
         withCredentials: true,
         Accept: 'application/json',
       },
       method: 'get',
-      url: 'https://sjs.hana-umc.shop/post?animal_id=1&post_id=1',
-      params: {
-        animal_id: 1,
-        post_id: 1,
-      },
-    }).then(
-      setMyDataInfo(mypageRes.result)
+      url: `https://sjs.hana-umc.shop/auth/private/${userIdx}`,
+    }).then((response) => {
+      console.log(response);
+      setMyDataInfo(response.data.result);
       // dummyInfo = mypageRes.result,
-      // console.log("isRole: ", isRole),
-      // console.log("data: ",mypageRes.result),
-      // setIsUserID(dummyInfo.userIdx),
-      // setIsName(dummyInfo.name),
-      // setIsPhoneNumber(dummyInfo.phoneNumber),
-      // setIsAddress(dummyInfo.address),
-      // setIsEmail(dummyInfo.email),
-      // setIsProfileUrl(dummyInfo.profileImgUrl),
-    );
+    });
   };
 
   useEffect(() => {
@@ -152,26 +148,22 @@ function MyPage() {
             <Tab>나의 관심 동물</Tab>
           )}
 
-          <Tab>
-            {' '}
-            {/*<Tab isDisabled>*/}
-            쪽지 목록
-          </Tab>
+          <Tab>쪽지 목록</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
             <MyInfo
               isRole={isRole}
-              userID={isUserID}
-              name={isName}
-              phoneNumber={isPhoneNumber}
-              address={isAddress}
-              email={isEmail}
-              profileImgUrl={isProfileUrl}
+              userID={userIdx}
+              name={myDataInfo.name}
+              phoneNumber={myDataInfo.phoneNumber}
+              address={myDataInfo.address}
+              email={myDataInfo.email}
+              profileImgUrl={myDataInfo.profileImgUrl}
             />
           </TabPanel>
           <TabPanel>
-            <MyLikeAnimal isRole={isRole} userID={isUserID} />
+            <MyLikeAnimal isRole={isRole} userID={userIdx} />
           </TabPanel>
           <TabPanel>
             <ChatList />

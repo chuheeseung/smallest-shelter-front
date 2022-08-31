@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MyPageCard from './MyPageCard';
 import axios from 'axios';
-import { likeAnimal_dummydata } from './dataDummy';
-import { Pagination } from 'antd';
 import { useRecoilState } from 'recoil';
 import { LoginUserToken, LoginUserIdx } from '../../states/LoginState';
 const PAGE_SIZE = 10;
@@ -38,21 +36,21 @@ function MyLikeAnimal(props) {
     //     });
   };
 
-  //   useEffect(() => {
-  //     console.log(userToken, userID);
-  //     axios
-  //       .get('https://sjs.hana-umc.shop/auth/private/animals/6?page=0', {
-  //         params: { page: 0 },
-  //         headers: {
-  //           // withCredentials: true,
-  //           // 'Accept': 'application/json',
-  //           Authorization: userToken,
-  //         },
-  //       })
-  //       .then((response) => {
-  //         console.log(response);
-  //       });
-  //   }, []);
+  useEffect(() => {
+    console.log(userToken, props.userID);
+    const mypageRes = axios({
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        withCredentials: true,
+        Accept: 'application/json',
+      },
+      method: 'get',
+      url: `https://sjs.hana-umc.shop/auth/private/animals/${userID}?page=0`,
+    }).then((response) => {
+      console.log(response);
+      setCardList(response.data.result.animalResList);
+    });
+  }, []);
 
   // useEffect(() => { // 처음 로딩 때 dummy를 가져와서 배열에 넣어줌
   //     console.log(likeAnimal_dummydata.results);
