@@ -122,24 +122,20 @@ function MyPage() {
   const [loginUserId, setLoginUserId] = useRecoilState(LoginUserId);
   const [savedLoginPw, setSavedLoginPw] = useRecoilState(LoginUserPw);
   const [loginImageIndex, setLoginImageIndex] = useRecoilState(LoginImageIndex);
-  const [loginUserAddr, setLoginUserAddr] = useRecoilState(LoginUserAddr);
-  const [loginUserPhoneNum, setLoginUserPhoneNum] =
-    useRecoilState(LoginUserPhoneNum);
-  const [loginUserEmail, setLoginUserEmail] = useRecoilState(LoginUserEmail);
   const [userOrgName, setUserOrgName] = useRecoilState(LoginUserOrgName);
-  //State들
-  const [isUserID, setIsUserID] = useState(0);
-  const [isName, setIsName] = useState('');
-  const [isPhoneNumber, setIsPhoneNumber] = useState('');
-  const [isAddress, setIsAddress] = useState('');
-  const [isEmail, setIsEmail] = useState('');
-  const [isProfileUrl, setIsProfileUrl] = useState('');
+  //State
   const [myDataInfo, setMyDataInfo] = useState([]);
 
   const navigate = useNavigate();
 
   const getPosts = async () => {
     console.log(token);
+    let role = '';
+    if (isRole == 'ORGANIZATION') {
+      role = 'organiztion';
+    } else if (isRole == 'PRIVATE') {
+      role = 'private';
+    }
     const mypageRes = await axios({
       headers: {
         Authorization: `Bearer ${token}`,
@@ -147,7 +143,7 @@ function MyPage() {
         Accept: 'application/json',
       },
       method: 'get',
-      url: `https://sjs.hana-umc.shop/auth/private/${userIdx}`,
+      url: `https://sjs.hana-umc.shop/auth/${role}/${userIdx}`,
     }).then((response) => {
       console.log(response);
       setMyDataInfo(response.data.result);
@@ -233,10 +229,10 @@ function MyPage() {
             <MyInfo
               isRole={isRole}
               userID={userIdx}
-              name={loginUserName}
-              phoneNumber={loginUserPhoneNum}
-              address={loginUserAddr}
-              email={loginUserEmail}
+              name={myDataInfo.name}
+              phoneNumber={myDataInfo.phoneNumber}
+              address={myDataInfo.address}
+              email={myDataInfo.email}
               profileImgUrl={loginImageIndex}
             />
           </TabPanel>
