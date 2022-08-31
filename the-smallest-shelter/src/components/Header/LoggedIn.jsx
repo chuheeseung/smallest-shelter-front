@@ -19,6 +19,7 @@ import {
   LoginImageIndex
 } from '../../states/LoginState';
 import { imageArr } from "../SignUpPage/InputForm";
+import axios from 'axios';
 
 function LoggedIn() {
   const loginUserName = useRecoilValue(LoginUserName);
@@ -48,6 +49,8 @@ const Content = ({ loginUserName, loginRole, loginUserOrgName }) => {
   const [userOrgName, setUserOrgName] = useRecoilState(LoginUserOrgName);
   const [loginImageIndex, setLoginImageIndex] = useRecoilState(LoginImageIndex);
 
+  const [index, setIndex] = useState(0);
+
   let sessionStorage = window.sessionStorage;
 
   const handleLogOut = () => {
@@ -72,11 +75,37 @@ const Content = ({ loginUserName, loginRole, loginUserOrgName }) => {
     window.location.href = '/';
   };
 
+  const getPosts = async () => {
+    console.log(savedUserToken);
+    let role = '';
+    if (isRole == 'ORGANIZATION') {
+      role = 'organiztion';
+    } else if (isRole == 'PRIVATE') {
+      role = 'private';
+    }
+    const mypageRes = await axios({
+      headers: {
+        Authorization: `Bearer ${savedUserToken}`,
+        withCredentials: true,
+        Accept: 'application/json',
+      },
+      method: 'get',
+      url: `https://sjs.hana-umc.shop/auth/${role}/${isUserIdx}`,
+    }).then((response) => {
+      console.log(response);
+      setIndex(response.data.result.profileImgUrl);
+    });
+  };
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
   return (
     <div className={style.dropdownWrap}>
       <div className={style.userInfoWrap}>
         <div className={style.userIcon}>
-          <img src={imageArr[loginImageIndex]} style={{ width: "48px" }} />
+          <img src={imageArr[index]} style={{ width: "48px" }} />
         </div>
         <div className={style.userInfo}>
           <p style={{ fontSize: "16px", color: "black", fontWeight: "bold" }}>{loginUserName}</p>
