@@ -219,7 +219,7 @@ function Banner(props) {
         </Profile>
         <ProfileIcon>
           <IconSet>
-            {props.isOrganization == 'PRIVATE' ? ( //입양희망자인 경우
+            {isRole == 'PRIVATE' || isRole == 'ORGANIZTION' ? ( //입양희망자인 경우
               <>
                 {likeHeart == false ? (
                   <AiOutlineHeart size='22' onClick={onLike} />

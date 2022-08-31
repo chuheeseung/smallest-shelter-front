@@ -5,21 +5,15 @@ import './MyPage.css';
 import MyLikeAnimal from './MyLikeAnimal';
 import styled from 'styled-components';
 import axios from 'axios';
-import {
-  useRecoilState,
-  // useRecoilValue,
-} from 'recoil';
+import { useRecoilState } from 'recoil';
 import {
   LoginImageIndex,
   LoginRole,
   LoginState,
-  LoginUserAddr,
-  LoginUserEmail,
   LoginUserId,
   LoginUserIdx,
   LoginUserName,
   LoginUserOrgName,
-  LoginUserPhoneNum,
   LoginUserPw,
   LoginUserToken,
 } from '../../states/LoginState';
@@ -132,7 +126,7 @@ function MyPage() {
     console.log(token);
     let role = '';
     if (isRole == 'ORGANIZATION') {
-      role = 'organiztion';
+      role = 'organization';
     } else if (isRole == 'PRIVATE') {
       role = 'private';
     }

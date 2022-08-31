@@ -128,7 +128,9 @@ function DetailScreen() {
         <PostList>
           <PostListTitle>
             <div style={{ display: 'flex', flex: 1 }}>동물 히스토리</div>
-            <HistoryRegister isOrganization={isRole} animalIdx={id} />
+            {isRole == 'ORGANIZTION' ? (
+              <HistoryRegister isOrganization={isRole} animalIdx={id} />
+            ) : null}
           </PostListTitle>
           <PostContainer>
             {postData.map((item) => {
