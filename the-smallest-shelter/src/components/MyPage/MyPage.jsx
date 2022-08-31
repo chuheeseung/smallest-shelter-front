@@ -10,18 +10,18 @@ import {
   // useRecoilValue,
 } from 'recoil';
 import {
-  LoginImageIndex, 
-  LoginRole, 
-  LoginState, 
-  LoginUserAddr, 
-  LoginUserEmail, 
-  LoginUserId, 
-  LoginUserIdx, 
-  LoginUserName, 
-  LoginUserOrgName, 
-  LoginUserPhoneNum, 
-  LoginUserPw, 
-  LoginUserToken 
+  LoginImageIndex,
+  LoginRole,
+  LoginState,
+  LoginUserAddr,
+  LoginUserEmail,
+  LoginUserId,
+  LoginUserIdx,
+  LoginUserName,
+  LoginUserOrgName,
+  LoginUserPhoneNum,
+  LoginUserPw,
+  LoginUserToken,
 } from '../../states/LoginState';
 import { myInfoDummy } from './dataMyInfo';
 import ChatList from '../ChatList/ChatList';
@@ -120,10 +120,11 @@ function MyPage() {
   const [token, setToken] = useRecoilState(LoginUserToken);
   const [loginUserName, setLoginUserName] = useRecoilState(LoginUserName);
   const [loginUserId, setLoginUserId] = useRecoilState(LoginUserId);
-  const [savedLoginPw, setSavedLoginPw]  = useRecoilState(LoginUserPw);
+  const [savedLoginPw, setSavedLoginPw] = useRecoilState(LoginUserPw);
   const [loginImageIndex, setLoginImageIndex] = useRecoilState(LoginImageIndex);
   const [loginUserAddr, setLoginUserAddr] = useRecoilState(LoginUserAddr);
-  const [loginUserPhoneNum, setLoginUserPhoneNum] = useRecoilState(LoginUserPhoneNum);
+  const [loginUserPhoneNum, setLoginUserPhoneNum] =
+    useRecoilState(LoginUserPhoneNum);
   const [loginUserEmail, setLoginUserEmail] = useRecoilState(LoginUserEmail);
   const [userOrgName, setUserOrgName] = useRecoilState(LoginUserOrgName);
   //State들
@@ -155,55 +156,50 @@ function MyPage() {
   };
 
   const handleUpdate = () => {
-    if(window.confirm("회원 정보를 수정하겠습니까?") === true) {
-      console.log("update");
+    if (window.confirm('회원 정보를 수정하겠습니까?') === true) {
+      console.log('update');
       navigate('/update/member');
-    }
-    else {
-      console.log("update 취소");
+    } else {
+      console.log('update 취소');
     }
   };
 
   const handleDelete = async (e) => {
     e.preventDefault();
 
-    if(window.confirm("정말로 탈퇴하겠습니까?") === true) {
+    if (window.confirm('정말로 탈퇴하겠습니까?') === true) {
       await axios
-        .delete(
-          `https://sjs.hana-umc.shop/auth/out/${userIdx}`,
-          {
-            params: { userIdx: userIdx },
-            headers: { Authorization: token },
-          }
-        )
+        .delete(`https://sjs.hana-umc.shop/auth/out/${userIdx}`, {
+          params: { userIdx: userIdx },
+          headers: { Authorization: token },
+        })
         .then((response) => {
           console.log(response);
-          alert("탈퇴했습니다.");
-          
-          sessionStorage.removeItem("userIdx");
-          sessionStorage.removeItem("name");
-          sessionStorage.removeItem("role");
-          sessionStorage.removeItem("organizationName");
-          sessionStorage.removeItem("bearer_token");
+          alert('탈퇴했습니다.');
+
+          sessionStorage.removeItem('userIdx');
+          sessionStorage.removeItem('name');
+          sessionStorage.removeItem('role');
+          sessionStorage.removeItem('organizationName');
+          sessionStorage.removeItem('bearer_token');
 
           setLoginState(false);
           setUserIdx(0);
-          setIsRole("");
-          setLoginUserName("");
-          setUserOrgName("");
-          setLoginUserId("");
-          setSavedLoginPw("");
-          setToken("");
+          setIsRole('');
+          setLoginUserName('');
+          setUserOrgName('');
+          setLoginUserId('');
+          setSavedLoginPw('');
+          setToken('');
           setLoginImageIndex(0);
 
           navigate('/');
         })
         .catch((error) => {
           console.log(error);
-        })
-    }
-    else {
-      alert("탈퇴를 취소하셨습니다.");
+        });
+    } else {
+      alert('탈퇴를 취소하셨습니다.');
     }
   };
 
@@ -225,11 +221,11 @@ function MyPage() {
           <Tab>쪽지 목록</Tab>
         </TabList>
         <TabPanels>
-          <TabButtons>
+          <TabPanel>
+            <TabButtons>
               <TabButton onClick={handleUpdate}>수정</TabButton>
               <TabButton onClick={handleDelete}>탈퇴</TabButton>
             </TabButtons>
-          <TabPanel>
             <MyInfo
               isRole={isRole}
               userID={userIdx}
