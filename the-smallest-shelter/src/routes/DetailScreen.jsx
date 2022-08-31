@@ -18,7 +18,7 @@ function DetailScreen() {
   //recoil : 단체 여부
   const [isRole, setIsRole] = useRecoilState(LoginRole);
   const [userIdx, setUserIdx] = useRecoilState(LoginUserIdx);
-  //채팅에서 쓰일 state
+
   //동물 id 넘어옴
   const location = useLocation();
   const id = location.state.id;
