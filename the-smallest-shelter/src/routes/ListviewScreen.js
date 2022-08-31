@@ -7,13 +7,15 @@ import style from './ListviewScreen.module.css';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { LoginUserToken, LoginRole, LoginUserIdx } from '../states/LoginState';
-
-const PAGE_SIZE = 10;
+import PageButtons from '../components/ListviewPage/PageButtons';
 
 export default function ListviewScreen() {
   const [userToken, setUserToken] = useRecoilState(LoginUserToken);
   const [cardList, setCardList] = useState([]); // 데이터 받아오는 배열
   const [pageNum, setPageNum] = useState(0);
+
+  const [click, setClick] = useState(false); // false: 조회, true: 필터링
+  const [maxPageNum, setMaxPageNum] = useState(1); // 페이지 버튼 최댓값
 
   const handleFilter = async (filters) => {
     const species = filters['species'];
@@ -53,7 +55,7 @@ export default function ListviewScreen() {
     };
     await axios
       .post(
-        `https://sjs.hana-umc.shop/animal/search?page=0`,
+        `https://sjs.hana-umc.shop/animal/search?page=${pageNum}`,
         JSON.stringify(data),
         {
           headers: {
@@ -61,35 +63,20 @@ export default function ListviewScreen() {
           },
         },
         {
-          params: { page: 0 },
+          params: { page: pageNum },
         }
       )
       .then((response) => {
         console.log(response);
+        setCardList(response.data.result.animal);
+        setPageNum(pageNum);
+        setMaxPageNum(response.data.result.pageNumber);
+        setClick(true);
       });
   };
 
-  const handlePrevious = () => {
-    // axios.get("https://sjs.hana-umc.shop/animals",
-    //     {params: {page: (pageNum > 0 ? pageNum - 1 : 0)}},
-    //     {withCredentials: true}
-    // ).then((res) => {
-    //     console.log(res.data.result)
-    //     setCardList(res.data.result.animal);
-    // });
-  };
-
-  const handleNext = () => {
-    axios
-      .get(
-        'https://sjs./hana-umc.shop/animals',
-        { params: { page: pageNum + 1 } },
-        { withCredentials: true }
-      )
-      .then((res) => {
-        console.log(res.data.result);
-        setCardList(res.data.result.animal);
-      });
+  const handleCardList = (data) => {
+    setCardList(data);
   };
 
   useEffect(() => {
@@ -103,6 +90,8 @@ export default function ListviewScreen() {
         console.log(res.data.result);
         setCardList(res.data.result.animal);
         console.log(userToken);
+        setPageNum(pageNum);
+        setMaxPageNum(res.data.result.pageNumber);
       });
   }, []);
 
@@ -120,14 +109,12 @@ export default function ListviewScreen() {
           return <DataItem key={item.animalIdx} item={item} />;
         })}
       </div>
-      <div className={style.buttonWrap}>
-        <button className={style.pageButton} onClick={handlePrevious}>
-          이전
-        </button>
-        <button className={style.pageButton} onClick={handleNext}>
-          다음
-        </button>
-      </div>
+      <PageButtons 
+        handleCardList={handleCardList} 
+        click={click} 
+        pageNum={pageNum} 
+        maxPageNum={maxPageNum}
+      />
     </>
   );
 }
