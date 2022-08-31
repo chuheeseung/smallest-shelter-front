@@ -55,4 +55,22 @@ export const LoginImageIndex = atom({
   key: 'LoginImageIndex',
   default: 0,
   effects_UNSTABLE: [persistAtom],
-})
+});
+
+export const LoginUserPhoneNum = atom({ // 로그인 유저 전화번호
+  key: 'LoginUserPhoneNum',
+  default: "010-0000-0000",
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const LoginUserAddr = atom({ // 로그인 유저 주소
+  key: 'LoginUserAddr',
+  default: "",
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const LoginUserEmail = atom({ // 로그인 유저 이메일
+  key: 'LoginUserEmail',
+  default: "",
+  effects_UNSTABLE: [persistAtom],
+});

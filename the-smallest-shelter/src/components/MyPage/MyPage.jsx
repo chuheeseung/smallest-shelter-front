@@ -170,10 +170,10 @@ function MyPage() {
     if(window.confirm("정말로 탈퇴하겠습니까?") === true) {
       await axios
         .delete(
-          `https://sjs.hana-umc.shop/auth/out/${loginUserIdx}`,
+          `https://sjs.hana-umc.shop/auth/out/${userIdx}`,
           {
-            params: { userIdx: loginUserIdx },
-            headers: { Authorization: loginUserToken },
+            params: { userIdx: userIdx },
+            headers: { Authorization: token },
           }
         )
         .then((response) => {
@@ -187,13 +187,13 @@ function MyPage() {
           sessionStorage.removeItem("bearer_token");
 
           setLoginState(false);
-          setLoginUserIdx(0);
+          setUserIdx(0);
           setIsRole("");
           setLoginUserName("");
           setUserOrgName("");
           setLoginUserId("");
           setSavedLoginPw("");
-          setLoginUserToken("");
+          setToken("");
           setLoginImageIndex(0);
 
           navigate('/');
