@@ -163,43 +163,39 @@ function MyPage() {
   const handleDelete = async (e) => {
     e.preventDefault();
 
-    if(window.confirm("정말로 탈퇴하겠습니까?") === true) {
+    if (window.confirm('정말로 탈퇴하겠습니까?') === true) {
       await axios
-        .delete(
-          `https://sjs.hana-umc.shop/auth/out/${userIdx}`,
-          {
-            params: { userIdx: userIdx },
-            headers: { Authorization: token },
-          }
-        )
+        .delete(`https://sjs.hana-umc.shop/auth/out/${userIdx}`, {
+          params: { userIdx: userIdx },
+          headers: { Authorization: token },
+        })
         .then((response) => {
           console.log(response);
-          alert("탈퇴했습니다.");
-          
-          sessionStorage.removeItem("userIdx");
-          sessionStorage.removeItem("name");
-          sessionStorage.removeItem("role");
-          sessionStorage.removeItem("organizationName");
-          sessionStorage.removeItem("bearer_token");
+          alert('탈퇴했습니다.');
+
+          sessionStorage.removeItem('userIdx');
+          sessionStorage.removeItem('name');
+          sessionStorage.removeItem('role');
+          sessionStorage.removeItem('organizationName');
+          sessionStorage.removeItem('bearer_token');
 
           setLoginState(false);
           setUserIdx(0);
-          setIsRole("");
-          setLoginUserName("");
-          setUserOrgName("");
-          setLoginUserId("");
-          setSavedLoginPw("");
-          setToken("");
+          setIsRole('');
+          setLoginUserName('');
+          setUserOrgName('');
+          setLoginUserId('');
+          setSavedLoginPw('');
+          setToken('');
           setLoginImageIndex(0);
 
           navigate('/');
         })
         .catch((error) => {
           console.log(error);
-        })
-    }
-    else {
-      alert("탈퇴를 취소하셨습니다.");
+        });
+    } else {
+      alert('탈퇴를 취소하셨습니다.');
     }
   };
 
@@ -233,7 +229,7 @@ function MyPage() {
               phoneNumber={myDataInfo.phoneNumber}
               address={myDataInfo.address}
               email={myDataInfo.email}
-              profileImgUrl={loginImageIndex}
+              profileImgUrl={myDataInfo.profileImgUrl}
             />
           </TabPanel>
           <TabPanel>
