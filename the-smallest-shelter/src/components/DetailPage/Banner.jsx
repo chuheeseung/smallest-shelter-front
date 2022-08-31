@@ -23,11 +23,13 @@ import {
   LoginRole,
   LoginUserId,
   LoginUserName,
+  LoginImageIndex,
 } from '../../states/LoginState';
 
 import BannerInfo from './BannerInfo';
 import { onValue, ref, remove, set } from 'firebase/database';
 import { dbService } from '../../fbase';
+import { imageArr } from '../SignUpPage/InputForm';
 
 const { confirm } = Modal;
 
@@ -37,6 +39,7 @@ function Banner(props) {
   const [isRole, setIsRole] = useRecoilState(LoginRole);
   const loginUserId = useRecoilValue(LoginUserId);
   const loginUserName = useRecoilValue(LoginUserName);
+  const loginImageIndex = useRecoilValue(LoginImageIndex);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [likeHeart, setLikeHeart] = useState('false');
@@ -49,8 +52,7 @@ function Banner(props) {
 
   const currUser = {
     id: loginUserId,
-    image:
-      'http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon',
+    image: imageArr[loginImageIndex],
     name: loginUserName,
   };
 

@@ -42,8 +42,6 @@ export class Chat extends Component {
     return userId < currUserId
     ? `${userId}-${currUserId}-${animalInfo.animalIdx}`
     : `${currUserId}-${userId}-${animalInfo.animalIdx}`
-      // ? `${userId}-${currUserId}-${String(this.props.animalIdx)}`
-      // : `${currUserId}-${userId}-${String(this.props.animalIdx)}`
   }
 
   render() {

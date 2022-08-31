@@ -159,7 +159,6 @@ function MyInfo(props) {
           )}
         </DetailInfo>
       </MyInfoDetail>
-      <button onClick={handleEdit}>수정</button>
     </>
   );
 }

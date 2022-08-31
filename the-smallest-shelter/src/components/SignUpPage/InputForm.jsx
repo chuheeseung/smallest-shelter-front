@@ -26,6 +26,13 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { LoginUserImage } from '../../states/LoginState';
 
+export const imageArr = [
+    image66, image67, image68, image69, image70,
+    image71, image72, image73, image74, image75,
+    image76, image77, image78, image79, image80,
+    image81, image82, image83, image84
+];
+
 function InputForm({ selectType }) {
     const navigate = useNavigate();
 
@@ -42,14 +49,6 @@ function InputForm({ selectType }) {
     const [phoneNumValid, setPhoneNumValid] = useState(false);
     const [emailValid, setEmailValid] = useState(false);
     const [notAllow, setNotAllow] = useState(true);
-
-    const imageArr = [
-        image66, image67, image68, image69, image70,
-        image71, image72, image73, image74, image75,
-        image76, image77, image78, image79, image80,
-        image81, image82, image83, image84
-    ];
-
     const handleId = (e) => {
         setId(e.target.value);
         const regex = 
