@@ -10,12 +10,22 @@ import {
   // useRecoilValue,
 } from 'recoil';
 import {
-  LoginRole,
-  LoginUserIdx,
-  LoginUserToken,
+  LoginImageIndex, 
+  LoginRole, 
+  LoginState, 
+  LoginUserAddr, 
+  LoginUserEmail, 
+  LoginUserId, 
+  LoginUserIdx, 
+  LoginUserName, 
+  LoginUserOrgName, 
+  LoginUserPhoneNum, 
+  LoginUserPw, 
+  LoginUserToken 
 } from '../../states/LoginState';
 import { myInfoDummy } from './dataMyInfo';
 import ChatList from '../ChatList/ChatList';
+import { useNavigate } from 'react-router-dom';
 
 class Tabs extends Component {
   static childContextTypes = {
@@ -104,9 +114,18 @@ class TabPanel extends Component {
 }
 //-------------------------여기가 메인-----------------------------------
 function MyPage() {
+  const [loginState, setLoginState] = useRecoilState(LoginState);
   const [isRole, setIsRole] = useRecoilState(LoginRole);
   const [userIdx, setUserIdx] = useRecoilState(LoginUserIdx);
   const [token, setToken] = useRecoilState(LoginUserToken);
+  const [loginUserName, setLoginUserName] = useRecoilState(LoginUserName);
+  const [loginUserId, setLoginUserId] = useRecoilState(LoginUserId);
+  const [savedLoginPw, setSavedLoginPw]  = useRecoilState(LoginUserPw);
+  const [loginImageIndex, setLoginImageIndex] = useRecoilState(LoginImageIndex);
+  const [loginUserAddr, setLoginUserAddr] = useRecoilState(LoginUserAddr);
+  const [loginUserPhoneNum, setLoginUserPhoneNum] = useRecoilState(LoginUserPhoneNum);
+  const [loginUserEmail, setLoginUserEmail] = useRecoilState(LoginUserEmail);
+  const [userOrgName, setUserOrgName] = useRecoilState(LoginUserOrgName);
   //State들
   const [isUserID, setIsUserID] = useState(0);
   const [isName, setIsName] = useState('');
@@ -115,6 +134,8 @@ function MyPage() {
   const [isEmail, setIsEmail] = useState('');
   const [isProfileUrl, setIsProfileUrl] = useState('');
   const [myDataInfo, setMyDataInfo] = useState([]);
+
+  const navigate = useNavigate();
 
   const getPosts = async () => {
     console.log(token);
@@ -131,6 +152,59 @@ function MyPage() {
       setMyDataInfo(response.data.result);
       // dummyInfo = mypageRes.result,
     });
+  };
+
+  const handleUpdate = () => {
+    if(window.confirm("회원 정보를 수정하겠습니까?") === true) {
+      console.log("update");
+      navigate('/update/member');
+    }
+    else {
+      console.log("update 취소");
+    }
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+
+    if(window.confirm("정말로 탈퇴하겠습니까?") === true) {
+      await axios
+        .delete(
+          `https://sjs.hana-umc.shop/auth/out/${loginUserIdx}`,
+          {
+            params: { userIdx: loginUserIdx },
+            headers: { Authorization: loginUserToken },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          alert("탈퇴했습니다.");
+          
+          sessionStorage.removeItem("userIdx");
+          sessionStorage.removeItem("name");
+          sessionStorage.removeItem("role");
+          sessionStorage.removeItem("organizationName");
+          sessionStorage.removeItem("bearer_token");
+
+          setLoginState(false);
+          setLoginUserIdx(0);
+          setIsRole("");
+          setLoginUserName("");
+          setUserOrgName("");
+          setLoginUserId("");
+          setSavedLoginPw("");
+          setLoginUserToken("");
+          setLoginImageIndex(0);
+
+          navigate('/');
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
+    else {
+      alert("탈퇴를 취소하셨습니다.");
+    }
   };
 
   useEffect(() => {
@@ -151,19 +225,23 @@ function MyPage() {
           <Tab>쪽지 목록</Tab>
         </TabList>
         <TabPanels>
+          <TabButtons>
+              <TabButton onClick={handleUpdate}>수정</TabButton>
+              <TabButton onClick={handleDelete}>탈퇴</TabButton>
+            </TabButtons>
           <TabPanel>
             <MyInfo
               isRole={isRole}
               userID={userIdx}
-              name={myDataInfo.name}
-              phoneNumber={myDataInfo.phoneNumber}
-              address={myDataInfo.address}
-              email={myDataInfo.email}
-              profileImgUrl={myDataInfo.profileImgUrl}
+              name={loginUserName}
+              phoneNumber={loginUserPhoneNum}
+              address={loginUserAddr}
+              email={loginUserEmail}
+              profileImgUrl={loginImageIndex}
             />
           </TabPanel>
           <TabPanel>
-            <MyLikeAnimal isRole={isRole} userID={userIdx} />
+            <MyLikeAnimal isRole={isRole} userID={loginUserId} />
           </TabPanel>
           <TabPanel>
             <ChatList />
@@ -219,4 +297,24 @@ const ChatPanels = styled.div`
   width: 250%;
   border-radius: 15px;
   margin-right: 50px;
+`;
+
+const TabButtons = styled.div`
+  text-align: right;
+  margin-top: 4px;
+`;
+
+const TabButton = styled.button`
+  border: none;
+  border-radius: 15px;
+  color: white;
+  background-color: #fbc22e;
+  margin-right: 10px;
+  font-size: 12px;
+  cursor: pointer;
+
+  &:hover {
+    transition: all ease 0.1s;
+    transform: scale(1.02);
+  }
 `;
