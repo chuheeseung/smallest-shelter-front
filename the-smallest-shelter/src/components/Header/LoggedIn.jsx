@@ -79,7 +79,7 @@ const Content = ({ loginUserName, loginRole, loginUserOrgName }) => {
     console.log(savedUserToken);
     let role = '';
     if (isRole == 'ORGANIZATION') {
-      role = 'organiztion';
+      role = 'organization';
     } else if (isRole == 'PRIVATE') {
       role = 'private';
     }
@@ -94,6 +94,7 @@ const Content = ({ loginUserName, loginRole, loginUserOrgName }) => {
     }).then((response) => {
       console.log(response);
       setIndex(response.data.result.profileImgUrl);
+      setLoginImageIndex(response.data.result.profileImgUrl);
     });
   };
 

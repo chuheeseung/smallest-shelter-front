@@ -132,7 +132,7 @@ function MyPage() {
     console.log(token);
     let role = '';
     if (isRole == 'ORGANIZATION') {
-      role = 'organiztion';
+      role = 'organization';
     } else if (isRole == 'PRIVATE') {
       role = 'private';
     }
