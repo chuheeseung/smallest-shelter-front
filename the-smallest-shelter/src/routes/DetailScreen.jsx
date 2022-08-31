@@ -9,10 +9,11 @@ import ReactModal from 'react-modal';
 import HistoryRegister from '../components/DetailPage/HistoryRegister';
 
 import {
-  useRecoilState,
+  useRecoilState, useRecoilValue,
   // useRecoilValue,
 } from 'recoil';
-import { LoginRole, LoginUserIdx } from '../states/LoginState';
+import { LoginImageIndex, LoginRole, LoginUserIdx } from '../states/LoginState';
+import { imageArr } from '../components/SignUpPage/InputForm';
 
 function DetailScreen() {
   //recoil : 단체 여부
@@ -43,9 +44,9 @@ function DetailScreen() {
   const [bite, setBite] = useState('');
 
   //단체
+  const loginImageIndex = useRecoilValue(LoginImageIndex);
   const [organizationMemberId, setOrganizationMemberId] = useState(0);
   const [organizationName, setOrganizationName] = useState('');
-  const [organizationImgUrl, setOrganizationImgUrl] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
   const [postData, setPostData] = useState([]);
@@ -89,7 +90,7 @@ function DetailScreen() {
       const obj = {
         id: detailData.organizationMemberId,
         name: detailData.organizationName,
-        image: detailData.organizationMemberImgUrl,
+        image: imageArr[loginImageIndex],
       };
       setOrganization(obj);
     });
