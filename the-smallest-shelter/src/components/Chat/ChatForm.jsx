@@ -3,7 +3,8 @@ import { dbService } from '../../fbase';
 import { child, push, ref, set } from 'firebase/database';
 import style from './Chat.module.css';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { LoginUserId, LoginUserName } from '../../states/LoginState';
+import { LoginImageIndex, LoginUserId, LoginUserName } from '../../states/LoginState';
+import { imageArr } from '../SignUpPage/InputForm';
 
 function ChatForm({ chatRoomId, organization, userInfo, animalInfo }) {
   const messagesRef = ref(dbService, "messages");
@@ -11,10 +12,11 @@ function ChatForm({ chatRoomId, organization, userInfo, animalInfo }) {
 
   const loginUserId = useRecoilValue(LoginUserId);
   const loginUserName = useRecoilValue(LoginUserName);
+  const loginImageIndex = useRecoilValue(LoginImageIndex);
 
   const currUser = {
     "id": loginUserId,
-    "image": "http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon",
+    "image": imageArr[loginImageIndex],
     "name": loginUserName
   };
 
