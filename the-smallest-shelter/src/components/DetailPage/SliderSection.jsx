@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 
 const Container = styled.div`
   overflow: hidden;
+  width: 100%;
   height: 298px;
 `;
 
@@ -21,7 +22,7 @@ Slide.displayName = 'Slide';
 
 const itemGutterRatio = ({ perPage, gutter }) =>
   ((perPage - 1) * gutter) / perPage;
-const itemWidth = perPage => 100 / perPage;
+const itemWidth = (perPage) => 100 / perPage;
 
 const transformValue = ({ position, perPage, gutter }) => {
   const positionTimesItemWidth = position * itemWidth(perPage);
@@ -40,7 +41,7 @@ const ItemsContainer = styled.div`
   height: 100%;
 
   @media (max-width: 768px) {
-    transform: ${props => transformValue({ ...props, perPage: 1 })};
+    transform: ${(props) => transformValue({ ...props, perPage: 1 })};
   }
 `;
 
@@ -48,7 +49,7 @@ ItemsContainer.displayName = 'ItemsContainer';
 
 const Item = styled.div`
   display: flex;
-  flex-basis: ${props =>
+  flex-basis: ${(props) =>
     `calc(${itemWidth(props.perPage)}% - ${itemGutterRatio(props)}px)`};
   padding-right: ${({ gutter }) => `${gutter}px`};
   flex-grow: 0;
@@ -183,7 +184,7 @@ const useCarousel = ({ p = 0, length, perPage = 3 }) => {
   const [isMobile, setIsMobile] = useState(mql.matches);
 
   useEffect(() => {
-    const fn = e => setIsMobile(e.matches);
+    const fn = (e) => setIsMobile(e.matches);
 
     mql.addListener(fn);
 
@@ -247,7 +248,7 @@ const Carousel = ({ children, perPage, position: propsPosition, gutter }) => {
           gutter={gutter}
           {...handlers}
         >
-          {Children.map(children, child => (
+          {Children.map(children, (child) => (
             <Item perPage={perPage} gutter={gutter}>
               {child}
             </Item>
@@ -258,27 +259,11 @@ const Carousel = ({ children, perPage, position: propsPosition, gutter }) => {
   );
 };
 
-const CarouselItem = styled.img`
-  display: block;
-  object-fit: cover;
-  height: 50%;
-  width: 100%;
-  margin: auto;
-  border-radius: 15px;
-`;
-
-const SliderSection = ({recommandAnimal}) => (
+const SliderSection = ({ recommandAnimal }) => (
   <Carousel perPage={3} gutter={12}>
-  {
-    recommandAnimal.map((item) => {
-      return (
-        <CarouselItem
-          src = {item.recommandImgUrl}
-        />
-
-      )
-    })
-  }
+    {recommandAnimal.map((item) => {
+      return <CarouselItem src={item.recommandImgUrl} />;
+    })}
     {/* <CarouselItem
       onClick={() => console.log('clicou')}
       src="https://images.unsplash.com/photo-1565225411862-b2a8c8a25101?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max"
@@ -291,5 +276,14 @@ const SliderSection = ({recommandAnimal}) => (
     <CarouselItem src="https://images.unsplash.com/photo-1565063407996-ab476d3cd8d4?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max" /> */}
   </Carousel>
 );
+
+const CarouselItem = styled.img`
+  display: block;
+  object-fit: cover;
+  height: 50%;
+  width: 100%;
+  margin: auto;
+  border-radius: 15px;
+`;
 
 export default SliderSection;

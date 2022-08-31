@@ -69,12 +69,12 @@ function Register() {
         e.preventDefault();
 
         let imgUrl = "";
-
         if (image !== "") {
             const fileRef = ref(storageService, `images/${name}/register/`);
             const uploadFile = await uploadString(fileRef, image, "data_url");
             imgUrl = await getDownloadURL(uploadFile.ref);
         }
+
         console.log(`
         userIdx: ${loginUserIdx},
         userToken: ${loginUserToken}

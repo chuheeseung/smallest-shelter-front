@@ -6,7 +6,6 @@ import { PlusOutlined } from '@ant-design/icons';
 import { GrCheckbox, GrCheckboxSelected } from 'react-icons/gr';
 import style from '../RegisterPage/Register.module.css'
 import UploadImg from '../RegisterPage/UploadImg';
-import RadioGroup from '../RegisterPage/RadioGroup';
 
 import perfect_on from '../../assets/img/perfect_on.png';
 import perfect_off from '../../assets/img/perfect_off.png';
@@ -27,7 +26,6 @@ function Edit() {
   const loginUserIdx = useRecoilValue(LoginUserIdx);
   const loginUserToken = useRecoilValue(LoginUserToken);
 
-  //동물 기본 정보
   const [name, setName] = useState('');
   const [imgUrl, setImgUrl] = useState('');
   const [year, setYear] = useState(0);
@@ -96,7 +94,7 @@ function Edit() {
           if (e === val.text) check[idx] = val.value
         })
       })
-      console.log(check)
+
       setCheckInit(check)
       setCheckVal(checkObj)
     })
@@ -317,7 +315,6 @@ function Edit() {
                     <p className={style.checkList}>
                       <span>{item}</span>
                       <EditRadioGroup item={item} idx={idx} checkType={checkType} setCheckVal={setCheckVal} checkVal={checkVal} checkInit={checkInit} />
-                      {/* <RadioGroup item={item} idx={idx} checkType={checkType} setCheckVal={setCheckVal} checkVal={checkVal} checkInit={checkInit} /> */}
                     </p>
                   ))
                 }
