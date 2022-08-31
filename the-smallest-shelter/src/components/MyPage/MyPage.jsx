@@ -10,18 +10,18 @@ import {
   // useRecoilValue,
 } from 'recoil';
 import {
-  LoginImageIndex, 
-  LoginRole, 
-  LoginState, 
-  LoginUserAddr, 
-  LoginUserEmail, 
-  LoginUserId, 
-  LoginUserIdx, 
-  LoginUserName, 
-  LoginUserOrgName, 
-  LoginUserPhoneNum, 
-  LoginUserPw, 
-  LoginUserToken 
+  LoginImageIndex,
+  LoginRole,
+  LoginState,
+  LoginUserAddr,
+  LoginUserEmail,
+  LoginUserId,
+  LoginUserIdx,
+  LoginUserName,
+  LoginUserOrgName,
+  LoginUserPhoneNum,
+  LoginUserPw,
+  LoginUserToken,
 } from '../../states/LoginState';
 import { myInfoDummy } from './dataMyInfo';
 import ChatList from '../ChatList/ChatList';
@@ -120,10 +120,11 @@ function MyPage() {
   const [token, setToken] = useRecoilState(LoginUserToken);
   const [loginUserName, setLoginUserName] = useRecoilState(LoginUserName);
   const [loginUserId, setLoginUserId] = useRecoilState(LoginUserId);
-  const [savedLoginPw, setSavedLoginPw]  = useRecoilState(LoginUserPw);
+  const [savedLoginPw, setSavedLoginPw] = useRecoilState(LoginUserPw);
   const [loginImageIndex, setLoginImageIndex] = useRecoilState(LoginImageIndex);
   const [loginUserAddr, setLoginUserAddr] = useRecoilState(LoginUserAddr);
-  const [loginUserPhoneNum, setLoginUserPhoneNum] = useRecoilState(LoginUserPhoneNum);
+  const [loginUserPhoneNum, setLoginUserPhoneNum] =
+    useRecoilState(LoginUserPhoneNum);
   const [loginUserEmail, setLoginUserEmail] = useRecoilState(LoginUserEmail);
   const [userOrgName, setUserOrgName] = useRecoilState(LoginUserOrgName);
   //State들
@@ -155,12 +156,11 @@ function MyPage() {
   };
 
   const handleUpdate = () => {
-    if(window.confirm("회원 정보를 수정하겠습니까?") === true) {
-      console.log("update");
+    if (window.confirm('회원 정보를 수정하겠습니까?') === true) {
+      console.log('update');
       navigate('/update/member');
-    }
-    else {
-      console.log("update 취소");
+    } else {
+      console.log('update 취소');
     }
   };
 
