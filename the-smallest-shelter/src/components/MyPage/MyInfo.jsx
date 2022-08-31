@@ -1,11 +1,79 @@
-//개인정보 패널 컴포넌트
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import 'antd/dist/antd.css';
 import styled from 'styled-components';
-import user1 from '../../assets/img/ProfileImg/Ellipse 67.png';
+import { Typography } from 'antd';
 import axios from 'axios';
+import {
+  useRecoilState,
+  // useRecoilValue,
+} from 'recoil';
+import {
+  LoginUserIdx,
+  LoginUserToken,
+  LoginRole,
+} from '../../states/LoginState';
+
+const { Paragraph } = Typography;
 
 function MyInfo(props) {
-  console.log();
+  const nameData = `${props.name}`;
+  const [editableName, setEditableName] = useState('');
+  const [editablePhone, setEditablePhone] = useState('');
+  const [editableAddress, setEditableAddress] = useState('');
+  const [editableEmail, setEditableEmail] = useState('');
+  const [editCheck, setEditCheck] = useState(false);
+
+  const [token, setToken] = useRecoilState(LoginUserToken);
+  const [userIdx, setUserIdx] = useRecoilState(LoginUserIdx);
+  const [isRole, setIsRole] = useRecoilState(LoginRole);
+
+  const handleEdit = () => {
+    setEditCheck((check) => !check);
+    console.log(editCheck);
+    if (editCheck == true && isRole == 'PRIVATE') {
+      const privateRes = axios
+        .patch(
+          `https://sjs.hana-umc.shop/auth/private/${userIdx}`,
+          {
+            data: {
+              name: editableName,
+              phoneNumber: editablePhone,
+              address: editableAddress,
+              email: editableEmail,
+            },
+          },
+          { headers: { Authorization: `${token}` } }
+        )
+        .then((response) => {
+          console.log(response);
+        });
+    } else if (editCheck == true && isRole == 'ORGANIZATION') {
+      const organizationRes = axios
+        .patch(
+          `https://sjs.hana-umc.shop/auth/organization/${userIdx}`,
+          {
+            data: {
+              name: editableName,
+              phoneNumber: editablePhone,
+              address: editableAddress,
+              email: editableEmail,
+            },
+          },
+          { headers: { Authorization: `${token}` } }
+        )
+        .then((response) => {
+          console.log(response);
+        });
+    }
+  };
+
+  useEffect(() => {
+    setEditableName(nameData);
+    setEditablePhone(props.phoneNumber);
+    setEditableAddress(props.address);
+    setEditableEmail(props.email);
+  }, [nameData, props.phoneNumber, props.address, props.email]);
+
   return (
     <>
       {props.isRole == 'ORGANIZATION' ? (
@@ -41,14 +109,56 @@ function MyInfo(props) {
               </>
             )}
           </ListItem>
-          <ListUserInfo>
-            <div>{props.name}</div>
-            <div>{props.phoneNumber}</div>
-            <div>{props.address}</div>
-            <div>{props.email}</div>
-          </ListUserInfo>
+          {editCheck ? (
+            <ListUserInfo>
+              <div>
+                <Paragraph
+                  editable={{
+                    onChange: setEditableName,
+                  }}
+                >
+                  {editableName}
+                </Paragraph>
+              </div>
+              <div>
+                <Paragraph
+                  editable={{
+                    onChange: setEditablePhone,
+                  }}
+                >
+                  {editablePhone}
+                </Paragraph>
+              </div>
+              <div>
+                <Paragraph
+                  editable={{
+                    onChange: setEditableAddress,
+                  }}
+                >
+                  {editableAddress}
+                </Paragraph>
+              </div>
+              <div>
+                <Paragraph
+                  editable={{
+                    onChange: setEditableEmail,
+                  }}
+                >
+                  {editableEmail}
+                </Paragraph>
+              </div>
+            </ListUserInfo>
+          ) : (
+            <ListUserInfo>
+              <div>{editableName}</div>
+              <div>{editablePhone}</div>
+              <div>{editableAddress}</div>
+              <div>{editableEmail}</div>
+            </ListUserInfo>
+          )}
         </DetailInfo>
       </MyInfoDetail>
+      <button onClick={handleEdit}>수정</button>
     </>
   );
 }
