@@ -132,13 +132,13 @@ function MyPage() {
     console.log(token);
     let role = '';
     if (isRole == 'ORGANIZATION') {
-      role = 'organiztion';
+      role = 'organization';
     } else if (isRole == 'PRIVATE') {
       role = 'private';
     }
     const mypageRes = await axios({
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `${token}`,
         withCredentials: true,
         Accept: 'application/json',
       },
