@@ -132,7 +132,7 @@ function MyPage() {
     }
     const mypageRes = await axios({
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `${token}`,
         withCredentials: true,
         Accept: 'application/json',
       },
