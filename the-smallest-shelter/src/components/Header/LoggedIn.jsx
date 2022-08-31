@@ -94,6 +94,7 @@ const Content = ({ loginUserName, loginRole, loginUserOrgName }) => {
     }).then((response) => {
       console.log(response);
       setIndex(response.data.result.profileImgUrl);
+      setLoginImageIndex(response.data.result.profileImgUrl);
     });
   };
 
