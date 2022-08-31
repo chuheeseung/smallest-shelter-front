@@ -139,7 +139,22 @@ function Banner(props) {
         setLikeHeart(liked);
       });
   };
+  //   const likedRes = () => {
+  //     console.log("좋아요 누름");
+  //     axios.get('https://sjs.hana-umc.shop/posts/1')
+  //     .then((res) => {
+  //       let { data } = res;
+  //       let { animalIdx, isLike } = data;
 
+  //       console.log('animalIdx : ' + animalIdx);
+  //       console.log('isLike : ' +isLike);
+  //       setLikeHeart(isLike);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+
+  //     });
+  //   }
   return (
     <RootBanner>
       <DetailTitle>동물 상세 정보</DetailTitle>

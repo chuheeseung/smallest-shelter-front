@@ -18,7 +18,7 @@ export class Chat extends Component {
   }
 
   componentDidMount() {
-    const {currUser, organization, animalInfo} = this.state;
+    const {currUser, organization, animalInfo } = this.state;
 
     const chatRoomId = this.getChatRoomId(currUser.id, organization.id, animalInfo);
     if (chatRoomId) {

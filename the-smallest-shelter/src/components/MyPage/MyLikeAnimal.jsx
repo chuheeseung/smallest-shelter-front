@@ -3,12 +3,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MyPageCard from './MyPageCard';
 import axios from 'axios';
-import {
-  Editable,
-  EditableInput,
-  EditableTextarea,
-  EditablePreview,
-} from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
 import { LoginUserToken, LoginUserIdx } from '../../states/LoginState';
 const PAGE_SIZE = 10;
