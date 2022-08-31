@@ -40,7 +40,7 @@ const RegisterModal = ({ isOpen, onCancel, animalIdx }) => {
       const uploadFile = await uploadString(fileRef, image, 'data_url');
       imgUrl = await getDownloadURL(uploadFile.ref);
     }
-    let animalID = { animalIdx };
+    let animalID = animalIdx;
     let token = userToken;
     console.log(
       '게시물 사진: ',

@@ -2,68 +2,102 @@ import React, { Component, useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import {
-  AiOutlineStar,
+  AiOutlineEdit,
+  AiFillDelete,
   AiOutlineHeart,
   AiFillHeart,
-  AiOutlineLike,
 } from 'react-icons/ai';
 import { FiMail } from 'react-icons/fi';
-import { Checkbox, Dropdown } from 'antd';
+import { Dropdown, Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.min.css';
 import { createTheme } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import SuccessMark from '../../assets/img/SuccessMark.png';
-import { useNavigate } from 'react-router-dom';
 import Chat from '../Chat/Chat';
+import { useNavigate } from 'react-router-dom';
 
+import { useRecoilState, useRecoilValue } from 'recoil';
 import {
-  useRecoilState, useRecoilValue,
-} from 'recoil';
-import { LoginUserToken, LoginRole, LoginUserId, LoginUserName } from '../../states/LoginState';
+  LoginUserToken,
+  LoginRole,
+  LoginUserId,
+  LoginUserName,
+} from '../../states/LoginState';
+
+import BannerInfo from './BannerInfo';
+import { onValue, ref, remove, set } from 'firebase/database';
+import { dbService } from '../../fbase';
+
+const { confirm } = Modal;
 
 function Banner(props) {
+  const navigate = useNavigate();
   const [userToken, setUserToken] = useRecoilState(LoginUserToken);
   const [isRole, setIsRole] = useRecoilState(LoginRole);
   const loginUserId = useRecoilValue(LoginUserId);
-  const loginUserName = useRecoilValue(LoginUserName)
+  const loginUserName = useRecoilValue(LoginUserName);
 
-  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [likeHeart, setLikeHeart] = useState("true");
-  const [checkAdopted, setCheckAdopted] = useState("true");
-  const animalInfo = { "animalIdx": String(props.animalIdx), "animalName": props.name }
-
-  const currUser = {
-    "id": loginUserId,
-    "image": "http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon",
-    "name": loginUserName
+  const [likeHeart, setLikeHeart] = useState('false');
+  const animalInfo = {
+    animalIdx: String(props.animalIdx),
+    animalName: props.name,
   };
 
-  const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-    console.log(userToken, isRole);
-    let checked = `${e.target.checked}`
-    setCheckAdopted(checked);
-    console.log(checked);
+  const messagesRef = ref(dbService, 'messages');
 
-    // axios.patch(`https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=30`, {animal_id: 30})
-    axios.patch('https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=30',
-      {
-        params: { animal_id: 30 },
-        headers: { 'Authorization': userToken }
-      }
-      // headers: {
-      //     // withCredentials: true,
-      //     // 'Accept': 'application/json',
-      //     'Authorization': userToken,
-      // },
-    ).then((response) => {
-      console.log(response);
+  const currUser = {
+    id: loginUserId,
+    image:
+      'http://gravatar.com/avatar/ba97c141500abffb0aee54dbcaee59ff?d=identicon',
+    name: loginUserName,
+  };
+
+  const onEditInfo = () => {
+    navigate(`/edit/${props.animalIdx}`);
+  };
+
+  const showConfirm = () => {
+    confirm({
+      title: '해당 동물 정보를 삭제하시겠습니까?',
+      icon: <ExclamationCircleOutlined />,
+      content: '삭제 시 복구가 불가합니다.',
+
+      onOk() {
+        axios
+          .delete(
+            `https://sjs.hana-umc.shop/auth/organization/animal/${props.animalIdx}`,
+            {
+              headers: {
+                Authorization: `Bearer ${userToken}`,
+              },
+            }
+          )
+          .then(() => console.log('성공'))
+          .catch((err) => console.log(err));
+
+        onValue(messagesRef, (snapshot) => {
+          if (snapshot.val() !== null) {
+            Object.keys(snapshot.val()).map((id) => {
+              id.includes(props.animalIdx) &&
+                remove(ref(dbService, `messages/${id}/`));
+            });
+          } else {
+            console.log('채팅방 없음');
+            return;
+          }
+        });
+        navigate('/');
+        //window.location.href = "/";
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
     });
-  }
+  };
 
-
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -74,63 +108,38 @@ function Banner(props) {
   const theme2 = createTheme({
     overrides: {
       MuiPopover: {
-        root: {
-        },
+        root: { height: '180px' },
         paper: {
-          padding: "20px",
-          borderRadius: "20px",
-          height: "120px",
-          border: "1px solid #D2D2D2",
-
-        }
-      }
-    }
+          padding: '20px',
+          borderRadius: '20px',
+          height: '180px',
+          border: '1px solid #D2D2D2',
+        },
+      },
+    },
   });
 
-  const onChange = async (e) => {
-    console.log(`checked = ${e.target.checked}`);
-    console.log(
-      props.isOrganization,
-      'user id:',
-      props.userIdx,
-      'animal id: ',
-      props.animalIdx
-    );
-    let userId = props.userIdx;
+  const onLike = async (e) => {
+    let userIdx = props.userIdx;
     let animalId = props.animalIdx;
-    let checked = `${e.target.checked}`;
     let token = userToken;
-    setCheckAdopted(checked);
-    console.log(token);
-
+    let liked = !likeHeart;
+    console.log(token, liked);
+    localStorage.setItem(`${userIdx}`, `${liked}`);
     await axios
       .patch(
-        `https://sjs.hana-umc.shop/auth/private/animal/like?user_id=${userId}&animal_id=${animalId}`,
+        `https://sjs.hana-umc.shop/auth/private/animal/like?user_id=${userIdx}&animal_id=${animalId}`,
         {
-          params: { user_id: `${userId}`, animal_id: `${animalId}` },
+          params: { user_id: userIdx, animal_id: animalId },
         },
         { headers: { Authorization: `${token}` } }
       )
       .then((response) => {
         console.log(response);
+        setLikeHeart(liked);
       });
   };
-  //   const likedRes = () => {
-  //     console.log("좋아요 누름");
-  //     axios.get('https://sjs.hana-umc.shop/posts/1')
-  //     .then((res) => {
-  //       let { data } = res;
-  //       let { animalIdx, isLike } = data;
 
-  //       console.log('animalIdx : ' + animalIdx);
-  //       console.log('isLike : ' +isLike);
-  //       setLikeHeart(isLike);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-
-  //     });
-  //   }
   return (
     <RootBanner>
       <DetailTitle>동물 상세 정보</DetailTitle>
@@ -138,20 +147,32 @@ function Banner(props) {
         <Profile>
           <ProfileImg src={props.imgUrl} />
           <PetInfo>
-            <PetName> {props.name} / <button onClick={handleClick} style={{ background: "none", border: "none", fontWeight: "700", }}>&nbsp;유행사</button>
+            <PetName>
+              {' '}
+              {props.name} /{' '}
+              <button
+                onClick={handleClick}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontWeight: '700',
+                }}
+              >
+                &nbsp;유행사
+              </button>
               <createTheme theme={theme2}>
                 <Popover
-                  id="popover-with-anchor"
+                  id='popover-with-anchor'
                   open={Boolean(anchorEl)}
                   anchorEl={anchorEl}
                   onClose={handleClose}
                   anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center"
+                    vertical: 'bottom',
+                    horizontal: 'center',
                   }}
                   transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center"
+                    vertical: 'top',
+                    horizontal: 'center',
                   }}
                 >
                   <GroupTitle>{props.organizationName}</GroupTitle>
@@ -161,104 +182,67 @@ function Banner(props) {
               </createTheme>
             </PetName>
 
-            <PetParagraph>
-              <InfoParagraph>
-                <InfoItem1>
-                  동물종류
-                </InfoItem1>
-                <InfoItem1>
-                  성별
-                </InfoItem1>
-                <InfoItem1>
-                  질병
-                </InfoItem1>
-                <InfoItem1>
-                  나이
-                </InfoItem1>
-                {
-                  props.isOrganization == "ORGANIZATION" //단체이면 입양상태 체크 가능
-                    ? <div style={{ marginTop: "19px" }}><Checkbox onChange={onChange} /></div>
-                    : <div style={{ marginTop: "19px" }}><Checkbox onChange={onChange} /></div>
-                }
-              </InfoParagraph>
-              <InfoParagraph>
-                <InfoItem2>
-                  {
-                    `${props.species}` == "CAT"
-                      ? <>고양이</>
-                      : <>강아지</>
-                  }
-                </InfoItem2>
-                <InfoItem2>
-                  {
-                    `${props.gender}` == "MALE"
-                      ? <>남</>
-                      : <>여</>
-                  }
-                </InfoItem2>
-                <InfoItem2>
-                  {
-                    props.illness.map((item) => {
-                      return (
-                        <>{item.illnessName} &nbsp;</>
-                      )
-                    })
-                  }
-                </InfoItem2>
-                <InfoItem2>
-                  {props.year}살 &nbsp; {props.month}개월 {props.isGuessed == true ? "추정" : ""}
-                </InfoItem2>
-                {
-                  props.isOrganization == "ORGANIZATION"
-                    ? <InfoItem2>입양 상태</InfoItem2>
-                    : <InfoItem2>입양 상태</InfoItem2>
-                }
-              </InfoParagraph>
-            </PetParagraph>
+            <BannerInfo
+              isOrganization={isRole}
+              id={props.animalIdx}
+              name={props.name}
+              species={props.species}
+              year={props.year}
+              month={props.month}
+              isGuessed={props.isGuessed}
+              gender={props.gender}
+              illness={props.illness}
+              socialization={props.socialization}
+              separation={props.separation}
+              toilet={props.toilet}
+              bark={props.bark}
+              bite={props.bite}
+            />
           </PetInfo>
         </Profile>
         <ProfileIcon>
           <IconSet>
-<<<<<<< HEAD
             {props.isOrganization == 'PRIVATE' ? ( //입양희망자인 경우
               <>
-                <div style={{ marginTop: '19px' }}>
-                  <Checkbox onChange={onChange} />
-                </div>
+                {likeHeart == false ? (
+                  <AiOutlineHeart size='22' onClick={onLike} />
+                ) : (
+                  <AiFillHeart size='22' onClick={onLike} />
+                )}
                 <Dropdown
                   overlay={
-                    <Chat currUser={currUser} organization={organization} />
-=======
-            {
-              props.isOrganization == "PRIVATE"//입양희망자인 경우
-                ? <>
-                  {
-                    likeHeart == "false"
-                      ? <AiOutlineHeart size="22" />
-                      : <AiFillHeart size="22" />
->>>>>>> 0588b3a0b034e7780f632ff5f3f43b4a46fa72a4
+                    <Chat
+                      currUser={currUser}
+                      organization={props.organization}
+                      animalInfo={animalInfo}
+                    />
                   }
-                  <Dropdown
-                    overlay={<Chat
-                    currUser={currUser}
-                    organization={props.organization}
-                    animalInfo={animalInfo} />}
-                    trigger={['click']}>
-                    <FiMail size="22" style={{ marginLeft: "22px", color: 'black' }} />
-                  </Dropdown>
-                </>
-                : null
-            }
+                  trigger={['click']}
+                >
+                  <FiMail
+                    size='22'
+                    style={{ marginLeft: '22px', color: 'black' }}
+                  />
+                </Dropdown>
+              </>
+            ) : (
+              <>
+                <AiOutlineEdit size='22' onClick={onEditInfo} />
+                <AiFillDelete
+                  size='22'
+                  onClick={showConfirm}
+                  style={{ marginLeft: '22px' }}
+                />
+              </>
+            )}
           </IconSet>
-          {
-            props.isAdopted == false//입양 되었을 때 마크 여부
-              ? <img src={SuccessMark} style={{ width: "150px" }} />
-              : null
-          }
+          {props.isAdopted == true ? ( //입양 되었을 때 마크 여부
+            <img src={SuccessMark} style={{ width: '150px' }} />
+          ) : null}
         </ProfileIcon>
       </ContainerBanner>
     </RootBanner>
-  )
+  );
 }
 
 export default Banner;
