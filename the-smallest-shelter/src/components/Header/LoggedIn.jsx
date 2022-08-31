@@ -79,13 +79,13 @@ const Content = ({ loginUserName, loginRole, loginUserOrgName }) => {
     console.log(savedUserToken);
     let role = '';
     if (isRole == 'ORGANIZATION') {
-      role = 'organiztion';
+      role = 'organization';
     } else if (isRole == 'PRIVATE') {
       role = 'private';
     }
     const mypageRes = await axios({
       headers: {
-        Authorization: `Bearer ${savedUserToken}`,
+        Authorization: `${savedUserToken}`,
         withCredentials: true,
         Accept: 'application/json',
       },
