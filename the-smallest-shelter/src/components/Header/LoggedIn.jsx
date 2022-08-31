@@ -85,7 +85,7 @@ const Content = ({ loginUserName, loginRole, loginUserOrgName }) => {
     }
     const mypageRes = await axios({
       headers: {
-        Authorization: `Bearer ${savedUserToken}`,
+        Authorization: `${savedUserToken}`,
         withCredentials: true,
         Accept: 'application/json',
       },
