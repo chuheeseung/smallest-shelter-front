@@ -16,43 +16,29 @@ export default function ListviewScreen() {
 
   const [click, setClick] = useState(false); // false: 조회, true: 필터링
   const [maxPageNum, setMaxPageNum] = useState(1); // 페이지 버튼 최댓값
+  const [data, setData] = useState({
+    species: "",
+    gender: "",
+    ageBoundary: "",
+    isAdopted: "",
+  });
 
   const handleFilter = async (filters) => {
-    const species = filters['species'];
-    const gender = filters['gender'];
-    const ageBoundary = filters['age'];
-    const isAdopted = filters['isAdopted'];
-    // const res = await axios({
-    //   headers: {
-    //     withCredentials: true,
-    //     'Access-Control-Allow-Origin': 'http://localhost:3000',
-    //     Accept: 'application/json',
-    //   },
-    //   method: 'POST',
-    //   url: 'https://sjs.hana-umc.shop/animal/search',
-    //   params: {
-    //     page: pageNum,
-    //   },
-    //   data: {
-    //     species: species,
-    //     gender: gender,
-    //     ageBoundary: ageBoundary,
-    //     isAdopted: isAdopted,
-    //   },
-    // })
-    //   .then((response) => {
-    //     console.log(response);
-    //     setCardList(response.data.result.animal);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
     let data = {
-      species: species,
-      gender: gender,
-      ageBoundary: ageBoundary,
-      isAdopted: isAdopted,
+      species: filters['species'],
+      gender: filters['gender'],
+      ageBoundary: filters['age'],
+      isAdopted: filters['isAdopted'],
     };
+    
+    setData({
+      ...data,
+      species: filters['species'],
+      gender: filters['gender'],
+      ageBoundary: filters['age'],
+      isAdopted: filters['isAdopted'],
+    });
+
     await axios
       .post(
         `https://sjs.hana-umc.shop/animal/search?page=${pageNum}`,
@@ -67,11 +53,13 @@ export default function ListviewScreen() {
         }
       )
       .then((response) => {
-        console.log(response);
         setCardList(response.data.result.animal);
         setPageNum(pageNum);
         setMaxPageNum(response.data.result.pageNumber);
         setClick(true);
+        
+        console.log(response);
+        console.log(click);
       });
   };
 
@@ -114,6 +102,7 @@ export default function ListviewScreen() {
         click={click} 
         pageNum={pageNum} 
         maxPageNum={maxPageNum}
+        data={data}
       />
     </>
   );
