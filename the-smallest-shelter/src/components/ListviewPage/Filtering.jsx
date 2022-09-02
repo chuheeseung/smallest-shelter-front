@@ -5,7 +5,7 @@ import searchButtonImage from '../../assets/img/search.png';
 
 const { Option } = Select;
 
-function Filtering({ getFilter }) {
+function Filtering({ getFilter, handleData }) {
   const filterData = {
     species: [null, 'DOG', 'CAT'],
     gender: [null, 'MALE', 'FEMALE', 'MALE_NEUTRAL', 'FEMALE_NEUTRAL'],
