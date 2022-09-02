@@ -4,14 +4,18 @@ import styled from 'styled-components';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { ButtonWrap, PageButton } from '../MyPage/MyLikeAnimal';
+import { useState } from 'react';
 
-export default function PageButtons({ handleCardList, click, pageNum, maxPageNum }) {
+export default function PageButtons({ handleCardList, click, pageNum, maxPageNum, data }) {
+  // const [clicked, setClicked] = useState(false);
+
   const handlePrevious = async () => {
     if(click === true) {
       console.log(1);
       await axios
-        .get(
+        .post(
           `https://sjs.hana-umc.shop/animal/search?page=${pageNum}`,
+          JSON.stringify(data),
           {
             headers: {
               'Content-Type': `application/json`,
@@ -22,20 +26,20 @@ export default function PageButtons({ handleCardList, click, pageNum, maxPageNum
           }
         )
         .then((res) => {
-          console.log(res.data.result)
+          console.log(res.data.result);
           handleCardList(res.data.result.animal);
         })
         .catch((error) => {
           console.log(error);
         });
     }
-    else {
+    else if (click === false) {
       console.log(2);
       await axios.get("https://sjs.hana-umc.shop/animals",
           {params: {page: (pageNum > 0 ? pageNum - 1 : 0)}},
           {withCredentials: true}
       ).then((res) => {
-          console.log(res.data.result)
+          console.log(res.data.result);
           handleCardList(res.data.result.animal);
       })
       .catch((error) => {
@@ -48,8 +52,9 @@ export default function PageButtons({ handleCardList, click, pageNum, maxPageNum
     if(click === true) {
       console.log(3);
       await axios
-        .get(
+        .post(
           `https://sjs.hana-umc.shop/animal/search?page=${pageNum}`,
+          JSON.stringify(data),
           {
             headers: {
               'Content-Type': `application/json`,
@@ -59,14 +64,14 @@ export default function PageButtons({ handleCardList, click, pageNum, maxPageNum
             params: { page: (pageNum < maxPageNum ? pageNum + 1 : maxPageNum) },
           }
         ).then((res) => {
-          console.log(res.data.result)
+          console.log(res.data.result);
           handleCardList(res.data.result.animal);
         })
         .catch((error) => {
           console.log(error);
         });
     }
-    else {
+    else if (click === false) {
       console.log(4);
       await axios
         .get(
@@ -83,6 +88,11 @@ export default function PageButtons({ handleCardList, click, pageNum, maxPageNum
         });
     }
   };
+
+  // useState(() => {
+  //   setClicked(click);
+  //   console.log(clicked);
+  // }, []);
 
   return (
     <ButtonWrap>
