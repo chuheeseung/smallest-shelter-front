@@ -5,12 +5,7 @@ import styled from 'styled-components';
 import { Checkbox, Dropdown } from 'antd';
 import 'antd/dist/antd.min.css';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import {
-  LoginUserToken,
-  LoginRole,
-  LoginUserId,
-  LoginUserName,
-} from '../../states/LoginState';
+import { LoginUserToken, LoginUserOrgName } from '../../states/LoginState';
 //이미지
 import GOOD from '../../assets/img/perfect_off.png';
 import TRAINING from '../../assets/img/practice_off.png';
@@ -18,22 +13,18 @@ import BAD from '../../assets/img/lack_off.png';
 
 function BannerInfo(props) {
   const [userToken, setUserToken] = useRecoilState(LoginUserToken);
-  const loginUserId = useRecoilValue(LoginUserId);
-  const loginUserName = useRecoilValue(LoginUserName);
+  const loginUserOrgName = useRecoilValue(LoginUserOrgName);
+  const [checkAdopted, setCheckAdopted] = useState('false');
 
-  const navigate = useNavigate();
-  const [likeHeart, setLikeHeart] = useState('true');
-  const [checkAdopted, setCheckAdopted] = useState('true');
+  const toggleChecked = () => {
+    setCheckAdopted(!checkAdopted);
+  };
 
   const onChange = async (e) => {
-    console.log(`checked = ${e.target.checked}`);
-    console.log(props.isOrganization, 'id:', props.id);
     let animalId = props.id;
-    let checked = `${e.target.checked}`;
     let token = userToken;
-    setCheckAdopted(checked);
-    console.log(token);
-
+    setCheckAdopted(e.target.checked);
+    console.log(token, `checked = ${e.target.checked}`);
     await axios
       .patch(
         `https://sjs.hana-umc.shop/auth/organization/animal/adopt?animal_id=${animalId}`,
@@ -55,9 +46,10 @@ function BannerInfo(props) {
           <InfoItem1>성별</InfoItem1>
           <InfoItem1>질병</InfoItem1>
           <InfoItem1>나이</InfoItem1>
-          {props.isOrganization == 'ORGANIZATION' ? ( //단체이면 입양상태 체크 가능
+          {props.isOrganization == 'ORGANIZATION' &&
+          props.organizationName == loginUserOrgName ? ( //단체이면 입양상태 체크 가능
             <div style={{ marginTop: '19px' }}>
-              <Checkbox onChange={onChange} />
+              <Checkbox onChange={onChange} onClick={toggleChecked} />
             </div>
           ) : null}
         </InfoParagraph>
@@ -82,7 +74,8 @@ function BannerInfo(props) {
             {props.year}살 {props.month}개월{' '}
             {props.isGuessed == true ? '추정' : ''}
           </InfoItem2>
-          {props.isOrganization == 'ORGANIZATION' ? (
+          {props.isOrganization == 'ORGANIZATION' &&
+          props.organizationName == loginUserOrgName ? (
             <InfoItem2>입양 상태</InfoItem2>
           ) : null}
         </InfoParagraph>

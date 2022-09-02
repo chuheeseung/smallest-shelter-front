@@ -5,27 +5,22 @@ import './MyPage.css';
 import MyLikeAnimal from './MyLikeAnimal';
 import styled from 'styled-components';
 import axios from 'axios';
-import {
-  useRecoilState,
-  // useRecoilValue,
-} from 'recoil';
+import { useRecoilState } from 'recoil';
 import {
   LoginImageIndex,
   LoginRole,
   LoginState,
-  LoginUserAddr,
-  LoginUserEmail,
   LoginUserId,
   LoginUserIdx,
   LoginUserName,
   LoginUserOrgName,
-  LoginUserPhoneNum,
   LoginUserPw,
   LoginUserToken,
 } from '../../states/LoginState';
 import { myInfoDummy } from './dataMyInfo';
 import ChatList from '../ChatList/ChatList';
 import { useNavigate } from 'react-router-dom';
+import MyRegisterAnimal from './MyRegisterAnimal';
 
 class Tabs extends Component {
   static childContextTypes = {
@@ -233,7 +228,11 @@ function MyPage() {
             />
           </TabPanel>
           <TabPanel>
-            <MyLikeAnimal isRole={isRole} userID={loginUserId} />
+            {isRole == 'PRIVATE' ? (
+              <MyLikeAnimal isRole={isRole} userID={loginUserId} />
+            ) : (
+              <MyRegisterAnimal isRole={isRole} userID={loginUserId} />
+            )}
           </TabPanel>
           <TabPanel>
             <ChatList />

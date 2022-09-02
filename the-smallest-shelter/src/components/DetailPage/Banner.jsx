@@ -24,6 +24,7 @@ import {
   LoginUserId,
   LoginUserName,
   LoginImageIndex,
+  LoginUserOrgName,
 } from '../../states/LoginState';
 
 import BannerInfo from './BannerInfo';
@@ -40,6 +41,7 @@ function Banner(props) {
   const loginUserId = useRecoilValue(LoginUserId);
   const loginUserName = useRecoilValue(LoginUserName);
   const loginImageIndex = useRecoilValue(LoginImageIndex);
+  const loginUserOrgName = useRecoilValue(LoginUserOrgName);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [likeHeart, setLikeHeart] = useState('false');
@@ -127,7 +129,7 @@ function Banner(props) {
     let token = userToken;
     let liked = !likeHeart;
     console.log(token, liked);
-    localStorage.setItem(`${userIdx}`, `${liked}`);
+    localStorage.setItem(`${animalId}`, `${liked}`);
     await axios
       .patch(
         `https://sjs.hana-umc.shop/auth/private/animal/like?user_id=${userIdx}&animal_id=${animalId}`,
@@ -141,22 +143,7 @@ function Banner(props) {
         setLikeHeart(liked);
       });
   };
-  //   const likedRes = () => {
-  //     console.log("좋아요 누름");
-  //     axios.get('https://sjs.hana-umc.shop/posts/1')
-  //     .then((res) => {
-  //       let { data } = res;
-  //       let { animalIdx, isLike } = data;
 
-  //       console.log('animalIdx : ' + animalIdx);
-  //       console.log('isLike : ' +isLike);
-  //       setLikeHeart(isLike);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-
-  //     });
-  //   }
   return (
     <RootBanner>
       <DetailTitle>동물 상세 정보</DetailTitle>
@@ -175,7 +162,7 @@ function Banner(props) {
                   fontWeight: '700',
                 }}
               >
-                &nbsp;유행사
+                &nbsp;{props.organizationName == 'UHENGSA' ? '유행사' : '카라'}
               </button>
               <createTheme theme={theme2}>
                 <Popover
@@ -200,6 +187,7 @@ function Banner(props) {
             </PetName>
 
             <BannerInfo
+              isChecked={props.isAdopted}
               isOrganization={isRole}
               id={props.animalIdx}
               name={props.name}
@@ -214,12 +202,13 @@ function Banner(props) {
               toilet={props.toilet}
               bark={props.bark}
               bite={props.bite}
+              organizationName={props.organizationName}
             />
           </PetInfo>
         </Profile>
         <ProfileIcon>
           <IconSet>
-            {props.isOrganization == 'PRIVATE' ? ( //입양희망자인 경우
+            {isRole == 'PRIVATE' || isRole == 'ORGANIZTION' ? ( //입양희망자인 경우
               <>
                 {likeHeart == false ? (
                   <AiOutlineHeart size='22' onClick={onLike} />
@@ -242,7 +231,7 @@ function Banner(props) {
                   />
                 </Dropdown>
               </>
-            ) : (
+            ) : props.organizationName == loginUserOrgName ? (
               <>
                 <AiOutlineEdit size='22' onClick={onEditInfo} />
                 <AiFillDelete
@@ -251,7 +240,7 @@ function Banner(props) {
                   style={{ marginLeft: '22px' }}
                 />
               </>
-            )}
+            ) : null}
           </IconSet>
           {props.isAdopted == true ? ( //입양 되었을 때 마크 여부
             <img src={SuccessMark} style={{ width: '150px' }} />
