@@ -3,18 +3,17 @@ import styled from 'styled-components';
 import Modal from './Modal';
 import ReactModal from 'react-modal';
 import axios from 'axios';
-import { modaldata } from './ModalDummyData';
 
-// import MyModal from "./MyModal";
-// import useModals from "./useModals.js";
 ReactModal.setAppElement('#root');
 
 export default function Posts(props) {
   const [isOpen, setOpen] = useState(false);
-  const [postImgUrl, setPostImgUrl] = useState('');
   const [postContent, setPostContent] = useState('');
+  const [modalImgUrl, setPostImgUrl] = useState('');
 
   const handleClick = () => {
+    let animalIdx = props.animalIdx;
+    let postIdx = props.postIdx;
     // 여기서 열어준다
     axios({
       headers: {
@@ -22,18 +21,16 @@ export default function Posts(props) {
         Accept: 'application/json',
       },
       method: 'get',
-      url: 'https://sjs.hana-umc.shop/post?animal_id=1&post_id=1',
+      url: `https://sjs.hana-umc.shop/post?animal_id=${animalIdx}&post_id=${postIdx}`,
       params: {
-        animal_id: 1,
-        post_id: 1,
+        animal_id: animalIdx,
+        post_id: postIdx,
       },
     }).then((response) => {
       console.log(response);
-      let postData = response.result;
-      console.log(postData.imgUrl);
-      console.log(postData.content);
-      setPostImgUrl(postData.imgUrl);
+      let postData = response.data.result;
       setPostContent(postData.content);
+      setPostImgUrl(postData.imgUrl);
     });
     setOpen(true);
   };
@@ -49,7 +46,7 @@ export default function Posts(props) {
     <>
       <PhotoContainer onClick={handleClick}>
         <img
-          src={props.imgUrl}
+          src={props.postImgUrl}
           alt='대표 사진'
           style={{
             width: '220px',
@@ -62,10 +59,12 @@ export default function Posts(props) {
       </PhotoContainer>
       <Modal
         isOpen={isOpen}
-        onSubmit={handleModalSubmit}
         onCancel={handleModalCancel}
-        postImgUrl={postImgUrl}
+        postImgUrl={modalImgUrl}
         postContent={postContent}
+        animalIdx={props.animalIdx}
+        postIdx={props.postIdx}
+        organizationName={props.organizationName}
       />
     </>
   );
@@ -74,23 +73,4 @@ export default function Posts(props) {
 const PhotoContainer = styled.div`
   margin: 16px;
   border-radius: 15px;
-`;
-
-const PhotoContent = styled.div`
-  padding: 8px;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const PhotoName = styled.div`
-  margin: 0;
-  font-size: 17px;
-  font-weight: bold;
-`;
-
-const PhotoInfo = styled.div`
-  display: block;
-  &:span {
-    margin-right: 8px;
-  }
 `;

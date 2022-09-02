@@ -1,12 +1,22 @@
 import React, { useEditableControls } from 'react';
 import AdoptedTag from '../../assets/img/adopted.png';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 function MyPageCard(props) {
+  let navigate = useNavigate();
 
+  const handleClick = () => {
+    console.log('clicked : ', props.animalIdx);
+    navigate('/detail', {
+      state: {
+        id: props.animalIdx,
+      },
+    });
+  };
   return (
     <>
-      <DataContainer>
+      <DataContainer onClick={handleClick}>
         <DataPhoto src={props.mainImgUrl} alt='사진 url' />
         <DataInfo>
           <div>

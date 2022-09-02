@@ -9,16 +9,23 @@ import ReactModal from 'react-modal';
 import HistoryRegister from '../components/DetailPage/HistoryRegister';
 
 import {
-  useRecoilState, useRecoilValue,
+  useRecoilState,
+  useRecoilValue,
   // useRecoilValue,
 } from 'recoil';
-import { LoginImageIndex, LoginRole, LoginUserIdx } from '../states/LoginState';
+import {
+  LoginImageIndex,
+  LoginRole,
+  LoginUserIdx,
+  LoginUserOrgName,
+} from '../states/LoginState';
 import { imageArr } from '../components/SignUpPage/InputForm';
 
 function DetailScreen() {
   //recoil : 단체 여부
   const [isRole, setIsRole] = useRecoilState(LoginRole);
   const [userIdx, setUserIdx] = useRecoilState(LoginUserIdx);
+  const loginUserOrgName = useRecoilValue(LoginUserOrgName);
 
   //동물 id 넘어옴
   const location = useLocation();
@@ -129,7 +136,8 @@ function DetailScreen() {
         <PostList>
           <PostListTitle>
             <div style={{ display: 'flex', flex: 1 }}>동물 히스토리</div>
-            {isRole == 'ORGANIZTION' ? (
+            {isRole == 'ORGANIZATION' &&
+            loginUserOrgName == organizationName ? (
               <HistoryRegister isOrganization={isRole} animalIdx={id} />
             ) : null}
           </PostListTitle>
@@ -139,15 +147,16 @@ function DetailScreen() {
                 <Posts
                   animalIdx={id}
                   postIdx={item.postIdx}
-                  imgUrl={item.postImgUrl}
+                  postImgUrl={item.postImgUrl}
+                  organizationName={organizationName}
                 />
               );
             })}
           </PostContainer>
         </PostList>
-        <SliderContainer>
+        {/* <SliderContainer>
           <SliderSection recommandAnimal={recommand} />
-        </SliderContainer>
+        </SliderContainer> */}
       </>
     </>
   );

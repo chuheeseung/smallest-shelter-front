@@ -5,10 +5,9 @@ import MyPageCard from './MyPageCard';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { LoginUserToken, LoginUserIdx } from '../../states/LoginState';
-
 const PAGE_SIZE = 10;
 
-function MyLikeAnimal(props) {
+function MyRegisterAnimal(props) {
   const [userToken, setUserToken] = useRecoilState(LoginUserToken);
   const [userID, setUserID] = useRecoilState(LoginUserIdx);
 
@@ -46,7 +45,7 @@ function MyLikeAnimal(props) {
         Accept: 'application/json',
       },
       method: 'get',
-      url: `https://sjs.hana-umc.shop/auth/private/animals/${userID}?page=0`,
+      url: `https://sjs.hana-umc.shop/auth/organization/animals/${userID}?page=0`,
     }).then((response) => {
       console.log(response);
       setCardList(response.data.result.animalResList);
@@ -55,7 +54,7 @@ function MyLikeAnimal(props) {
 
   return (
     <>
-      <MyLikeTitle>나의 관심 동물</MyLikeTitle>
+      <MyLikeTitle>등록한 동물 목록</MyLikeTitle>
       <DataContainer>
         {cardList.slice(minValue, maxValue).map((item) => {
           return (
@@ -118,4 +117,4 @@ export const PageButton = styled.button`
   }
 `;
 
-export default MyLikeAnimal;
+export default MyRegisterAnimal;

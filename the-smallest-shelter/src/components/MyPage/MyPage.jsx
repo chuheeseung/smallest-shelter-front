@@ -20,6 +20,7 @@ import {
 import { myInfoDummy } from './dataMyInfo';
 import ChatList from '../ChatList/ChatList';
 import { useNavigate } from 'react-router-dom';
+import MyRegisterAnimal from './MyRegisterAnimal';
 
 class Tabs extends Component {
   static childContextTypes = {
@@ -227,7 +228,11 @@ function MyPage() {
             />
           </TabPanel>
           <TabPanel>
-            <MyLikeAnimal isRole={isRole} userID={loginUserId} />
+            {isRole == 'PRIVATE' ? (
+              <MyLikeAnimal isRole={isRole} userID={loginUserId} />
+            ) : (
+              <MyRegisterAnimal isRole={isRole} userID={loginUserId} />
+            )}
           </TabPanel>
           <TabPanel>
             <ChatList />
