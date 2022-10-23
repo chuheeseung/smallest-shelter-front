@@ -11,11 +11,11 @@ import PageButtons from '../components/ListviewPage/PageButtons';
 
 export default function ListviewScreen() {
   const [userToken, setUserToken] = useRecoilState(LoginUserToken);
-  const [cardList, setCardList] = useState([]); // 데이터 받아오는 배열
+  const [cardList, setCardList] = useState([]); 
   const [pageNum, setPageNum] = useState(0);
 
-  const [click, setClick] = useState(false); // false: 조회, true: 필터링
-  const [maxPageNum, setMaxPageNum] = useState(1); // 페이지 버튼 최댓값
+  const [click, setClick] = useState(false); 
+  const [maxPageNum, setMaxPageNum] = useState(1); 
   const [data, setData] = useState({
     species: "",
     gender: "",

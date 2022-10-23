@@ -7,8 +7,6 @@ import { ButtonWrap, PageButton } from '../MyPage/MyLikeAnimal';
 import { useState } from 'react';
 
 export default function PageButtons({ handleCardList, click, pageNum, maxPageNum, data }) {
-  // const [clicked, setClicked] = useState(false);
-
   const handlePrevious = async () => {
     if(click === true) {
       console.log(1);
@@ -51,6 +49,7 @@ export default function PageButtons({ handleCardList, click, pageNum, maxPageNum
   const handleNext = async () => {
     if(click === true) {
       console.log(3);
+      console.log(maxPageNum);
       await axios
         .post(
           `https://sjs.hana-umc.shop/animal/search?page=${pageNum}`,
@@ -89,10 +88,9 @@ export default function PageButtons({ handleCardList, click, pageNum, maxPageNum
     }
   };
 
-  // useState(() => {
-  //   setClicked(click);
-  //   console.log(clicked);
-  // }, []);
+  useEffect(() => {
+    console.log(maxPageNum);
+  }, []);
 
   return (
     <ButtonWrap>
