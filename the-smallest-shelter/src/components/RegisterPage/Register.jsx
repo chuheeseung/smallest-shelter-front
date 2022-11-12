@@ -40,8 +40,8 @@ function Register() {
     ];
     const [species, setSpecies] = useState("");
     const speciesList = [
-        { name: '강아지', value: 'DOG' },
-        { name: '고양이', value: 'CAT' }
+        { name: "강아지", value: "DOG" },
+        { name: "고양이", value: "CAT" }
     ];
     const [items, setItems] = useState(["홍역", "파보", "코로나", "슬개골",]);
     const [diseaseName, setDiseaseName] = useState("");
