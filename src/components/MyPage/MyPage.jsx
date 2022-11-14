@@ -1,6 +1,6 @@
 import React, { Component, Children, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import MyInfo from '../MyPage/MyInfo';
+import MyInfo from './MyInfo';
 import './MyPage.css';
 import MyLikeAnimal from './MyLikeAnimal';
 import styled from 'styled-components';
